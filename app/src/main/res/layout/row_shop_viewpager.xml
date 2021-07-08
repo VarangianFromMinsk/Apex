@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:gravity="center_vertical">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        app:cardCornerRadius="20dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/bannerIv"
+                android:layout_width="match_parent"
+                android:layout_marginTop="5dp"
+                android:layout_height="230dp"
+                android:contentDescription="@string/imageinpager" />
+
+            <TextView
+                android:id="@+id/priceOfStaff"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/bannerIv"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="5dp"
+                android:layout_toStartOf="@+id/minusStaff"
+                android:textColor="#000"
+                android:textSize="18sp"
+                android:text="@string/price"/>
+
+            <ImageButton
+                android:id="@+id/plusStaff"
+                android:layout_marginTop="10dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="5dp"
+                app:srcCompat="@drawable/plus"
+                android:layout_below="@+id/bannerIv"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                tools:ignore="ContentDescription" />
+
+            <TextView
+                android:id="@+id/numberOfStaff"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/_0"
+                android:layout_marginTop="20dp"
+                android:textSize="20sp"
+                android:layout_toStartOf="@+id/plusStaff"
+                android:layout_below="@+id/bannerIv"
+                android:textColor="@color/purple_500"/>
+
+            <ImageButton
+                android:id="@+id/minusStaff"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="7dp"
+                android:layout_toStartOf="@+id/numberOfStaff"
+                app:srcCompat="@drawable/minus"
+                android:layout_below="@+id/bannerIv"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                tools:ignore="ContentDescription"/>
+
+            <TextView
+                android:id="@+id/titleViewPager"
+                android:layout_below="@+id/minusStaff"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:text="@string/title"
+                android:textColor="#000"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/descriptionViewPager"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/titleViewPager"
+                android:ellipsize="end"
+                android:text="@string/description"
+                android:paddingStart="5dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
+                android:textColor="#000"
+                android:textSize="14sp"
+                android:background="@drawable/shape_rect"
+                tools:ignore="RtlSymmetry" />
+
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</LinearLayout>

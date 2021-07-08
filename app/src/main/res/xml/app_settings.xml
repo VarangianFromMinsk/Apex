@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+ <PreferenceCategory app:title="Player">
+    <SwitchPreference
+        android:defaultValue="true"
+        android:key="player_switch_1"
+        android:title="[PLAYER] AutoBackground"
+        android:summaryOff="AutoBack off"
+        android:summaryOn="AutoBack on"/>
+    <SwitchPreference
+        android:defaultValue="true"
+        android:key="player_switch_2"
+        android:title="[PLAYER] LoopList"
+        android:summaryOff="LoopList off"
+        android:summaryOn="LoopList on"/>
+    <SwitchPreference
+        android:defaultValue="true"
+        android:key="player_switch_3"
+        android:title="[PLAYER] Notifications"
+        android:summaryOff="Notidications off"
+        android:summaryOn="Notidications on"/>
+</PreferenceCategory>
+
+</PreferenceScreen>

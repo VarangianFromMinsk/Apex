@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F3F3F3"
+    tools:context=".main.Screens.Dashboard_MVP.View_Pager_And_Shop_Activity.Shop_Activity">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_rowWeight="1"
+        android:layout_columnWeight="1"
+        app:cardElevation="6dp"
+        app:cardCornerRadius="10dp"
+        android:layout_margin="12dp"
+        tools:ignore="UnusedAttribute,UsingOnClickInXml">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:padding="14dp"
+            android:orientation="vertical"
+            tools:ignore="UseCompoundDrawables">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="15dp"
+                android:text="@string/order_information"
+                android:textAllCaps="true"
+                android:textColor="@color/black"
+                android:textSize="28sp" />
+
+            <TextView
+                android:id="@+id/OrderFor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="80dp"
+                android:layout_marginTop="80dp"
+                android:text="@string/order_for"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/OrderTextName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="160dp"
+                android:layout_marginTop="80dp"
+                android:textColor="#151515"
+                android:textSize="16sp"
+                android:textStyle="italic" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="80dp"
+                android:layout_marginTop="100dp"
+                android:text="@string/staff"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+
+            <TextView
+                android:id="@+id/OrderTextNameStaff"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="120dp"
+                android:layout_marginTop="100dp"
+                android:textColor="#151515"
+                android:textSize="16sp"
+                android:textStyle="italic" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="80dp"
+                android:layout_marginTop="120dp"
+                android:text="@string/number"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/quantityTextNameStaff"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#151515"
+                android:textSize="16sp"
+                android:textStyle="italic"
+                android:layout_marginTop="120dp"
+                android:layout_marginStart="150dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="80dp"
+                android:layout_marginTop="140dp"
+                android:text="@string/price_for_one"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/OneStafPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#151515"
+                android:textSize="16sp"
+                android:textStyle="italic"
+                android:layout_marginTop="140dp"
+                android:layout_marginStart="190dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="80dp"
+                android:layout_marginTop="160dp"
+                android:text="@string/full_pice"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/PriceTextNameStaff"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#151515"
+                android:textSize="16sp"
+                android:textStyle="italic"
+                android:layout_marginTop="160dp"
+                android:layout_marginStart="160dp"/>
+
+            <Button
+                android:onClick="Email"
+                android:id="@+id/button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:layout_marginStart="20dp"
+                android:textColor="@color/purple_500"
+                style="?android:attr/borderlessButtonStyle"
+                android:text="@string/send_email"
+                android:layout_below="@id/PriceTextNameStaff"/>
+
+            <Button
+                android:onClick="Messenger"
+                android:layout_marginEnd="30dp"
+                android:id="@+id/buttonMessenger"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/purple_500"
+                android:layout_marginStart="20dp"
+                style="?android:attr/borderlessButtonStyle"
+                android:text="@string/send_by_messenger"
+                android:layout_below="@+id/button"/>
+
+            <TextView
+                android:textColor="@color/black"
+                android:text="@string/you_also_can"
+                android:id="@+id/GeoPidor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:layout_below="@+id/button"
+                android:layout_marginTop="80dp"
+                android:layout_marginStart="10dp"/>
+
+            <Button
+                android:onClick="CallToSupport"
+                android:id="@+id/CallToPidor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/purple_500"
+                style="?android:attr/borderlessButtonStyle"
+                android:text="@string/call_to_support"
+                android:layout_below="@+id/GeoPidor"/>
+
+
+        </RelativeLayout>
+
+
+    </androidx.cardview.widget.CardView>
+
+
+
+</RelativeLayout>

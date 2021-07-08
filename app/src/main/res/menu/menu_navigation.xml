@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/dashboard_nav"
+        android:title="Dashboard"
+        android:icon="@drawable/dashboard_nav"/>
+
+    <item
+        android:id="@+id/userChat_nav"
+        android:title="Chats"
+        android:icon="@drawable/chat_nav"/>
+
+    <item
+        android:id="@+id/userPosts_nav"
+        android:title="Posts"
+
+        android:icon="@drawable/posts"/>
+
+    <item
+        android:id="@+id/musicPlayer_nav"
+        android:title="MusicPlayer"
+        android:icon="@drawable/musicplayer_nav"/>
+
+    <item
+        android:id="@+id/myProfile_nav"
+        android:title="myProfile"
+        android:icon="@drawable/profile_nav"/>
+
+</menu>

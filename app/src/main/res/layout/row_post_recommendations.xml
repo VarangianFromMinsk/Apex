@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    android:id="@+id/postCardVIew"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="150dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="1dp"
+    app:cardElevation="3dp"
+    android:layout_marginBottom="3dp"
+    android:layout_marginTop="3dp"
+    android:layout_margin="2dp"
+    app:cardBackgroundColor="@color/white">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/pRecImageIv"
+            android:layout_marginTop="4dp"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:scaleType="centerCrop"
+            android:background="@color/white"
+            tools:ignore="ContentDescription" />
+
+        <RelativeLayout
+            android:id="@+id/layToSetLike"
+            android:layout_width="60dp"
+            android:layout_height="25dp"
+            android:layout_marginBottom="5dp"
+            android:layout_alignParentBottom="true">
+
+            <ImageView
+                android:layout_width="190dp"
+                android:layout_height="30dp"
+                android:background="#00FFFFFF"
+                android:src="@drawable/custom_apex_back"
+                tools:ignore="ContentDescription" />
+
+            <ImageView
+                android:id="@+id/likeIvRecommend"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_marginStart="3dp"
+                app:srcCompat="@drawable/likeoff"
+                android:scaleX="0.8"
+                android:scaleY="0.8"
+                android:textColor="?attr/colorControlNormal"
+                app:backgroundTint="#00DCD6D6"
+                tools:ignore="ContentDescription" />
+
+            <TextView
+                android:id="@+id/pLikesRecTv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxWidth="10dp"
+                android:layout_toEndOf="@+id/likeIvRecommend"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="5dp"
+                android:textSize="12sp"
+                android:text="--"
+                android:textColor="#000000"
+                tools:ignore="SmallSp" />
+
+        </RelativeLayout>
+
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

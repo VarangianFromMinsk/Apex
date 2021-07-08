@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".main.Screens.Music.Add_Music_Activity_MVP.Add_Music_Activity">
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/songMainTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Song main title"/>
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/songLastTitle"
+        android:layout_below="@+id/songMainTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Song last title"/>
+
+    <Button
+        android:id="@+id/uploadSongBtn"
+        android:onClick="chooseAudioFile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/songLastTitle"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="30dp"
+        android:text="Choose song"/>
+
+
+    <TextView
+        android:id="@+id/textViewSongFileSelected"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:gravity="center"
+        android:layout_below="@+id/songLastTitle"
+        android:layout_toRightOf="@+id/uploadSongBtn"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="20dp"
+        android:textSize="20sp"
+        android:text="No file selected"/>
+
+    <ImageView
+        android:id="@+id/albumImage"
+        android:background="@drawable/default_add_pick_post"
+        android:layout_below="@+id/uploadSongBtn"
+        android:scaleType="centerCrop"
+        android:layout_marginTop="20dp"
+        android:layout_centerHorizontal="true"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:minHeight="200dp"/>
+
+    <Button
+        android:id="@+id/uploadAlbumBtn"
+        android:onClick="chooseAudioFile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/albumImage"
+        android:layout_centerInParent="true"
+        android:text="Choose album"/>
+
+    <ProgressBar
+        android:id="@+id/progressBarUploadAlbum"
+        android:layout_margin="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/uploadAlbumBtn"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"/>
+
+    <ProgressBar
+        android:id="@+id/progressBarUploadSong"
+        android:layout_margin="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/progressBarUploadAlbum"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"/>
+
+    <Button
+        android:layout_below="@+id/progressBarUploadSong"
+        android:onClick="uploadSongToFirebase"
+        android:layout_margin="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Upload treck"/>
+
+
+
+</RelativeLayout>

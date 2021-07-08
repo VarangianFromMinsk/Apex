@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
+    android:background="#19979696"
+    tools:context=".main.Screens.Posts.Post_Comments_MVVM.Post_Comment_Activity">
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scrollViewPostComment"
+        android:layout_above="@+id/commentsLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- Actual post -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardInPostComment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="10dp"
+                android:animateLayoutChanges="true"
+                app:cardUseCompatPadding="true"
+                app:cardBackgroundColor="@color/white">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:id="@+id/upPostPart"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical">
+
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:id="@+id/uPictureIv"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_marginStart="5dp"
+                            android:layout_marginTop="1dp"
+                            android:background="@drawable/default_avatar"
+                            android:src="@drawable/default_avatar"
+                            android:transitionName="avatar"
+                            app:civ_border_width="1dp"
+                            app:civ_border_color="#FF000000"
+                            tools:ignore="VectorDrawableCompat" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_weight="1">
+
+                            <TextView
+                                android:id="@+id/uNameTv"
+                                android:layout_marginStart="10dp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/Name"
+                                android:textSize="20sp"
+                                android:textColor="#000000" />
+
+                            <TextView
+                                android:id="@+id/pTimeTv"
+                                android:layout_marginStart="10dp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/minutes" />
+
+                        </LinearLayout>
+
+                        <ImageButton
+                            android:id="@+id/moreBtn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="10dp"
+                            android:background="#00FFFFFF"
+                            android:rotation="90"
+                            android:rotationY="0"
+                            app:srcCompat="@drawable/more"
+                            android:contentDescription="@string/postdialog"
+                            app:tint="#4E4C4C" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/pTitleTv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/upPostPart"
+                        android:autoLink="all"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginEnd="5dp"
+                        android:text="@string/title"
+                        android:textColor="#000000"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/pDescriptionTv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/pTitleTv"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginEnd="5dp"
+                        android:autoLink="all"
+                        android:text="@string/the_description_of_the_post"
+                        android:textColor="#000000"
+                        android:textStyle="italic" />
+
+                    <ImageView
+                        android:id="@+id/pImageIv"
+                        android:layout_marginTop="4dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="350dp"
+                        android:layout_below="@+id/pDescriptionTv"
+                        android:scaleType="centerCrop"
+                        android:background="@color/white"
+                        tools:ignore="ContentDescription" />
+
+                    <ImageView
+                        android:id="@+id/pLikeClickComment"
+                        android:layout_width="140dp"
+                        android:layout_height="140dp"
+                        android:layout_below="@+id/pDescriptionTv"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginTop="130dp"
+                        android:alpha="0"
+                        android:background="#00FFFFFF"
+                        app:srcCompat="@drawable/avd_apex_like"
+                        tools:ignore="ContentDescription" />
+
+                    <RelativeLayout
+                        android:id="@+id/likesCommentPart"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/pImageIv"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/pLikesTv"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="7dp"
+                            android:layout_marginStart="5dp"
+                            android:layout_marginEnd="5dp"
+                            android:textSize="12sp"
+                            android:textColor="#000000" />
+
+                        <TextView
+                            android:id="@+id/pCommentsTv"
+                            android:layout_marginStart="130dp"
+                            android:layout_width="match_parent"
+                            android:layout_marginTop="7dp"
+                            android:layout_marginEnd="5dp"
+                            android:layout_height="wrap_content"
+                            android:textSize="12sp"
+                            android:textColor="#000000" />
+
+                    </RelativeLayout>
+
+
+                    <LinearLayout
+                        android:id="@+id/bottomPostPart"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/likesCommentPart"
+                        android:orientation="horizontal"
+                        android:gravity="center">
+
+                        <Button
+                            android:id="@+id/likeBtn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="2dp"
+                            android:layout_weight="1"
+                            android:drawablePadding="5dp"
+                            android:textColor="?attr/colorControlNormal"
+                            android:text="@string/like"
+                            app:backgroundTint="#00DCD6D6"
+                            style="?android:attr/borderlessButtonStyle"
+                            tools:ignore="ButtonStyle" />
+
+
+                        <Button
+                            android:id="@+id/shareBtn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="2dp"
+                            android:layout_weight="1"
+                            android:drawablePadding="2dp"
+                            android:shadowColor="#00FFFFFF"
+                            android:text="@string/share"
+                            android:textColor="?attr/colorControlNormal"
+                            app:backgroundTint="#00DCD6D6"
+                            style="?android:attr/borderlessButtonStyle" />
+
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <!-- list of comment -->
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewForComments"
+                android:layout_below="@+id/cardInPostComment"
+                android:layout_marginStart="3dp"
+                android:layout_marginEnd="3dp"
+                android:layout_marginTop="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <ProgressBar
+                android:id="@+id/progressbarInUPostComment"
+                android:layout_below="@+id/cardInPostComment"
+                android:layout_marginTop="40dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:indeterminate="true"/>
+
+            <TextView
+                android:id="@+id/noCommentsInPostComment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/cardInPostComment"
+                android:layout_centerHorizontal="true"
+                android:textColor="#490902"
+                android:textSize="18sp"
+                android:layout_marginTop="45dp"
+                android:text="@string/no_comments"/>
+
+
+
+        </RelativeLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <RelativeLayout
+        android:id="@+id/commentsLayout"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="5dp"
+        android:background="#00000000">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/cAvatarIv"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="5dp"
+            android:src="@drawable/default_avatar"
+            app:civ_border_color="#FF000000"
+            app:civ_border_width="1dp"
+            tools:ignore="VectorDrawableCompat" />
+
+        <EditText
+            android:id="@+id/commentEt"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="10dp"
+            android:paddingStart="10dp"
+            android:paddingEnd="5dp"
+            android:layout_toLeftOf="@+id/sendBtn"
+            android:layout_toRightOf="@+id/cAvatarIv"
+            android:background="@drawable/custiom_edit_text"
+            android:hint="@string/your_comment"
+            android:inputType="textCapSentences|textMultiLine"
+            android:importantForAutofill="no" />
+
+        <ImageButton
+            android:id="@+id/sendBtn"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginTop="12dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:background="@drawable/custom_send"
+            android:contentDescription="@string/sendcommentpost" />
+
+
+    </RelativeLayout>
+
+</RelativeLayout>

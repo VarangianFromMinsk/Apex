@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    android:id="@+id/postCardVIew"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="10dp"
+    app:cardElevation="3dp"
+    android:layout_marginBottom="3dp"
+    android:layout_marginTop="3dp"
+    android:layout_margin="5dp"
+    app:cardBackgroundColor="@color/white">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/upPostPart"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/uPictureIv"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="1dp"
+                android:src="@drawable/default_avatar"
+                app:civ_border_width="1dp"
+                app:civ_border_color="@color/purple_500"
+                tools:ignore="VectorDrawableCompat" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/uNameTv"
+                    android:layout_marginStart="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/Name"
+                    android:textSize="20sp"
+                    android:textColor="#000000" />
+
+                <TextView
+                    android:id="@+id/pTimeTv"
+                    android:layout_marginStart="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/minutes" />
+
+            </LinearLayout>
+
+            <ImageButton
+                android:id="@+id/moreBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:background="#00FFFFFF"
+                android:rotation="90"
+                android:rotationY="0"
+                app:srcCompat="@drawable/more"
+                android:tint="#4E4C4C"
+                android:contentDescription="@string/postdialog" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/pTitleTv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/upPostPart"
+            android:autoLink="all"
+            android:layout_marginTop="3dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:text="@string/title"
+            android:textColor="#000000"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+
+        <ImageView
+            android:id="@+id/pImageIv"
+            android:layout_marginTop="4dp"
+            android:layout_width="match_parent"
+            android:layout_height="400dp"
+            android:layout_below="@+id/pTitleTv"
+            android:scaleType="centerCrop"
+            android:background="@color/white"
+            tools:ignore="ContentDescription" />
+
+        <TextView
+            android:id="@+id/pDescriptionTv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/pImageIv"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:maxLength="30"
+            android:maxLines="1"
+            android:autoLink="all"
+            android:text="@string/the_description_of_the_post"
+            android:textColor="#000000" />
+
+        <ImageView
+            android:id="@+id/pLikeClick"
+            android:layout_width="140dp"
+            android:layout_height="140dp"
+            android:layout_below="@+id/pTitleTv"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="130dp"
+            android:alpha="0"
+            android:background="#00FFFFFF"
+            app:srcCompat="@drawable/avd_apex_like"
+            tools:ignore="ContentDescription" />
+
+        <RelativeLayout
+            android:id="@+id/likesCommentPart"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/pDescriptionTv"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/pLikesTv"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="7dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="5dp"
+                android:textSize="12sp"
+                android:textColor="#000000" />
+
+            <TextView
+                android:id="@+id/pCommentsTv"
+                android:layout_marginStart="130dp"
+                android:layout_width="100dp"
+                android:layout_marginTop="7dp"
+                android:layout_marginEnd="5dp"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:textColor="#000000" />
+
+        </RelativeLayout>
+
+
+        <LinearLayout
+            android:id="@+id/bottomPostPart"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/likesCommentPart"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <Button
+                android:id="@+id/likeBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="2dp"
+                android:layout_weight="1"
+                android:drawablePadding="5dp"
+                android:textColor="?attr/colorControlNormal"
+                app:backgroundTint="#00DCD6D6"
+                style="?android:attr/borderlessButtonStyle"
+                tools:ignore="ButtonStyle" />
+
+            <Button
+                android:id="@+id/commentBtn"
+                android:layout_margin="2dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColor="?attr/colorControlNormal"
+                android:text="@string/comment"
+                app:backgroundTint="#00DCD6D6"
+                android:drawablePadding="5dp"
+                android:background="@null"
+                style="?android:attr/borderlessButtonStyle" />
+
+            <Button
+                android:id="@+id/shareBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="2dp"
+                android:layout_weight="1"
+                android:drawablePadding="2dp"
+                android:shadowColor="#00FFFFFF"
+                android:text="@string/share"
+                android:textColor="?attr/colorControlNormal"
+                app:backgroundTint="#00DCD6D6"
+                style="?android:attr/borderlessButtonStyle" />
+
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

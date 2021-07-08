@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
+    android:background="#19979696"
+    tools:context=".main.Screens.Posts.Add_Change_Post_MVP.Add_Change_Post_Activity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/addPostCard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="3dp"
+            android:layout_marginBottom="3dp"
+            android:layout_marginTop="3dp"
+            android:layout_margin="10dp"
+            app:cardBackgroundColor="@color/white">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="2dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="2dp"
+                android:animateLayoutChanges="true"
+                android:orientation="vertical">
+
+                <EditText
+                    android:id="@+id/pTitleEt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:textColorHint="#C1555454"
+                    android:hint="@string/enter_title"
+                    android:singleLine="true"
+                    android:importantForAutofill="no"
+                    android:inputType="textCapSentences|textMultiLine" />
+
+                <ImageView
+                    android:background="@drawable/default_add_pick_post"
+                    android:id="@+id/pImageIv"
+                    android:layout_width="match_parent"
+                    android:layout_height="400dp"
+                    android:scaleType="centerCrop"
+                    android:contentDescription="@string/chooseimageincreatepost" />
+
+                <EditText
+                    android:id="@+id/pDescriptionEt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:hint="@string/enter_description"
+                    android:textColorHint="#D2555454"
+                    android:inputType="textCapSentences|textMultiLine"
+                    android:minHeight="120dp"
+                    android:gravity="start"
+                    android:importantForAutofill="no" />
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <Button
+            android:id="@+id/pUploadBtn"
+            android:layout_width="200dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="15dp"
+            android:layout_below="@+id/addPostCard"
+            android:layout_centerHorizontal="true"
+            android:text="@string/publish"
+            android:textColor="#6B0A00"
+            app:backgroundTint="#FFFFFF" />
+
+    </RelativeLayout>
+
+
+</ScrollView>

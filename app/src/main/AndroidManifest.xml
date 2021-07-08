@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.example.myapplication">
+    <!--
+         The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
+         Google Maps Android API v2, but you must specify either coarse or fine
+         location permissions for the "MyLocation" functionality.
+    -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.MyApplication">
+        <activity android:name=".Notes_ROOM.Add_Note_Activity"></activity>
+        <activity android:name=".Notes_ROOM.Notes_Activity" />
+        <activity android:name=".main.Screens.Additional.Cut_Methods.Json_And_Internet" />
+        <activity android:name=".main.Screens.Posts.Posts_By_Recommendation_MVVM.Post_Activity_Recommendations" />
+        <!--
+             The API key for Google Maps-based APIs is defined as a string resource.
+             (See the file "res/values/google_maps_api.xml").
+             Note that the API key is linked to the encryption key used to sign the APK.
+             You need a different API key for each encryption key, including the release key that is used to
+             sign the APK for publishing.
+             You can define the keys for the debug and release targets in src/debug/ and src/release/.
+        -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
+
+        <activity
+            android:name=".main.Screens.Find_Selected_Or_My_User_Location.Users_FInd_Location"
+            android:label="@string/title_activity_users__f_ind__location" />
+        <activity android:name=".main.Screens.Additional.Splash_Screen_Activity.Splash_Screen_Activity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".main.Screens.Additional.location_Card_Google.Location_Find_Example_Activity" />
+        <activity android:name=".main.Screens.Music.Add_Music_Activity_MVP.Add_Music_Activity" />
+        <activity android:name=".main.Screens.Show_Image_MVP.Show_Image_Activity" />
+        <activity android:name=".main.Screens.Posts.Post_Comments_MVVM.Post_Comment_Activity" />
+        <activity android:name=".main.Screens.Posts.Add_Change_Post_MVP.Add_Change_Post_Activity" />
+        <activity android:name=".main.Screens.Posts.Posts_By_Friends_MVP.Post_Activity_Friends" />
+        <activity
+            android:name=".main.Screens.User_Profile_MVVM.User_Profile_Activity"
+            android:windowSoftInputMode="adjustPan" />
+        <activity android:name=".main.Screens.User_List_4_States_MVVM.User_List_Activity" />
+        <activity android:name=".main.Screens.Dashboard_MVP.Dashboard_Activity" />
+        <activity android:name=".main.Screens.Chat_Activity_MVP.Chat_Main_Activity" />
+        <activity android:name=".main.Screens.Additional.Kino_Json.Full_Kino_Info_Activity" />
+        <activity android:name=".main.Screens.Additional.Kino_Json.Kino_Search_Info_Activity" />
+        <activity android:name=".main.Screens.DB_Activities.Workout_SQL.Workout_Register_Activity" />
+        <activity
+            android:name=".main.Screens.Settings.Settings_Activity"
+            android:parentActivityName=".SaveExample">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".SaveExample" />
+        </activity>
+        <activity android:name=".main.Screens.Music.Music_List_Activity_MVVM.Music_List_Activity" />
+        <activity android:name=".main.Screens.Music.Music_Player_Activity_And_Service_MVP.Music_Player_Activity" />
+        <activity android:name=".main.Screens.Dashboard_MVP.View_Pager_And_Shop_Activity.Shop_Activity" />
+        <activity
+            android:name=".main.Screens.Sing_In_MVP.Sign_In_Activity"
+            android:windowSoftInputMode="adjustPan" />
+        <activity android:name=".main.Screens.DB_Activities.Workout_SQL.Workout_Add_Member_Activity" />
+
+        <service android:name=".Services.Firebase_Notification_Service">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <provider
+            android:name=".main.Screens.DB_Activities.Workout_SQL.data.WorkoutContentProvider"
+            android:authorities="com.example.myapplication"
+            android:exported="false" />
+
+        <receiver android:name=".Services.Music_Notification_Service" />
+
+        <service android:name=".main.Screens.Music.Music_Player_Activity_And_Service_MVP.On_Clear_From_Music_Service" />
+    </application>
+
+</manifest>

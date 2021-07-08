@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="100dp"
+    app:cardCornerRadius="10dp"
+    app:cardElevation="3dp"
+    android:layout_marginTop="3dp"
+    android:layout_marginBottom="3dp"
+    android:layout_marginStart="5dp"
+    android:layout_marginEnd="5dp"
+    app:contentPadding="3dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="4dp"
+        android:orientation="horizontal">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/avatarImageView"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/default_avatar"
+            app:civ_border_color="@color/purple_500"
+            app:civ_border_width="1dp"
+            tools:ignore="VectorDrawableCompat" />
+
+        <TextView
+            android:id="@+id/UserNameChatList"
+            android:layout_width="95dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="5dp"
+            android:layout_marginStart="60dp"
+            android:maxLines="2"
+            android:maxLength="25"
+            android:text="@string/hide_text"
+            android:textColor="#000000"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/lastMessage"
+            android:layout_width="130dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="5dp"
+            android:layout_marginStart="160dp"
+            android:text="@string/last_message"
+            android:textColor="#000000"
+            android:textSize="15sp" />
+
+        <com.github.library.bubbleview.BubbleTextView
+            android:id="@+id/userLastMessage"
+            android:layout_marginStart="160dp"
+            android:layout_below="@+id/lastMessage"
+            android:maxLength="12"
+            android:text="@string/no_message"
+            android:padding="10dp"
+            android:textColor="@android:color/black"
+            app:arrowWidth="8dp"
+            app:angle="15dp"
+            app:arrowHeight="0dp"
+            app:arrowPosition="14dp"
+            app:arrowLocation="right"
+            app:arrowCenter="true"
+            app:bubbleColor="#efefef"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/dayLastConnection"
+            android:layout_width="wrap_content"
+            android:layout_height="12dp"
+            android:layout_gravity="center"
+            android:layout_marginStart="65dp"
+            android:layout_marginTop="55dp"
+            android:text="@string/day"
+            android:textColor="#000000"
+            android:textSize="10sp"
+            tools:ignore="SmallSp" />
+
+
+        <TextView
+            android:id="@+id/timeLastConnection"
+            android:layout_width="wrap_content"
+            android:layout_height="12dp"
+            android:layout_gravity="center"
+            android:layout_marginStart="65dp"
+            android:layout_marginTop="65dp"
+            android:text="@string/time"
+            android:textColor="#000000"
+            android:textSize="10sp"
+            tools:ignore="SmallSp"/>
+
+
+        <TextView
+            android:id="@+id/onOffLine"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="55dp"
+            android:text="@string/hide_text"
+            android:textColor="#000000"
+            android:textStyle="italic" />
+
+        <ImageButton
+            android:id="@+id/blockBtn"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="3dp"
+            android:background="#FFFFFF"
+            android:contentDescription="@string/blockedanotheruser" />
+
+        <ImageView
+            android:id="@+id/blockByAnotherUser"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:visibility="gone"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="40dp"
+            android:background="#FFFFFF"
+            app:srcCompat="@drawable/block_on_red"
+            android:contentDescription="@string/youblockedbyanotheruser" />
+
+        <ImageButton
+            android:id="@+id/addRequestToFriend"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="45dp"
+            android:layout_marginEnd="10dp"
+            android:background="#00FFFFFF"
+            android:scaleX="1.3"
+            android:scaleY="1.3"
+            android:contentDescription="@string/addrequestforfriends" />
+
+        <ImageButton
+            android:id="@+id/addToFriend"
+            android:visibility="gone"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="45dp"
+            android:layout_marginEnd="40dp"
+            android:background="#00FFFFFF"
+            android:scaleX="1.3"
+            android:scaleY="1.3"
+            app:srcCompat="@drawable/add"
+            android:contentDescription="@string/acceptanotherusertofriend" />
+
+
+
+    </RelativeLayout>
+
+
+</androidx.cardview.widget.CardView>

@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:id="@+id/backInPlayer"
+    android:animateLayoutChanges="true"
+    android:orientation="vertical"
+    android:layout_height="match_parent"
+    android:background="#867f79"
+    tools:context=".main.Screens.Music.Music_Player_Activity_And_Service_MVP.Music_Player_Activity">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="55dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/mytoolbar"
+                android:background="#867f79"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="?attr/actionBarSize"
+                android:theme="?attr/actionBarTheme"
+                 />
+
+            <ImageButton
+                android:id="@+id/ActBarBut"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="320dp"
+                android:layout_marginTop="15dp"
+                android:background="#00FFFFFF"
+                android:scaleX="1.2"
+                android:scaleY="1.2"
+                app:srcCompat="@drawable/home"
+                tools:ignore="ContentDescription" />
+
+            <ImageButton
+                android:id="@+id/ActBarSett"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="360dp"
+                android:layout_marginTop="15dp"
+                android:background="#00EDECEC"
+                app:srcCompat="@drawable/settings_white"
+                tools:ignore="ContentDescription" />
+        </RelativeLayout>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <ImageView
+        android:layout_marginTop="80dp"
+        android:layout_marginStart="60dp"
+        android:id="@+id/imageAlbum"
+        android:layout_width="280dp"
+        android:layout_height="280dp"
+        tools:layout_editor_absoluteX="81dp"
+        tools:layout_editor_absoluteY="15dp"
+        android:transitionName="album"
+        tools:ignore="ContentDescription" />
+
+    <TextView
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="40dp"
+        android:layout_below="@id/imageAlbum"
+        android:id="@+id/textMainTitle"
+        android:layout_width="320dp"
+        android:layout_height="25dp"
+        android:text="@string/main_title"
+        android:textAlignment="viewStart"
+        android:textColor="#EFE6E6"
+        android:textSize="20sp"
+        tools:layout_editor_absoluteX="46dp"
+        tools:layout_editor_absoluteY="270dp"
+        android:transitionName="mainTitle"/>
+    <TextView
+        android:layout_marginTop="50dp"
+        android:layout_marginStart="40dp"
+        android:layout_below="@id/imageAlbum"
+        android:id="@+id/textLastTitle"
+        android:layout_width="320dp"
+        android:layout_height="25dp"
+        android:text="@string/last_title"
+        android:textAlignment="viewStart"
+        android:textColor="#EFE6E6"
+        android:textSize="15sp"
+        tools:layout_editor_absoluteX="46dp"
+        tools:layout_editor_absoluteY="270dp"
+        android:transitionName="lastTitle"/>
+
+    <SeekBar
+        android:id="@+id/seekBarInMusic"
+        android:layout_width="340dp"
+        android:layout_height="40dp"
+        android:layout_below="@+id/textMainTitle"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="15dp"
+        android:thumb="@drawable/custom_thumb"
+        android:progressBackgroundTint="#DCDCDC"
+        android:progressTint="@color/white"
+        tools:layout_editor_absoluteX="36dp"
+        tools:layout_editor_absoluteY="310dp"
+        tools:ignore="UnusedAttribute" />
+
+    <ImageButton
+        android:layout_marginStart="155dp"
+        android:layout_marginTop="40dp"
+        android:layout_below="@+id/seekBarInMusic"
+        android:id="@+id/startPauseBtn"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:background="#00FFFFFF"
+        app:srcCompat="@drawable/start"
+        tools:layout_editor_absoluteX="160dp"
+        tools:layout_editor_absoluteY="405dp"
+        tools:srcCompat="@drawable/start"
+        tools:ignore="ContentDescription" />
+
+    <TextView
+        android:layout_marginTop="450dp"
+        android:layout_marginStart="40dp"
+        android:id="@+id/updateTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:text="@string/_00_00" />
+
+    <TextView
+        android:layout_marginTop="450dp"
+        android:layout_marginStart="320dp"
+        android:id="@+id/AllTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:text="@string/_00_00" />
+
+    <ImageButton
+        android:layout_marginStart="255dp"
+        android:layout_marginTop="60dp"
+        android:layout_below="@+id/seekBarInMusic"
+        android:id="@+id/nextBtn"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="#00FFFFFF"
+        app:srcCompat="@drawable/forward"
+        tools:layout_editor_absoluteX="250dp"
+        tools:layout_editor_absoluteY="426dp"
+        app:tint="@color/white" />
+
+    <ImageButton
+        android:id="@+id/prevBtn"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_below="@+id/seekBarInMusic"
+        android:layout_marginStart="95dp"
+        android:layout_marginTop="60dp"
+        android:background="#00FFFFFF"
+        android:rotationY="180"
+        android:scaleY="1"
+        app:srcCompat="@drawable/forward"
+        tools:layout_editor_absoluteX="110dp"
+        tools:layout_editor_absoluteY="426dp"
+        app:tint="@color/white" />
+
+    <ImageButton
+        android:id="@+id/listBtn"
+        android:layout_marginStart="320dp"
+        android:layout_marginTop="60dp"
+        android:layout_below="@+id/seekBarInMusic"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="#00FFFFFF"
+        app:srcCompat="@drawable/musiclist"
+        tools:layout_editor_absoluteX="326dp"
+        tools:layout_editor_absoluteY="425dp" />
+
+    <ImageButton
+        android:id="@+id/likeBtnMusic"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_below="@+id/seekBarInMusic"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="58dp"
+        android:background="#00FFFFFF"
+        android:scaleX="1.2"
+        android:scaleY="1.2"
+        app:srcCompat="@drawable/likeoff"
+        tools:layout_editor_absoluteX="35dp"
+        tools:layout_editor_absoluteY="425dp" />
+
+    <ImageButton
+        android:id="@+id/loopBtn"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_below="@+id/startPauseBtn"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="40dp"
+        android:alpha="0.5"
+        android:background="#00FFFFFF"
+        app:srcCompat="@drawable/retry"
+        tools:layout_editor_absoluteX="35dp"
+        tools:layout_editor_absoluteY="546dp" />
+
+    <Button
+        android:id="@+id/HQbtn"
+        android:layout_marginTop="40dp"
+        android:layout_marginStart="115dp"
+        android:layout_below="@+id/startPauseBtn"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="60dp"
+        android:layout_height="50dp"
+        android:alpha="0.5"
+        android:text="@string/hq"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textSize="17sp"
+        app:backgroundTint="#00FFFFFF"
+        tools:layout_editor_absoluteX="129dp"
+        tools:layout_editor_absoluteY="547dp" />
+
+    <ImageButton
+        android:id="@+id/shareMusicBtn"
+        android:layout_marginTop="40dp"
+        android:layout_marginStart="230dp"
+        android:layout_below="@+id/startPauseBtn"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="#00FFFFFF"
+        app:srcCompat="@drawable/share"
+        tools:layout_editor_absoluteX="227dp"
+        tools:layout_editor_absoluteY="547dp"
+        tools:srcCompat="@drawable/share"
+        tools:ignore="ContentDescription" />
+
+    <ImageButton
+        android:id="@+id/randomBtn"
+        android:layout_marginTop="40dp"
+        android:layout_marginStart="320dp"
+        android:layout_below="@+id/startPauseBtn"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="#00FFFFFF"
+        android:alpha="0.5"
+        app:srcCompat="@drawable/mix"
+        tools:layout_editor_absoluteX="326dp"
+        tools:layout_editor_absoluteY="546dp"
+        tools:ignore="ContentDescription" />
+
+
+</RelativeLayout>

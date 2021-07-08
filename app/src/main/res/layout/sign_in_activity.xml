@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    android:orientation="vertical"
+    android:animateLayoutChanges="true"
+    tools:context=".main.Screens.Sing_In_MVP.Sign_In_Activity">
+
+    <VideoView
+        android:id="@+id/videoLogIn"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:scaleY="1.2" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="100dp"
+        android:layout_alignParentBottom="true">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/emailEditText"
+                style="@style/Widget.AppCompat.EditText"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="60dp"
+                android:drawableStart="@drawable/custom_email_icon"
+                android:drawablePadding="10dp"
+                android:hint="@string/Your_email"
+                android:inputType="textEmailAddress"
+                app:backgroundTint="#92FFFFFF"
+                android:shadowColor="#FFFFFF"
+                android:textColor="#FFFFFF"
+                android:textColorHighlight="#FFFFFF"
+                android:textColorHint="#92FFFFFF"
+                android:textColorLink="#FFFFFF" />
+
+            <EditText
+                android:id="@+id/passwordEditText"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/emailEditText"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:hint="@string/Your_password"
+                android:inputType="textPassword"
+                android:password="true"
+                android:drawablePadding="10dp"
+                android:drawableStart="@drawable/custom_lock_icon"
+                app:backgroundTint="#92FFFFFF"
+                android:shadowColor="#FFFFFF"
+                android:textColor="#FFFFFF"
+                android:textColorHighlight="#FFFFFF"
+                android:textColorHint="#92FFFFFF"
+                android:textColorLink="#FFFFFF"
+                android:importantForAutofill="no" />
+
+            <EditText
+                android:id="@+id/repeatpasswordEditText"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/passwordEditText"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:hint="@string/Password_again"
+                android:inputType="textPassword"
+                android:password="true"
+                android:drawablePadding="10dp"
+                android:drawableStart="@drawable/custom_lock_icon"
+                app:backgroundTint="#92FFFFFF"
+                android:shadowColor="#FFFFFF"
+                android:textColor="#FFFFFF"
+                android:textColorHighlight="#FFFFFF"
+                android:textColorHint="#92FFFFFF"
+                android:textColorLink="#FFFFFF"
+                android:importantForAutofill="no" />
+
+            <EditText
+                android:id="@+id/nameEditText"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/repeatpasswordEditText"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:hint="@string/Your_name"
+                android:inputType="textPersonName"
+                android:drawablePadding="10dp"
+                android:drawableStart="@drawable/custom_name_icon"
+                app:backgroundTint="#92FFFFFF"
+                android:shadowColor="#FFFFFF"
+                android:textColor="#FFFFFF"
+                android:textColorHighlight="#FFFFFF"
+                android:textColorHint="#92FFFFFF"
+                android:textColorLink="#FFFFFF"
+                android:importantForAutofill="no" />
+
+            <Button
+                android:id="@+id/loginSingUpButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/nameEditText"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:text="@string/Log_in"
+                android:textColor="@color/purple_500"
+                app:backgroundTint="#FFFFFF" />
+
+            <TextView
+                android:id="@+id/toggleLoginSingUPTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/loginSingUpButton"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="15dp"
+                android:clickable="true"
+                android:onClick="toggleLoginMode"
+                android:text="@string/Or_Sign_Up"
+                android:textSize="16sp"
+                android:shadowColor="#FFFFFF"
+                android:textColor="#FFFFFF"
+                android:textColorHint="#79FFFFFF"
+                android:focusable="true" />
+
+            <TextView
+                android:id="@+id/recoverForgottenPassword"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/loginSingUpButton"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginTop="50dp"
+                android:clickable="true"
+                android:text="@string/Forgot_pass"
+                android:textSize="16sp"
+                android:shadowColor="#FFFFFF"
+                android:textColor="#FFFFFF"
+                android:textColorHint="#79FFFFFF"
+                android:focusable="true" />
+
+        </RelativeLayout>
+
+
+    </ScrollView>
+
+</RelativeLayout>

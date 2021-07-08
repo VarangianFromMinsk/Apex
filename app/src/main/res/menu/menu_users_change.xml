@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/All_nav"
+        android:title="All"
+        android:icon="@drawable/all_users"/>
+
+    <item
+        android:id="@+id/Friends_nav"
+        android:title="Friends"
+        android:icon="@drawable/friends"/>
+
+    <item
+        android:id="@+id/Request_nav"
+        android:title="Requests"
+        android:icon="@drawable/request"/>
+
+    <item
+        android:id="@+id/Ban_nav"
+        android:title="Ban"
+        android:icon="@drawable/ban"/>
+
+</menu>

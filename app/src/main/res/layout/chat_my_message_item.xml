@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/messageLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:orientation="vertical"
+        android:layout_alignParentEnd="true"
+        android:paddingBottom="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <com.github.library.bubbleview.BubbleImageView
+            android:id="@+id/photoImageView"
+            android:scaleType="centerCrop"
+            android:src="@drawable/image_default_for_chat"
+            android:layout_below="@+id/timeOfMessage"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="3dp"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            app:arrowLocation="left"
+            app:arrowHeight="0dp"/>
+
+        <TextView
+            android:id="@+id/repostDeletedName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:textColor="@color/black" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/chatRepostCard"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:paddingBottom="10dp"
+            app:cardBackgroundColor="#7EC0EE">
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/repostName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/white"
+                    android:layout_marginStart="10dp"
+                    android:layout_alignParentStart="true"
+                    android:text="PostName"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="10dp"/>
+
+
+                <ImageView
+                    android:id="@+id/repostImage"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/image_default_for_chat"
+                    android:layout_below="@+id/repostName"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="3dp"
+                    android:layout_width="300dp"
+                    android:layout_height="200dp"
+                    android:transitionName="postImage"/>
+
+                <TextView
+                    android:id="@+id/repostDescription"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/repostImage"
+                    android:textColor="@android:color/white"
+                    android:layout_alignParentStart="true"
+                    android:text="PostDescription"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="10dp"/>
+
+            </RelativeLayout>
+
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <TextView
+            android:id="@+id/dayOfMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:maxWidth="200dp"
+            android:text="day of message"
+            android:textSize="10sp" />
+
+        <TextView
+            android:id="@+id/timeOfMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:maxWidth="300dp"
+            android:text="time of message"
+            android:textSize="10sp" />
+
+
+
+        <com.github.library.bubbleview.BubbleTextView
+            android:id="@+id/messageTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/timeOfMessage"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="3dp"
+            android:maxWidth="300dp"
+            android:padding="10dp"
+            android:text="TextVew"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            app:angle="15dp"
+            app:arrowHeight="0dp"
+            app:arrowLocation="left"
+            app:arrowPosition="14dp"
+            app:arrowWidth="8dp"
+            app:bubbleColor="#7EC0EE" />
+
+
+    </RelativeLayout>
+
+</RelativeLayout>

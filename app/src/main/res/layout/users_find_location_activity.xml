@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:map="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <fragment
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".main.Screens.Find_Selected_Or_My_User_Location.Users_FInd_Location" />
+
+    <LinearLayout
+        android:id="@+id/linearBtnLocation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/white">
+
+        <Button
+            android:id="@+id/changeBtnInLocation"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:layout_weight="1"
+            android:enabled="false"
+            android:text="@string/find_selected_user"
+            android:textColor="@color/purple_500"
+            style="?android:attr/borderlessButtonStyle" />
+
+        <Button
+            android:id="@+id/findBtnInLocation"
+            android:text="@string/find_nearest_user"
+            android:enabled="false"
+            android:textColor="@color/purple_500"
+            android:layout_margin="4dp"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            style="?android:attr/borderlessButtonStyle"/>
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/lineInFindsLocation"
+        android:layout_width="2dp"
+        android:layout_height="45dp"
+        android:background="@color/purple_500"
+        android:layout_marginBottom="5dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"/>
+
+
+</RelativeLayout>

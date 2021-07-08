@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "946488833843",
+    "project_id": "gachichat-88c3c",
+    "storage_bucket": "gachichat-88c3c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:946488833843:android:6763c414163524e2413046",
+        "android_client_info": {
+          "package_name": "com.example.myapplication"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "946488833843-dh114lnk23hob851ned7b7jeh44ser36.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.myapplication",
+            "certificate_hash": "0969d70acf9e5c22acea4d08d4f39b8f43807460"
+          }
+        },
+        {
+          "client_id": "946488833843-tkqboh6cum2hdrbage2c4659tuarntv9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDez-iV_eTK44WXxfUBVKzwYTB27TOZt_s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "946488833843-tkqboh6cum2hdrbage2c4659tuarntv9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
