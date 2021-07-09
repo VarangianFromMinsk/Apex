@@ -25,7 +25,8 @@
         android:layout_above="@+id/bottomNavigation"
         android:layout_below="@+id/searchTextMusic"
         android:backgroundTint="@color/black"
-        android:scrollbars="vertical" />
+        android:scrollbars="vertical"
+        tools:ignore="UnusedAttribute" />
 
     <ProgressBar
         android:id="@+id/progressbarInMusicList"
@@ -57,5 +58,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:clickable="true"
-        app:srcCompat="@drawable/add" />
+        app:srcCompat="@drawable/add"
+        tools:ignore="ContentDescription,KeyboardInaccessibleWidget" />
 </RelativeLayout>

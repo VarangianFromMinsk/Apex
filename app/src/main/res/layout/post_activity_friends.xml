@@ -53,7 +53,7 @@
             android:background="@drawable/background_serch"
             android:backgroundTint="#9FFFFFFF"
             android:layout_below="@+id/textBtnFriendPost"
-            >
+            tools:ignore="UnusedAttribute">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -122,7 +122,8 @@
         app:srcCompat="@drawable/add"
         app:backgroundTint="#FFFFFF"
         app:fabSize="normal"
-        android:contentDescription="@string/add_posts_floating_btn" />
+        android:contentDescription="@string/add_posts_floating_btn"
+        tools:ignore="UsingOnClickInXml" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:layout_width="match_parent"

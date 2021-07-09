@@ -11,7 +11,8 @@
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".main.Screens.Find_Selected_Or_My_User_Location.Users_FInd_Location" />
+        tools:context=".main.Screens.Find_Selected_Or_My_User_Location.Users_FInd_Location"
+        tools:ignore="FragmentTagUsage" />
 
     <LinearLayout
         android:id="@+id/linearBtnLocation"
@@ -51,7 +52,8 @@
         android:background="@color/purple_500"
         android:layout_marginBottom="5dp"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"/>
+        android:layout_centerHorizontal="true"
+        tools:ignore="ContentDescription" />
 
 
 </RelativeLayout>

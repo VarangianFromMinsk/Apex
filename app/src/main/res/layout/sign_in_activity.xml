@@ -129,7 +129,8 @@
                 android:shadowColor="#FFFFFF"
                 android:textColor="#FFFFFF"
                 android:textColorHint="#79FFFFFF"
-                android:focusable="true" />
+                android:focusable="true"
+                tools:ignore="UsingOnClickInXml" />
 
             <TextView
                 android:id="@+id/recoverForgottenPassword"

@@ -24,7 +24,8 @@
                 android:layout_marginTop="15dp"
                 android:scaleType="centerCrop"
                 android:layout_width="match_parent"
-                android:layout_height="350dp" />
+                android:layout_height="350dp"
+                tools:ignore="ContentDescription" />
 
             <TextView
                 android:id="@+id/TitleFullInfo"

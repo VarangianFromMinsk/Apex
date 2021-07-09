@@ -24,18 +24,20 @@
             <EditText
                 android:id="@+id/titleNoteEt"
                 android:inputType="textPersonName"
-                android:hint="Title"
+                android:hint="@string/title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"/>
+                android:layout_margin="5dp"
+                android:autofillHints="no" />
 
             <EditText
                 android:id="@+id/descrNoteEt"
-                android:hint="Description"
+                android:hint="@string/description"
                 android:inputType="textMultiLine"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"/>
+                android:layout_margin="5dp"
+                android:importantForAutofill="no" />
 
         </LinearLayout>
 
@@ -52,21 +54,21 @@
             android:id="@+id/radioButton3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="High" />
+            android:text="@string/high" />
 
         <RadioButton
             android:id="@+id/radioButton2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:text="Medium" />
+            android:text="@string/medium" />
 
         <RadioButton
             android:id="@+id/radioButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:text="Low" />
+            android:text="@string/low" />
     </RadioGroup>
 
     <Button
@@ -79,6 +81,7 @@
         android:layout_centerHorizontal="true"
         android:text="@string/publish"
         android:textColor="#6B0A00"
-        android:backgroundTint="@color/white"/>
+        android:backgroundTint="@color/white"
+        tools:ignore="UnusedAttribute" />
 
 </RelativeLayout>

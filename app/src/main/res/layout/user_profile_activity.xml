@@ -56,7 +56,7 @@
                             android:layout_height="45dp"
                             android:background="#00FFFFFF"
                             app:srcCompat="@drawable/settings_white"
-                            tools:ignore="ContentDescription" />
+                            tools:ignore="ContentDescription,UsingOnClickInXml" />
 
                         <ImageButton
                             android:id="@+id/passwordButtonInProfile"
@@ -76,7 +76,7 @@
                             android:layout_below="@+id/passwordButtonInProfile"
                             android:background="#00FFFFFF"
                             app:srcCompat="@drawable/exit_white"
-                            tools:ignore="ContentDescription" />
+                            tools:ignore="ContentDescription,UsingOnClickInXml" />
 
                     </RelativeLayout>
 
@@ -98,7 +98,7 @@
                             android:layout_marginTop="20dp"
                             android:background="#00FFFFFF"
                             app:srcCompat="@drawable/add"
-                            tools:ignore="ContentDescription" />
+                            tools:ignore="ContentDescription,UsingOnClickInXml" />
 
                         <ImageButton
                             android:id="@+id/addUserPhotoButtonInProfile"
@@ -109,7 +109,7 @@
                             android:layout_toEndOf="@+id/addBackground"
                             android:background="#00FFFFFF"
                             app:srcCompat="@drawable/addphoto_white"
-                            tools:ignore="ContentDescription" />
+                            tools:ignore="ContentDescription,UsingOnClickInXml" />
 
                         <ImageButton
                             android:id="@+id/locationButtonInProfile"
@@ -145,7 +145,7 @@
                             app:srcCompat="@drawable/default_avatar"
                             android:layout_centerVertical="true"
                             android:transitionName="avatar"
-                            tools:ignore="VectorDrawableCompat" />
+                            tools:ignore="UnusedAttribute,VectorDrawableCompat" />
 
 
                         <TextView
@@ -156,10 +156,11 @@
                             android:layout_marginStart="10dp"
                             android:layout_toEndOf="@+id/profileScreenAvatar"
                             android:fontFamily="serif"
-                            android:text="Name"
+                            android:text="@string/name"
                             android:textColor="#FFFFFF"
                             android:textSize="24sp"
-                            android:transitionName="name"/>
+                            android:transitionName="name"
+                            tools:ignore="UnusedAttribute" />
 
                         <TextView
                             android:id="@+id/profileScreenNickname"
@@ -169,7 +170,7 @@
                             android:layout_marginStart="10dp"
                             android:layout_toEndOf="@+id/profileScreenAvatar"
                             android:includeFontPadding="false"
-                            android:text="Nick"
+                            android:text="@string/nick"
                             android:textColor="#FFFFFF"
                             android:textSize="18sp"
                             android:textStyle="italic" />
@@ -187,7 +188,7 @@
                                 android:layout_height="wrap_content"
                                 android:includeFontPadding="false"
                                 android:layout_marginStart="25dp"
-                                android:text="offline"
+                                android:text="@string/offline"
                                 android:textColor="#FFFFFF"
                                 android:textSize="16sp"
                                 />
@@ -199,7 +200,7 @@
                                 android:layout_below="@+id/onOffLineProfile"
                                 android:includeFontPadding="false"
                                 android:layout_marginStart="25dp"
-                                android:text="time"
+                                android:text="@string/time"
                                 android:textColor="#FFFFFF"
                                 android:textSize="14sp"
                                 />
@@ -243,7 +244,8 @@
                                 android:layout_height="30dp"
                                 android:layout_centerHorizontal="true"
                                 android:layout_marginTop="5dp"
-                                app:srcCompat="@drawable/post_white" />
+                                app:srcCompat="@drawable/post_white"
+                                tools:ignore="ContentDescription" />
 
                             <TextView
                                 android:id="@+id/countLeft"
@@ -255,7 +257,8 @@
                                 android:layout_marginTop="5dp"
                                 android:textColor="@color/white"
                                 android:text="-"
-                                android:textSize="20sp" />
+                                android:textSize="20sp"
+                                tools:ignore="HardcodedText" />
 
                             <TextView
                                 android:id="@+id/clouds_balance"
@@ -264,7 +267,7 @@
                                 android:layout_below="@+id/countLeft"
                                 android:layout_centerHorizontal="true"
                                 android:includeFontPadding="false"
-                                android:text="Posts"
+                                android:text="@string/posts"
                                 android:textColor="#FFFFFF"
                                 android:textSize="18sp" />
 
@@ -293,7 +296,8 @@
                                 android:layout_height="30dp"
                                 android:layout_centerHorizontal="true"
                                 android:layout_marginTop="5dp"
-                                app:srcCompat="@drawable/musicplayer_nav" />
+                                app:srcCompat="@drawable/musicplayer_nav"
+                                tools:ignore="ContentDescription" />
 
                             <TextView
                                 android:id="@+id/countRight"
@@ -305,7 +309,8 @@
                                 android:includeFontPadding="false"
                                 android:textColor="@color/white"
                                 android:text="-"
-                                android:textSize="20sp" />
+                                android:textSize="20sp"
+                                tools:ignore="HardcodedText" />
 
                             <TextView
                                 android:id="@+id/music_balance"
@@ -315,7 +320,7 @@
                                 android:layout_centerHorizontal="true"
                                 android:includeFontPadding="false"
                                 android:textColor="@color/white"
-                                android:text="Tracks"
+                                android:text="@string/tracks"
                                 android:textSize="18sp" />
 
 
@@ -457,7 +462,8 @@
                         android:onClick="update"
                         android:text="@string/update"
                         android:textColor="#490902"
-                        app:backgroundTint="#FFFFFF" />
+                        app:backgroundTint="#FFFFFF"
+                        tools:ignore="UsingOnClickInXml" />
 
                     <ProgressBar
                         android:id="@+id/progressBarInUserProfile"

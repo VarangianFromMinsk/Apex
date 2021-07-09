@@ -61,7 +61,7 @@
         tools:layout_editor_absoluteX="81dp"
         tools:layout_editor_absoluteY="15dp"
         android:transitionName="album"
-        tools:ignore="ContentDescription" />
+        tools:ignore="ContentDescription,UnusedAttribute" />
 
     <TextView
         android:layout_marginTop="20dp"
@@ -76,7 +76,8 @@
         android:textSize="20sp"
         tools:layout_editor_absoluteX="46dp"
         tools:layout_editor_absoluteY="270dp"
-        android:transitionName="mainTitle"/>
+        android:transitionName="mainTitle"
+        tools:ignore="UnusedAttribute" />
     <TextView
         android:layout_marginTop="50dp"
         android:layout_marginStart="40dp"
@@ -90,7 +91,8 @@
         android:textSize="15sp"
         tools:layout_editor_absoluteX="46dp"
         tools:layout_editor_absoluteY="270dp"
-        android:transitionName="lastTitle"/>
+        android:transitionName="lastTitle"
+        tools:ignore="UnusedAttribute" />
 
     <SeekBar
         android:id="@+id/seekBarInMusic"
@@ -149,7 +151,8 @@
         app:srcCompat="@drawable/forward"
         tools:layout_editor_absoluteX="250dp"
         tools:layout_editor_absoluteY="426dp"
-        app:tint="@color/white" />
+        app:tint="@color/white"
+        tools:ignore="ContentDescription" />
 
     <ImageButton
         android:id="@+id/prevBtn"
@@ -164,7 +167,8 @@
         app:srcCompat="@drawable/forward"
         tools:layout_editor_absoluteX="110dp"
         tools:layout_editor_absoluteY="426dp"
-        app:tint="@color/white" />
+        app:tint="@color/white"
+        tools:ignore="ContentDescription" />
 
     <ImageButton
         android:id="@+id/listBtn"
@@ -176,7 +180,8 @@
         android:background="#00FFFFFF"
         app:srcCompat="@drawable/musiclist"
         tools:layout_editor_absoluteX="326dp"
-        tools:layout_editor_absoluteY="425dp" />
+        tools:layout_editor_absoluteY="425dp"
+        tools:ignore="ContentDescription" />
 
     <ImageButton
         android:id="@+id/likeBtnMusic"
@@ -190,7 +195,8 @@
         android:scaleY="1.2"
         app:srcCompat="@drawable/likeoff"
         tools:layout_editor_absoluteX="35dp"
-        tools:layout_editor_absoluteY="425dp" />
+        tools:layout_editor_absoluteY="425dp"
+        tools:ignore="ContentDescription" />
 
     <ImageButton
         android:id="@+id/loopBtn"
@@ -203,7 +209,8 @@
         android:background="#00FFFFFF"
         app:srcCompat="@drawable/retry"
         tools:layout_editor_absoluteX="35dp"
-        tools:layout_editor_absoluteY="546dp" />
+        tools:layout_editor_absoluteY="546dp"
+        tools:ignore="ContentDescription" />
 
     <Button
         android:id="@+id/HQbtn"

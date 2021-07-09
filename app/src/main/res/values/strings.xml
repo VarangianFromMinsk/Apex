@@ -136,8 +136,80 @@
     <string name="temp">Temp</string>
     <string name="notes">Notes</string>
 
+    <!-- TODO: Notes-->
+    <string name="high">High</string>
+    <string name="medium">Medium</string>
+    <string name="low">Low</string>
+
+    <!-- TODO: Add_Music-->
+    <string name="song_main_title">Song main title</string>
+    <string name="song_last_title">Song last title</string>
+    <string name="choose_song">Choose song</string>
+    <string name="no_file_selected">No file selected</string>
+    <string name="choose_album">Choose album</string>
+    <string name="upload_treck">Upload treck</string>
+
+    <!-- TODO: Chat-->
+    <string name="texting_to_you">texting to you ...</string>
+    <string name="refresh">refresh</string>
+    <string name="name">Name</string>
+    <string name="online">Online</string>
+
+    <!-- TODO: Chat_Bubble -->
+    <string name="postname">PostName</string>
+    <string name="postdescription">PostDescription</string>
+    <string name="day_of_message">day of message</string>
+    <string name="time_of_message">time of message</string>
+    <string name="textvew">TextVew</string>
+    <string name="deleted_message">deleted Message</string>
+    <string name="text">text</string>
+
+    <!-- TODO: Kino_Search_Info -->
+    <string name="search">Search</string>
+
+    <!-- TODO: row_Kino -->
+    <string name="year">Year</string>
+    <string name="type">Type</string>
+    <string name="title_second">Title :</string>
+    <string name="year_second">Year :</string>
+    <string name="type_second">Type :</string>
+
+    <!-- TODO: row_Member-->
+    <string name="first_name">First name :</string>
+    <string name="last_name">Last name :</string>
+    <string name="sport">Sport :</string>
+    <string name="age">Age :</string>
+    <string name="time_workout">Time :</string>
+    <string name="w_n">W/n :</string>
+    <string name="w_t">W/t :</string>
+
+    <!-- TODO: user_Profile-->
+    <string name="nick">Nick</string>
+    <string name="offline">offline</string>
+    <string name="posts">Posts</string>
+    <string name="tracks">Tracks</string>
+
+    <!-- TODO: WorkOut-->
+    <string name="main_information">Main information :</string>
+    <string name="first_name_mem_act">First Name :</string>
+    <string name="first_name_mem_ac">First Name</string>
+    <string name="last_name_mem_act">Last Name :</string>
+    <string name="last_name_mem_ac">Last Name</string>
+    <string name="gender">Gender</string>
+    <string name="group">Group :</string>
+    <string name="group_2">Group</string>
+    <string name="extra_information">Extra information :</string>
+    <string name="time_mem">Time :</string>
+    <string name="time_mem_sec">Time</string>
+    <string name="weight_now">Weight now :</string>
+    <string name="your_weight_now">Your weight now</string>
+    <string name="weight_target">Weight target :</string>
+    <string name="your_weight_target">Your weight target</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_json">Json</string>
+
+
 
 </resources>

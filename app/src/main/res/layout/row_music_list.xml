@@ -27,7 +27,8 @@
             android:layout_marginStart="-1dp"
             android:layout_marginTop="-1dp"
             android:layout_marginBottom="-1dp"
-            android:transitionName="album"/>
+            android:transitionName="album"
+            tools:ignore="ContentDescription,UnusedAttribute" />
 
         <TextView
             android:id="@+id/mainTitle"
@@ -39,7 +40,8 @@
             android:textColor="@color/white"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:transitionName="mainTitle"/>
+            android:transitionName="mainTitle"
+            tools:ignore="UnusedAttribute" />
 
         <TextView
             android:id="@+id/lastTitle"
@@ -50,7 +52,8 @@
             android:layout_marginStart="5dp"
             android:textColor="@color/white"
             android:textSize="16sp"
-            android:transitionName="lastTitle"/>
+            android:transitionName="lastTitle"
+            tools:ignore="UnusedAttribute" />
 
         <ImageView
             android:id="@+id/likeInMusicList"
@@ -59,7 +62,8 @@
             android:layout_alignParentEnd="true"
             android:layout_marginTop="12dp"
             android:layout_marginEnd="22dp"
-            app:srcCompat="@drawable/likeoff"/>
+            app:srcCompat="@drawable/likeoff"
+            tools:ignore="ContentDescription" />
 
         <TextView
             android:id="@+id/songDuration"
@@ -71,7 +75,8 @@
             android:layout_marginBottom="5dp"
             android:text="00:00"
             android:textColor="@color/white"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            tools:ignore="HardcodedText" />
 
 
     </RelativeLayout>

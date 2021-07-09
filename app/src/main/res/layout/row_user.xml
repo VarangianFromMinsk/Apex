@@ -80,7 +80,7 @@
             android:text="@string/day"
             android:textColor="#000000"
             android:textSize="10sp"
-            tools:ignore="SmallSp" />
+            tools:ignore="RelativeOverlap,SmallSp" />
 
 
         <TextView
@@ -93,7 +93,7 @@
             android:text="@string/time"
             android:textColor="#000000"
             android:textSize="10sp"
-            tools:ignore="SmallSp"/>
+            tools:ignore="RelativeOverlap,SmallSp"/>
 
 
         <TextView
@@ -105,7 +105,8 @@
             android:layout_marginTop="55dp"
             android:text="@string/hide_text"
             android:textColor="#000000"
-            android:textStyle="italic" />
+            android:textStyle="italic"
+            tools:ignore="RelativeOverlap" />
 
         <ImageButton
             android:id="@+id/blockBtn"

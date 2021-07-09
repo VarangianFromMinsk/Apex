@@ -2,6 +2,7 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/messageLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -11,7 +12,8 @@
         android:layout_alignParentEnd="true"
         android:paddingBottom="10dp"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        tools:ignore="UselessParent">
 
         <com.github.library.bubbleview.BubbleImageView
             android:id="@+id/photoImageView"
@@ -33,7 +35,8 @@
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="10dp"
-            android:textColor="@color/black" />
+            android:textColor="@color/black"
+            tools:ignore="RelativeOverlap" />
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/chatRepostCard"
@@ -54,7 +57,7 @@
                     android:textColor="@android:color/white"
                     android:layout_marginStart="10dp"
                     android:layout_alignParentStart="true"
-                    android:text="PostName"
+                    android:text="@string/postname"
                     android:layout_marginTop="10dp"
                     android:layout_marginEnd="10dp"/>
 
@@ -68,7 +71,8 @@
                     android:layout_marginTop="3dp"
                     android:layout_width="300dp"
                     android:layout_height="200dp"
-                    android:transitionName="postImage"/>
+                    android:transitionName="postImage"
+                    tools:ignore="ContentDescription,UnusedAttribute" />
 
                 <TextView
                     android:id="@+id/repostDescription"
@@ -77,7 +81,7 @@
                     android:layout_below="@+id/repostImage"
                     android:textColor="@android:color/white"
                     android:layout_alignParentStart="true"
-                    android:text="PostDescription"
+                    android:text="@string/postdescription"
                     android:layout_marginBottom="10dp"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="10dp"
@@ -94,8 +98,9 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:maxWidth="200dp"
-            android:text="day of message"
-            android:textSize="10sp" />
+            android:text="@string/day_of_message"
+            android:textSize="10sp"
+            tools:ignore="RelativeOverlap,SmallSp" />
 
         <TextView
             android:id="@+id/timeOfMessage"
@@ -103,8 +108,9 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:maxWidth="300dp"
-            android:text="time of message"
-            android:textSize="10sp" />
+            android:text="@string/time_of_message"
+            android:textSize="10sp"
+            tools:ignore="RelativeOverlap,SmallSp" />
 
 
 
@@ -117,7 +123,7 @@
             android:layout_marginTop="3dp"
             android:maxWidth="300dp"
             android:padding="10dp"
-            android:text="TextVew"
+            android:text="@string/textvew"
             android:textColor="@android:color/white"
             android:textSize="16sp"
             app:angle="15dp"

@@ -29,10 +29,13 @@
         android:layout_marginBottom="5dp"
         android:backgroundTint="@color/purple_500"
         android:ems="10"
-        android:hint="Search"
+        android:hint="@string/search"
         app:layout_constraintBottom_toTopOf="@+id/kinoRecyclerView"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:importantForAutofill="no"
+        android:inputType="text"
+        tools:ignore="UnusedAttribute" />
 
     <ImageButton
         android:id="@+id/imageButtonSearchKino"
@@ -49,6 +52,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/editTitleName"
         app:layout_constraintTop_toTopOf="parent"
-        app:tint="@color/purple_500" />
+        app:tint="@color/purple_500"
+        tools:ignore="ContentDescription,UsingOnClickInXml" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -2,6 +2,7 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/messageLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -11,7 +12,8 @@
         android:layout_alignParentStart="true"
         android:paddingBottom="10dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        tools:ignore="UselessParent">
 
 
         <com.github.library.bubbleview.BubbleImageView
@@ -24,7 +26,8 @@
             app:arrowHeight="0dp"
             android:scaleType="centerCrop"
             android:layout_width="200dp"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            tools:ignore="RtlHardcoded" />
 
         <TextView
             android:id="@+id/repostDeletedName"
@@ -55,7 +58,7 @@
                     android:textColor="@android:color/black"
                     android:layout_marginStart="10dp"
                     android:layout_alignParentStart="true"
-                    android:text="PostName"
+                    android:text="@string/postname"
                     android:layout_marginTop="10dp"
                     android:layout_marginEnd="10dp"/>
 
@@ -69,7 +72,8 @@
                     android:layout_marginTop="3dp"
                     android:layout_width="300dp"
                     android:layout_height="200dp"
-                    android:transitionName="postImage"/>
+                    android:transitionName="postImage"
+                    tools:ignore="ContentDescription,UnusedAttribute" />
 
                 <TextView
                     android:id="@+id/repostDescription"
@@ -78,7 +82,7 @@
                     android:layout_below="@+id/repostImage"
                     android:textColor="@android:color/black"
                     android:layout_alignParentStart="true"
-                    android:text="PostDescription"
+                    android:text="@string/postdescription"
                     android:layout_marginBottom="10dp"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="10dp"
@@ -95,16 +99,18 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:maxWidth="200dp"
-            android:text="day of message"
-            android:textSize="10sp" />
+            android:text="@string/day_of_message"
+            android:textSize="10sp"
+            tools:ignore="SmallSp" />
 
         <TextView
             android:id="@+id/timeOfMessage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="time of message"
+            android:text="@string/time_of_message"
             android:textSize="10sp"
-            android:maxWidth="300dp"/>
+            android:maxWidth="300dp"
+            tools:ignore="SmallSp" />
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/avatarInChatImageView"
@@ -115,13 +121,14 @@
             app:srcCompat="@drawable/default_avatar"
             app:civ_border_width="1dp"
             app:civ_border_color="#FF000000"
-            android:transitionName="avatar"/>
+            android:transitionName="avatar"
+            tools:ignore="UnusedAttribute" />
 
 
         <com.github.library.bubbleview.BubbleTextView
             android:id="@+id/messageTextView"
             android:maxWidth="300dp"
-            android:text="TextVew"
+            android:text="@string/textvew"
             android:layout_toRightOf="@+id/avatarInChatImageView"
             android:layout_below="@+id/timeOfMessage"
             android:layout_marginTop="3dp"
@@ -137,7 +144,8 @@
             app:arrowCenter="true"
             app:bubbleColor="@color/white"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            tools:ignore="RtlHardcoded" />
 
         <TextView
             android:id="@+id/deletedImageTextView"
@@ -149,7 +157,7 @@
             android:layout_marginTop="3dp"
             android:layout_marginStart="30dp"
             android:padding="10dp"
-            android:text="deleted Message"
+            android:text="@string/deleted_message"
             android:textColor="@android:color/black"
             android:textSize="12sp"
             />

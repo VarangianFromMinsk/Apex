@@ -11,14 +11,14 @@
         android:id="@+id/songMainTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Song main title"/>
+        android:hint="@string/song_main_title"/>
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/songLastTitle"
         android:layout_below="@+id/songMainTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Song last title"/>
+        android:hint="@string/song_last_title"/>
 
     <Button
         android:id="@+id/uploadSongBtn"
@@ -28,7 +28,8 @@
         android:layout_below="@+id/songLastTitle"
         android:layout_marginTop="10dp"
         android:layout_marginStart="30dp"
-        android:text="Choose song"/>
+        android:text="@string/choose_song"
+        tools:ignore="UsingOnClickInXml" />
 
 
     <TextView
@@ -41,7 +42,8 @@
         android:layout_marginStart="30dp"
         android:layout_marginTop="20dp"
         android:textSize="20sp"
-        android:text="No file selected"/>
+        android:text="@string/no_file_selected"
+        tools:ignore="RtlHardcoded" />
 
     <ImageView
         android:id="@+id/albumImage"
@@ -52,7 +54,8 @@
         android:layout_centerHorizontal="true"
         android:layout_width="200dp"
         android:layout_height="200dp"
-        android:minHeight="200dp"/>
+        android:minHeight="200dp"
+        tools:ignore="ContentDescription" />
 
     <Button
         android:id="@+id/uploadAlbumBtn"
@@ -61,7 +64,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/albumImage"
         android:layout_centerInParent="true"
-        android:text="Choose album"/>
+        android:text="@string/choose_album"
+        tools:ignore="UsingOnClickInXml" />
 
     <ProgressBar
         android:id="@+id/progressBarUploadAlbum"
@@ -85,7 +89,8 @@
         android:layout_margin="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Upload treck"/>
+        android:text="@string/upload_treck"
+        tools:ignore="UsingOnClickInXml" />
 
 
 

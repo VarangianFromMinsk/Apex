@@ -70,8 +70,8 @@
                 android:rotation="90"
                 android:rotationY="0"
                 app:srcCompat="@drawable/more"
-                android:tint="#4E4C4C"
-                android:contentDescription="@string/postdialog" />
+                android:contentDescription="@string/postdialog"
+                app:tint="#4E4C4C" />
 
         </LinearLayout>
 

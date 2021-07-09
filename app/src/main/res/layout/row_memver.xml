@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_height="wrap_content"
@@ -18,15 +19,16 @@
         <ImageView
             android:id="@+id/imageViewWorkout"
             android:layout_width="80dp"
-            android:layout_height="80dp"/>
+            android:layout_height="80dp"
+            tools:ignore="ContentDescription" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="80dp"
-            android:text="First name : "
+            android:text="@string/first_name"
             android:textColor="@color/black"
-            android:textSize="16dp"
+            android:textSize="16sp"
             android:textStyle="bold" />
 
         <TextView
@@ -34,9 +36,9 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/firstNameTextView"
             android:layout_marginStart="80dp"
-            android:text="Last name : "
+            android:text="@string/last_name"
             android:textColor="@color/black"
-            android:textSize="16dp"
+            android:textSize="16sp"
             android:textStyle="bold" />
 
         <TextView
@@ -45,9 +47,9 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/lastNameTextView"
             android:layout_marginStart="80dp"
-            android:text="Sport : "
+            android:text="@string/sport"
             android:textColor="@color/black"
-            android:textSize="16dp"
+            android:textSize="16sp"
             android:textStyle="bold" />
 
         <TextView
@@ -55,9 +57,9 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/sportText"
             android:layout_marginStart="80dp"
-            android:text="Age : "
+            android:text="@string/age"
             android:textColor="@color/black"
-            android:textSize="16dp"
+            android:textSize="16sp"
             android:textStyle="bold" />
 
         <TextView
@@ -65,10 +67,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/firstNameTextView"
-            android:text="Time : "
+            android:text="@string/time_workout"
             android:textColor="@color/black"
-            android:textSize="16dp"
-            android:textStyle="bold" />
+            android:textSize="16sp"
+            android:textStyle="bold"
+            tools:ignore="RtlHardcoded" />
 
         <TextView
             android:id="@+id/weightText"
@@ -76,25 +79,27 @@
             android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/firstNameTextView"
             android:layout_below="@+id/timeText"
-            android:text="W/n : "
+            android:text="@string/w_n"
             android:textColor="@color/black"
-            android:textSize="16dp"
-            android:textStyle="bold" />
+            android:textSize="16sp"
+            android:textStyle="bold"
+            tools:ignore="RtlHardcoded" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/firstNameTextView"
             android:layout_below="@+id/weightText"
-            android:text="W/t : "
+            android:text="@string/w_t"
             android:textColor="@color/black"
-            android:textSize="16dp"
-            android:textStyle="bold" />
+            android:textSize="16sp"
+            android:textStyle="bold"
+            tools:ignore="RtlHardcoded" />
 
         <TextView
             android:id="@+id/firstNameTextView"
             android:layout_marginStart="175dp"
-            android:textSize="16dp"
+            android:textSize="16sp"
             android:textColor="@color/black"
             android:layout_width="110dp"
             android:layout_height="wrap_content"/>
@@ -102,7 +107,7 @@
         <TextView
             android:id="@+id/lastNameTextView"
             android:layout_marginStart="175dp"
-            android:textSize="16dp"
+            android:textSize="16sp"
             android:textColor="@color/black"
             android:layout_below="@+id/firstNameTextView"
             android:layout_width="130dp"
@@ -111,7 +116,7 @@
         <TextView
             android:id="@+id/sportTextView"
             android:layout_marginStart="140dp"
-            android:textSize="16dp"
+            android:textSize="16sp"
             android:textColor="@color/red"
             android:layout_below="@+id/lastNameTextView"
             android:layout_width="150dp"
@@ -120,7 +125,7 @@
         <TextView
             android:id="@+id/ageTextView"
             android:layout_marginStart="130dp"
-            android:textSize="16dp"
+            android:textSize="16sp"
             android:textColor="@color/purple_500"
             android:layout_below="@+id/sportText"
             android:layout_width="150dp"
@@ -129,7 +134,7 @@
         <TextView
             android:id="@+id/timeTextView"
             android:layout_marginStart="335dp"
-            android:textSize="16dp"
+            android:textSize="16sp"
             android:textColor="@color/teal_200"
             android:layout_width="40dp"
             android:layout_height="wrap_content"/>
@@ -138,19 +143,21 @@
             android:id="@+id/wNowTextView"
             android:layout_toRightOf="@+id/weightText"
             android:layout_below="@+id/timeText"
-            android:textSize="16dp"
+            android:textSize="16sp"
             android:textColor="@color/teal_200"
             android:layout_width="40dp"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            tools:ignore="RtlHardcoded" />
 
         <TextView
             android:id="@+id/wTarTextView"
             android:layout_toRightOf="@+id/weightText"
-            android:textSize="16dp"
+            android:textSize="16sp"
             android:layout_below="@+id/weightText"
             android:textColor="@color/teal_200"
             android:layout_width="40dp"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            tools:ignore="RtlHardcoded" />
 
     </RelativeLayout>
 

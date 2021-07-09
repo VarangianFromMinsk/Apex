@@ -26,5 +26,5 @@
         app:srcCompat="@drawable/add"
         app:backgroundTint="#914A4A"
         app:rippleColor="#F1F1F1"
-        android:contentDescription="TODO" />
+        tools:ignore="ContentDescription" />
 </RelativeLayout>
