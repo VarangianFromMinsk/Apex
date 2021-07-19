@@ -39,7 +39,7 @@ public class Dashboard_Presenter {
 
     public void loadWeather(String city_default){
 
-        //TODO: first var
+        //TODO: first var by https connection
         /*
         Download_Json_Task_Weather downloadJsonTask = new Download_Json_Task_Weather();
         downloadJsonTask.setView(view);

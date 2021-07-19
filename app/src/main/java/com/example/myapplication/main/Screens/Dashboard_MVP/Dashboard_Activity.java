@@ -139,6 +139,7 @@ public class Dashboard_Activity extends AppCompatActivity implements Dashboard_v
 
     private void loadWeather(CharSequence s){
         city_default = String.valueOf(s);
+        //todo: created switch in presenter
         presenter.loadWeather(city_default);
     }
 
