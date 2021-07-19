@@ -14,6 +14,8 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 public class Post_Friends_Presenter {
 
     private final ArrayList<Model_Post> postListFriends = new ArrayList<>();
@@ -21,11 +23,15 @@ public class Post_Friends_Presenter {
     private String myUid;
     private boolean itsWork;
 
+    //TODO: инджектим зависимость через конструктор
     private final Post_List_view view;
 
+    
     public Post_Friends_Presenter(Post_List_view view) {
         this.view = view;
     }
+
+
 
     public void loadData(String searchQuery){
 

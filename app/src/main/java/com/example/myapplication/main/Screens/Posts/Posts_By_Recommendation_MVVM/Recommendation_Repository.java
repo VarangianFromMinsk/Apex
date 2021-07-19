@@ -12,7 +12,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class Recommendation_Repository {
+public class  Recommendation_Repository {
 
     private static Recommendation_Repository instance;
     private final ArrayList<Model_Post> postListFriendsRepArray = new ArrayList<>();

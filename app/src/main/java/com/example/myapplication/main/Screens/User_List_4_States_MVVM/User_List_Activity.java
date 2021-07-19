@@ -3,6 +3,7 @@ package com.example.myapplication.main.Screens.User_List_4_States_MVVM;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -33,6 +34,8 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.Objects;
+
+//TODO: используем DataBinging тут через ViewModel
 
 public class User_List_Activity extends AppCompatActivity  {
 
@@ -76,6 +79,11 @@ public class User_List_Activity extends AppCompatActivity  {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         viewModel = new ViewModelProvider(this).get(User_List_ViewModel.class);
+
+
+        //todo: Пробуем биндинг, чатсь тут, часть в Xml
+       // binding = DataBindingUtil.setContentView(this, R.layout.user_list_activity);
+
 
         initialization();
 

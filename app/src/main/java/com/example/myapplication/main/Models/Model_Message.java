@@ -17,7 +17,7 @@ public class Model_Message {
     private String keyMessage;
     private boolean isMine;
 
-    public Model_Message(){     // Конструктор
+    public Model_Message(){
     }
 
     public Model_Message(String text, String name, String imageUrl, String sender, String recipient, String timeOfMessage, String dayOfMessage, String recipientImageAvatar, String isThatRepost, String postId, String isThatRecord, String recordUrl, String keyMessage, boolean isMine) {

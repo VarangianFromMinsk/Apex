@@ -24,8 +24,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication">
-        <activity android:name=".Notes_ROOM.Add_Note_Activity"></activity>
-        <activity android:name=".Notes_ROOM.Notes_Activity" />
+        <activity android:name=".Notes_ROOM_MVVM.Add_Note_Activity"/>
+        <activity android:name=".Notes_ROOM_MVVM.Notes_Activity" />
         <activity android:name=".main.Screens.Additional.Cut_Methods.Json_And_Internet" />
         <activity android:name=".main.Screens.Posts.Posts_By_Recommendation_MVVM.Post_Activity_Recommendations" />
         <!--
@@ -50,7 +50,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".main.Screens.Additional.location_Card_Google.Location_Find_Example_Activity" />
         <activity android:name=".main.Screens.Music.Add_Music_Activity_MVP.Add_Music_Activity" />
         <activity android:name=".main.Screens.Show_Image_MVP.Show_Image_Activity" />
         <activity android:name=".main.Screens.Posts.Post_Comments_MVVM.Post_Comment_Activity" />
@@ -65,13 +64,6 @@
         <activity android:name=".main.Screens.Additional.Kino_Json.Full_Kino_Info_Activity" />
         <activity android:name=".main.Screens.Additional.Kino_Json.Kino_Search_Info_Activity" />
         <activity android:name=".main.Screens.DB_Activities.Workout_SQL.Workout_Register_Activity" />
-        <activity
-            android:name=".main.Screens.Settings.Settings_Activity"
-            android:parentActivityName=".SaveExample">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".SaveExample" />
-        </activity>
         <activity android:name=".main.Screens.Music.Music_List_Activity_MVVM.Music_List_Activity" />
         <activity android:name=".main.Screens.Music.Music_Player_Activity_And_Service_MVP.Music_Player_Activity" />
         <activity android:name=".main.Screens.Dashboard_MVP.View_Pager_And_Shop_Activity.Shop_Activity" />

@@ -5,9 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -23,6 +23,7 @@ import com.example.myapplication.R;
 import com.example.myapplication.Services.Online_Offline_Service;
 import com.example.myapplication.main.Screens.Posts.Add_Change_Post_MVP.Add_Change_Post_Activity;
 import com.example.myapplication.main.Models.Model_Post;
+
 import com.example.myapplication.main.Screens.Posts.Posts_By_Recommendation_MVVM.Post_Activity_Recommendations;
 import com.example.myapplication.main.Screens.User_List_4_States_MVVM.User_List_Activity;
 import com.example.myapplication.main.Screens.User_Profile_MVVM.User_Profile_Activity;
@@ -38,7 +39,7 @@ import static android.content.Intent.FLAG_ACTIVITY_NO_ANIMATION;
 
 //TODO: created by Anton Sushchevich MVP format
 
-public class Post_Activity_Friends extends AppCompatActivity implements Post_List_view {
+public class Post_Activity_Friends extends AppCompatActivity implements Post_List_view{
 
     private RecyclerView recyclerView;
     private Post_Adapter_Friends postAdapter;
@@ -56,6 +57,8 @@ public class Post_Activity_Friends extends AppCompatActivity implements Post_Lis
     //TODO: create presenter
     private Post_Friends_Presenter presenter;
 
+    Observer_On_LifeCycle controller = new Observer_On_LifeCycle();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +70,9 @@ public class Post_Activity_Friends extends AppCompatActivity implements Post_Lis
         Objects.requireNonNull(getSupportActionBar()).hide();
 
         presenter = new Post_Friends_Presenter(this);
+
+        //TODO: Android Architeckcher components - lifecycle
+        getLifecycle().addObserver(controller);
 
         initialization();
 
@@ -84,6 +90,7 @@ public class Post_Activity_Friends extends AppCompatActivity implements Post_Lis
 
         updateUserStatus("online");
     }
+
 
     //TODO: main
     private void initialization() {

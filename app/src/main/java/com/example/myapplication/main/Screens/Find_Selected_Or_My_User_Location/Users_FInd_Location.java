@@ -333,10 +333,20 @@ public class Users_FInd_Location extends FragmentActivity implements OnMapReadyC
                     selectedUserLocation.setLongitude(longitude);
 
                     float distanceToDriver = selectedUserLocation.distanceTo(currentLocation);
+                    boolean isKm = false;
+                    if(distanceToDriver > 1000){
+                        distanceToDriver = distanceToDriver/1000;
+                        isKm = true;
+                    }
 
                     selectedUserMarker = mMap.addMarker(new MarkerOptions().position(selectedUserLatLng).title("This User"));
 
-                    findSelectedUserBtn.setText(String.valueOf(R.string.Distance + df.format(distanceToDriver) + R.string.m));
+                    if(isKm){
+                        findSelectedUserBtn.setText(String.valueOf(R.string.Distance + df.format(distanceToDriver) + "km"));
+                    }
+                    else{
+                        findSelectedUserBtn.setText(String.valueOf(R.string.Distance + df.format(distanceToDriver) + R.string.m));
+                    }
 
                     LatLng myLatLng = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
 

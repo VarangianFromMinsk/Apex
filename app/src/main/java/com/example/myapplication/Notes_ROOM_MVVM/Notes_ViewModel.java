@@ -1,4 +1,4 @@
-package com.example.myapplication.Notes_ROOM;
+package com.example.myapplication.Notes_ROOM_MVVM;
 
 import android.app.Application;
 import android.os.AsyncTask;

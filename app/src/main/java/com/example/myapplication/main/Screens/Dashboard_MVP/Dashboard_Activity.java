@@ -29,7 +29,7 @@ import com.example.myapplication.main.Screens.User_List_4_States_MVVM.User_List_
 import com.example.myapplication.main.Screens.User_Profile_MVVM.User_Profile_Activity;
 import com.example.myapplication.main.Screens.Additional.Kino_Json.Kino_Search_Info_Activity;
 import com.example.myapplication.main.Screens.Music.Music_List_Activity_MVVM.Music_List_Activity;
-import com.example.myapplication.Notes_ROOM.Notes_Activity;
+import com.example.myapplication.Notes_ROOM_MVVM.Notes_Activity;
 import com.example.myapplication.main.Screens.DB_Activities.Workout_SQL.Workout_Register_Activity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -140,6 +140,12 @@ public class Dashboard_Activity extends AppCompatActivity implements Dashboard_v
     private void loadWeather(CharSequence s){
         city_default = String.valueOf(s);
         presenter.loadWeather(city_default);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        presenter.removeApiObserver();
     }
 
     @Override

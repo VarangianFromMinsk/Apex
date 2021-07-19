@@ -9,6 +9,7 @@
     android:background="#19979696"
     tools:context=".main.Screens.User_List_4_States_MVVM.User_List_Activity">
 
+
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipeLayUserList"
         android:layout_width="match_parent"

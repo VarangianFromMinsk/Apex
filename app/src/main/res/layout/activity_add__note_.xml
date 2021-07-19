@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="#19979696"
-    tools:context=".Notes_ROOM.Add_Note_Activity">
+    tools:context=".Notes_ROOM_MVVM.Add_Note_Activity">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardAddNote"
