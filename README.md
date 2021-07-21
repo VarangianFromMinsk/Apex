@@ -29,13 +29,15 @@
 Проект создается с помощью:
 * Android Studio
 * Java
-* MVP/MVVM
+* MVP/MVVM + Repository
 * Firebase services
 * Google Maps services
-* Retrofit, Volley, Json, RxJava
+* Retrofit 2, Volley, Json, RxJava 2
 * ROOM, SQL
-* Async task, Handler ,Thread
-* ContentResolver / ContentProvider, BroadcastReceiver;
+* RecyclerView (+SnapHelper / RecyclerView in RecyclerView),  ViewPager, Custom Notification;
+* Music Notification (Notification + MediaSession+ PendingIntent + BroadcastReceiver send / get by intentFilter + Service)
+* Multithreading (Async task, Thread and etc);
+* ContentResolver / ContentProvider;
 
  
 ## Использование
