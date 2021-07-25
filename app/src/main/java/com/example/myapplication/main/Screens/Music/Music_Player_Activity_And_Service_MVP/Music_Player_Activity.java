@@ -841,8 +841,7 @@ public class Music_Player_Activity extends AppCompatActivity implements SharedPr
 
     //TODO: Block online/offline
     public void updateUserStatus( String state){
-        Online_Offline_Service service = new Online_Offline_Service();
-        service.updateUserStatus(state, this);
+        Online_Offline_Service.updateUserStatus(state, this);
     }
 
     @Override

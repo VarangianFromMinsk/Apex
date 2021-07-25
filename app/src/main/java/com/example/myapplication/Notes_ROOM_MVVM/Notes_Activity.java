@@ -14,6 +14,7 @@ import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.View;
 
+import com.example.myapplication.Notes_ROOM_MVVM.DataBase.Model_Note;
 import com.example.myapplication.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -24,7 +25,6 @@ public class Notes_Activity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private List<Model_Note> notes = new ArrayList<>();
-    private FloatingActionButton floatingActionButton;
     private Notes_Adapter adapter;
 
     private Notes_ViewModel viewModel;
@@ -56,7 +56,9 @@ public class Notes_Activity extends AppCompatActivity {
 
         adapter = new Notes_Adapter(notes);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
         getData();
+
         recyclerView.setAdapter(adapter);
 
         adapter.setOnNoteClickListener(new Notes_Adapter.onNoteClickListener() {
@@ -102,13 +104,10 @@ public class Notes_Activity extends AppCompatActivity {
     private void remove(int position){
         Model_Note note = notes.get(position);
         viewModel.deleteNote(note);
-        //TODO: this methods is needable now, cauze we have observer
-        //getData();
-       // adapter.notifyDataSetChanged();
     }
 
     private void initfloatBtn() {
-        floatingActionButton = findViewById(R.id.floatingAddNotes);
+        FloatingActionButton floatingActionButton = findViewById(R.id.floatingAddNotes);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

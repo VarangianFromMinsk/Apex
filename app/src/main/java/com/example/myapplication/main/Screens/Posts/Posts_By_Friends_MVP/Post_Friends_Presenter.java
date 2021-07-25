@@ -2,6 +2,7 @@ package com.example.myapplication.main.Screens.Posts.Posts_By_Friends_MVP;
 
 import androidx.annotation.NonNull;
 
+import com.example.myapplication.Services.Check_Permission_Service;
 import com.example.myapplication.main.Models.Model_Post;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -23,14 +24,19 @@ public class Post_Friends_Presenter {
     private String myUid;
     private boolean itsWork;
 
-    //TODO: инджектим зависимость через конструктор
+
     private final Post_List_view view;
 
-    
+
     public Post_Friends_Presenter(Post_List_view view) {
         this.view = view;
     }
 
+
+    //TODO: test method to unitTest
+    public int add(int a, int b){
+        return a*b;
+    }
 
 
     public void loadData(String searchQuery){

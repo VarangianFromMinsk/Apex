@@ -26,19 +26,20 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Music_Adapter extends RecyclerView.Adapter<Music_Adapter.RecyclerViewViewHolder> {
 
     private Context context;
-    private ArrayList<Model_Song> arrayList = new ArrayList<>();
+    private List<Model_Song> arrayList = new ArrayList<>();
     private String myUid;
 
-    public ArrayList<Model_Song> getArrayList() {
+    public List<Model_Song> getArrayList() {
         return arrayList;
     }
 
     //TODO: use to update current data
-    public void setMusicList(ArrayList<Model_Song> arrayList) {
+    public void setMusicList(List<Model_Song> arrayList) {
         this.arrayList = arrayList;
         notifyDataSetChanged();
     }
@@ -96,7 +97,7 @@ public class Music_Adapter extends RecyclerView.Adapter<Music_Adapter.RecyclerVi
     }
 
     @Override
-    public int getItemCount() {  // Возвращаем кол-во элементов из ArrayList;
+    public int getItemCount() {
         return arrayList.size();
     }
 

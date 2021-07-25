@@ -739,10 +739,9 @@ public class User_Profile_Activity extends AppCompatActivity {
     }
 
     private boolean checkCurrentPermission() {
-        Check_Permission_Service service = new Check_Permission_Service();
-        if(service.checkPermission(this, User_Profile_Activity.this, Manifest.permission.CAMERA, App_Constants.CAMERA_REQUEST_CODE_PROFILE)
-                && service.checkPermission(this,User_Profile_Activity.this, Manifest.permission.READ_EXTERNAL_STORAGE, App_Constants.READING_REQUEST_CODE_PROFILE)
-                && service.checkPermission(this,User_Profile_Activity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE, App_Constants.WRITE_REQUEST_CODE_PROFILE)){
+        if(Check_Permission_Service.checkPermission(this, User_Profile_Activity.this, Manifest.permission.CAMERA, App_Constants.CAMERA_REQUEST_CODE_PROFILE)
+                && Check_Permission_Service.checkPermission(this,User_Profile_Activity.this, Manifest.permission.READ_EXTERNAL_STORAGE, App_Constants.READING_REQUEST_CODE_PROFILE)
+                && Check_Permission_Service.checkPermission(this,User_Profile_Activity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE, App_Constants.WRITE_REQUEST_CODE_PROFILE)){
             return true;
         }
         return false;
@@ -902,8 +901,7 @@ public class User_Profile_Activity extends AppCompatActivity {
 
     //todo: block online/offline and location
     public void updateUserStatus( String state){
-        Online_Offline_Service service = new Online_Offline_Service();
-        service.updateUserStatus(state, this);
+        Online_Offline_Service.updateUserStatus(state, this);
     }
 
     @Override

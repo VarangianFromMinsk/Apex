@@ -195,10 +195,9 @@ public class Add_Change_Post_Activity extends AppCompatActivity implements Add_C
     }
 
     private boolean checkCurrentPermission() {
-        Check_Permission_Service service = new Check_Permission_Service();
-        if(service.checkPermission(this,Add_Change_Post_Activity.this, Manifest.permission.CAMERA, App_Constants.CAMERA_REQUEST_CODE_POST)
-        && service.checkPermission(this,Add_Change_Post_Activity.this, Manifest.permission.READ_EXTERNAL_STORAGE, App_Constants.READING_REQUEST_CODE_POST)
-        && service.checkPermission(this,Add_Change_Post_Activity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE, App_Constants.WRITE_REQUEST_CODE_POST)){
+        if(Check_Permission_Service.checkPermission(this,Add_Change_Post_Activity.this, Manifest.permission.CAMERA, App_Constants.CAMERA_REQUEST_CODE_POST)
+        && Check_Permission_Service.checkPermission(this,Add_Change_Post_Activity.this, Manifest.permission.READ_EXTERNAL_STORAGE, App_Constants.READING_REQUEST_CODE_POST)
+        && Check_Permission_Service.checkPermission(this,Add_Change_Post_Activity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE, App_Constants.WRITE_REQUEST_CODE_POST)){
             return true;
         }
         return false;
@@ -341,8 +340,7 @@ public class Add_Change_Post_Activity extends AppCompatActivity implements Add_C
 
     //TODO: Block online/offline
     public void updateUserStatus( String state){
-        Online_Offline_Service service = new Online_Offline_Service();
-        service.updateUserStatus(state, this);
+        Online_Offline_Service.updateUserStatus(state, this);
     }
 
     @Override

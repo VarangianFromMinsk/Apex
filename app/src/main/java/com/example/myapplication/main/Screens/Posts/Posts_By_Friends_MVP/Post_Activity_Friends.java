@@ -3,7 +3,9 @@ package com.example.myapplication.main.Screens.Posts.Posts_By_Friends_MVP;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.LinearSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.SnapHelper;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -116,6 +118,10 @@ public class Post_Activity_Friends extends AppCompatActivity implements Post_Lis
         postAdapter.setPostList(new ArrayList<Model_Post>());
         recyclerView.setAdapter(postAdapter);
 
+        //TODO: перелистывает как VIEWPAGER + тонко настроить растояние и анимацию
+       // SnapHelper snapHelper = new LinearSnapHelper();
+       // snapHelper.attachToRecyclerView(recyclerView);
+
         createScrollListener();
     }
 
@@ -182,7 +188,7 @@ public class Post_Activity_Friends extends AppCompatActivity implements Post_Lis
     }
 
     private void loadPosts() {
-        presenter.loadData("no");
+         presenter.loadData("no");
     }
 
     private void searchPosts(String searchQuery) {
@@ -253,8 +259,7 @@ public class Post_Activity_Friends extends AppCompatActivity implements Post_Lis
 
     //TODO: Block online/offline
     public void updateUserStatus(String state) {
-        Online_Offline_Service service = new Online_Offline_Service();
-        service.updateUserStatus(state, this);
+        Online_Offline_Service.updateUserStatus(state, this);
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.example.myapplication.Notes_ROOM_MVVM;
+package com.example.myapplication.Notes_ROOM_MVVM.DataBase;
 
 import androidx.room.Entity;
 import androidx.room.Ignore;

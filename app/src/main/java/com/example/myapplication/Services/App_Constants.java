@@ -8,6 +8,9 @@ public class App_Constants {
     public static final String NOTIFICATION_URL = "https://fcm.googleapis.com/fcm/send";;
     public static final String SERVER_KEY = "AAAA3F8hdzM:APA91bFKnqWRqsRnYciDh51dlaP-kuinLGXqy6OfLdSvbhI7Uf6r3fnb1aMAP_jEanq0ohjy-kQ9LqZcVfNrVm8fzOvSYd-IN4IMuBOlN2Gs0xOZoaaB8kJM5vWrsHGZQkUtkWeiXTjW";
 
+
+    public static final int ALL_APP_REQUEST_CODE = 101;
+
     //TODO: Chat_Main_Activity
     public static final int READING_REQUEST_CODE = 5;
     public static final int CAMERA_REQUEST_CODE = 6;

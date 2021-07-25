@@ -498,8 +498,7 @@ public class Post_Comment_Activity extends AppCompatActivity {
 
     //TODO: Block online/offline
     public void updateUserStatus( String state){
-        Online_Offline_Service service = new Online_Offline_Service();
-        service.updateUserStatus(state, this);
+        Online_Offline_Service.updateUserStatus(state, this);
 
     }
 

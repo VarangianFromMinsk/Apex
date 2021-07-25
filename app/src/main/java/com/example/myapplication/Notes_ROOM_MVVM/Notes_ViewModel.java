@@ -7,6 +7,9 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
+import com.example.myapplication.Notes_ROOM_MVVM.DataBase.Model_Note;
+import com.example.myapplication.Notes_ROOM_MVVM.DataBase.Notes_Database;
+
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 

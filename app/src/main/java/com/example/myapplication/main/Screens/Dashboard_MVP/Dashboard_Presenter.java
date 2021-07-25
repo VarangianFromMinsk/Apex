@@ -37,6 +37,8 @@ public class Dashboard_Presenter {
         this.view = view;
     }
 
+
+
     public void loadWeather(String city_default){
 
         //TODO: first var by https connection

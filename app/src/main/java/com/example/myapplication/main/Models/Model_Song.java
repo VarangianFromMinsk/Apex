@@ -1,15 +1,43 @@
 package com.example.myapplication.main.Models;
 
-import com.google.firebase.database.Exclude;
+import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
 
+
+@Entity(tableName = "songs")
 public class Model_Song {
 
-    private String albumUrl, songUrl, songMainTitle, songLastTitle, songDuration, uploadId, mKey;
+    @PrimaryKey(autoGenerate = true)
+    private int id;
 
+    private String albumUrl, songUrl, songMainTitle, songLastTitle, songDuration, uploadId;
+
+    @Ignore
     public Model_Song() {
     }
 
-    public Model_Song(String albumUrl, String songUrl, String songMainTitle, String songLastTitle, String songDuration, String uploadId, String mKey) {
+    public Model_Song(int id, String albumUrl, String songUrl, String songMainTitle, String songLastTitle, String songDuration, String uploadId) {
+        this.id = id;
+
+        if(songMainTitle.equals("")){
+            songMainTitle = "No main title";
+        }
+
+        if(songLastTitle.equals("")){
+            songLastTitle = "No main title";
+        }
+
+        this.albumUrl = albumUrl;
+        this.songUrl = songUrl;
+        this.songMainTitle = songMainTitle;
+        this.songLastTitle = songLastTitle;
+        this.songDuration = songDuration;
+        this.uploadId = uploadId;
+    }
+
+    @Ignore
+    public Model_Song(String albumUrl, String songUrl, String songMainTitle, String songLastTitle, String songDuration, String uploadId) {
 
         if(songMainTitle.equals("")){
             songMainTitle = "No main title";
@@ -25,7 +53,6 @@ public class Model_Song {
         this.songLastTitle = songLastTitle;
         this.songDuration = songDuration;
         this.uploadId =uploadId;
-        this.mKey = mKey;
     }
 
     public String getAlbumUrl() {
@@ -76,13 +103,11 @@ public class Model_Song {
         this.uploadId = uploadId;
     }
 
-    @Exclude
-    public String getmKey() {
-        return mKey;
+    public int getId() {
+        return id;
     }
 
-    @Exclude
-    public void setmKey(String mKey) {
-        this.mKey = mKey;
+    public void setId(int id) {
+        this.id = id;
     }
 }

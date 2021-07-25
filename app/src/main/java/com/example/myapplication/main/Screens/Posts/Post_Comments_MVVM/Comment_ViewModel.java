@@ -42,7 +42,7 @@ public class Comment_ViewModel extends AndroidViewModel {
 
     //TODO: comment part
     public void loadComments(String postId){
-        mutCommentList = Comment_Repository.getInstance().getCommentsList(postId);
+        mutCommentList = Comment_Repository.instance.getCommentsList(postId);
     }
 
     public MutableLiveData<ArrayList<Model_Comment>> getMutCommentList() {
@@ -52,7 +52,7 @@ public class Comment_ViewModel extends AndroidViewModel {
 
     //TODO: current post part
     public void loadCurrentPost(String postId){
-        currentPost = Comment_Repository.getInstance().getCurrentPost(postId);
+        currentPost = Comment_Repository.instance.getCurrentPost(postId);
     }
 
     public MutableLiveData<Model_Post> getCurrentPost() {
@@ -62,7 +62,7 @@ public class Comment_ViewModel extends AndroidViewModel {
 
     //TODO: current user part
     public void loadCurrentUser(String myUid){
-        currentUser = Comment_Repository.getInstance().getCurrentUser(myUid);
+        currentUser = Comment_Repository.instance.getCurrentUser(myUid);
     }
 
     public MutableLiveData<Model_User> getCurrentUser() {
@@ -71,7 +71,7 @@ public class Comment_ViewModel extends AndroidViewModel {
 
     //TODO: isLiked
     public void checkIsLiked(String postId, String myUid){
-        mutIsLiked = Comment_Repository.getInstance().getMutIsLiked(postId, myUid);
+        mutIsLiked = Comment_Repository.instance.getMutIsLiked(postId, myUid);
     }
 
     public MutableLiveData<String> getMutIsLiked() {

@@ -13,6 +13,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import com.example.myapplication.Notes_ROOM_MVVM.DataBase.Model_Note;
 import com.example.myapplication.R;
 
 import java.util.concurrent.ExecutionException;
@@ -24,8 +25,7 @@ public class Add_Note_Activity extends AppCompatActivity {
     private RadioGroup groupPriorityBtn;
 
     private Notes_ViewModel viewModel;
-    private int gettingId;
-    Model_Note note = null;
+    private Model_Note note = null;
 
 
     @Override
@@ -43,18 +43,7 @@ public class Add_Note_Activity extends AppCompatActivity {
 
         initValues();
 
-        Intent fromMain = getIntent();
-        Bundle extras = fromMain.getExtras();
-        if(extras != null ){
-            gettingId = fromMain.getIntExtra("selectedModelId",1);
-            try {
-                note = viewModel.getModelById(gettingId);
-            } catch (ExecutionException | InterruptedException e) {
-                e.printStackTrace();
-            }
-            title.setText(note.getTitle());
-            description.setText(note.getDescription());
-        }
+        getIntentMethod();
 
         uploadBtn();
     }
@@ -65,6 +54,21 @@ public class Add_Note_Activity extends AppCompatActivity {
         description = findViewById(R.id.descrNoteEt);
         recordBrn = findViewById(R.id.UploadBtnNote);
         groupPriorityBtn = findViewById(R.id.groupBtns);
+    }
+
+    private void getIntentMethod(){
+        Intent fromMain = getIntent();
+        Bundle extras = fromMain.getExtras();
+        if(extras != null ){
+            int gettingId = fromMain.getIntExtra("selectedModelId", 1);
+            try {
+                note = viewModel.getModelById(gettingId);
+            } catch (ExecutionException | InterruptedException e) {
+                e.printStackTrace();
+            }
+            title.setText(note.getTitle());
+            description.setText(note.getDescription());
+        }
     }
 
     private void uploadBtn() {
@@ -86,8 +90,7 @@ public class Add_Note_Activity extends AppCompatActivity {
                         note.setDescription(descriptionText);
                         note.setPriority(priority);
                         viewModel.updateNote(note);
-                        Intent intent = new Intent(Add_Note_Activity.this, Notes_Activity.class);
-                        startActivity(intent);
+                        onBackPressed();
                     }
                     else{
                         Toast.makeText(Add_Note_Activity.this, "Please,fill the fields", Toast.LENGTH_SHORT).show();
@@ -96,8 +99,7 @@ public class Add_Note_Activity extends AppCompatActivity {
                     if(isFilled(titleText, descriptionText)){
                         Model_Note noteNew = new Model_Note(titleText, descriptionText, priority);
                         viewModel.insertNote(noteNew);
-                        Intent intent = new Intent(Add_Note_Activity.this, Notes_Activity.class);
-                        startActivity(intent);
+                        onBackPressed();
                     }
                     else{
                         Toast.makeText(Add_Note_Activity.this, "Please,fill the fields", Toast.LENGTH_SHORT).show();

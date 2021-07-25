@@ -17,7 +17,11 @@ import java.util.ArrayList;
 
 public class Comment_Repository {
 
-    private static Comment_Repository instance;
+    //todo: неленивая инициализацтя
+    public static final Comment_Repository instance = new Comment_Repository();
+
+    //todo: ленивая инициализация
+   // private static Comment_Repository instance;
 
     //TODO: comments
     private final ArrayList<Model_Comment> commentRepArray = new ArrayList<>();
@@ -33,13 +37,15 @@ public class Comment_Repository {
     private final MutableLiveData<String> mutIsLiked = new MutableLiveData<>();
 
 
-    //TODO: common constructor
-    public static Comment_Repository getInstance(){
+    //todo: ленивая инициализация
+    /*public static Comment_Repository getInstance(){
         if(instance == null){
             instance = new Comment_Repository();
         }
         return instance;
     }
+
+     */
 
     //TODO: comments
     public MutableLiveData<ArrayList<Model_Comment>> getCommentsList(String postId){

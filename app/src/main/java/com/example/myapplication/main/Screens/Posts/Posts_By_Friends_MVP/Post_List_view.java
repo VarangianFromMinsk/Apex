@@ -1,8 +1,6 @@
 package com.example.myapplication.main.Screens.Posts.Posts_By_Friends_MVP;
 
 import com.example.myapplication.main.Models.Model_Post;
-import com.google.android.datatransport.runtime.dagger.Component;
-
 import java.util.ArrayList;
 
 

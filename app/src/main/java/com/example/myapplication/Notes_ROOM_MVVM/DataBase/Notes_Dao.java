@@ -1,4 +1,4 @@
-package com.example.myapplication.Notes_ROOM_MVVM;
+package com.example.myapplication.Notes_ROOM_MVVM.DataBase;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
@@ -6,6 +6,8 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
+
+import com.example.myapplication.Notes_ROOM_MVVM.DataBase.Model_Note;
 
 import java.util.List;
 

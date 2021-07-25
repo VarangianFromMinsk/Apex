@@ -13,7 +13,9 @@ import java.util.Calendar;
 import java.util.Locale;
 
 public class Online_Offline_Service {
-    public void updateUserStatus(String state, Context context){
+
+
+    public static void updateUserStatus(String state, Context context){
         String saveCurrentDate, saveCurrentTime;
 
         //staff to onile/offline

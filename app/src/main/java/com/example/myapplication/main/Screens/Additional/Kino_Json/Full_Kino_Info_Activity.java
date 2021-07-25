@@ -58,7 +58,8 @@ public class Full_Kino_Info_Activity extends AppCompatActivity {
         posterIv = findViewById(R.id.posterFullInfo);
     }
 
-    private void fullInfo() {
+    //TODO: change private to public for unitTest
+    public void fullInfo() {
 
         requestQueue = Volley.newRequestQueue(this);
 

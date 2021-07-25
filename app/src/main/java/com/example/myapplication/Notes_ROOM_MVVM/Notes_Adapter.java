@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.myapplication.Notes_ROOM_MVVM.DataBase.Model_Note;
 import com.example.myapplication.R;
 
 import java.util.List;
@@ -41,7 +42,7 @@ public class Notes_Adapter extends RecyclerView.Adapter<Notes_Adapter.NotesViewH
 
     @Override
     public void onBindViewHolder(@NonNull NotesViewHolder holder, int position) {
-        Model_Note note = notes.get(position);
+         Model_Note note = notes.get(position);
          holder.titleTv.setText(note.getTitle());
          holder.desciptionTv.setText(note.getDescription());
 
@@ -67,8 +68,9 @@ public class Notes_Adapter extends RecyclerView.Adapter<Notes_Adapter.NotesViewH
 
     class NotesViewHolder extends RecyclerView.ViewHolder{
 
-        private TextView titleTv, desciptionTv;
-        private ImageView background;
+        private final TextView titleTv;
+        private final TextView desciptionTv;
+        private final ImageView background;
 
         public NotesViewHolder(@NonNull View itemView) {
             super(itemView);

@@ -14,20 +14,30 @@ import java.util.ArrayList;
 
 public class  Recommendation_Repository {
 
-    private static Recommendation_Repository instance;
+    //todo: ленивая инициализация
+   // private static Recommendation_Repository instance;
+
+    //todo: неленивая инициализацтя
+    //+ Простая и прозрачная реализация
+    //+ Потокобезопасность
+    //- Не ленивая инициализация
+    public static final Recommendation_Repository instance = new Recommendation_Repository();
+
     private final ArrayList<Model_Post> postListFriendsRepArray = new ArrayList<>();
     private final DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Posts");
     private final MutableLiveData<ArrayList<Model_Post>> posts = new MutableLiveData<>();
 
     private boolean itsWork = false;
 
-
-    public static Recommendation_Repository getInstance(){
+   //todo: ленивая инициализация ( избегаем )
+   /* public static Recommendation_Repository getInstance(){
         if(instance == null){
             instance = new Recommendation_Repository();
         }
         return instance;
     }
+
+    */
 
 
     public MutableLiveData<ArrayList<Model_Post>> getPostList(String searchText){

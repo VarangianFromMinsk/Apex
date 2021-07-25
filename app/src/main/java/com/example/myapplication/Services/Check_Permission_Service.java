@@ -9,7 +9,9 @@ import androidx.core.content.ContextCompat;
 
 public class Check_Permission_Service  {
 
-    public boolean checkPermission(Context context, Activity activity, String permission, int requestCode){
+    //TODO: This class are support, cause we add all permission on main screen, this is second checked request
+
+    public static boolean checkPermission(Context context, Activity activity, String permission, int requestCode){
         if(ContextCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_DENIED) {
             setPermission(context,activity, permission, requestCode);
             return false;
@@ -17,7 +19,7 @@ public class Check_Permission_Service  {
         return true;
     }
 
-    public void setPermission(Context context, Activity activity, String permission, int requestCode){
+    public static void setPermission(Context context, Activity activity, String permission, int requestCode){
         ActivityCompat.requestPermissions(activity, new String[]{permission}, requestCode);
     }
 

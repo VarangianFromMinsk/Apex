@@ -3,22 +3,31 @@ package com.example.myapplication.main.Screens.Dashboard_MVP;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.preference.PreferenceManager;
 import androidx.viewpager.widget.ViewPager;
 
+import android.Manifest;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.myapplication.Services.App_Constants;
 import com.example.myapplication.main.Models.Model_ViewPager;
 import com.example.myapplication.R;
 import com.example.myapplication.Services.Online_Offline_Service;
@@ -33,6 +42,8 @@ import com.example.myapplication.Notes_ROOM_MVVM.Notes_Activity;
 import com.example.myapplication.main.Screens.DB_Activities.Workout_SQL.Workout_Register_Activity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -90,6 +101,8 @@ public class Dashboard_Activity extends AppCompatActivity implements Dashboard_v
         updateNavigationMenu();
 
         getAndWriteToken();
+
+        checkPermission();
 
         updateUserStatus("online");
 
@@ -296,8 +309,7 @@ public class Dashboard_Activity extends AppCompatActivity implements Dashboard_v
 
     //TODO: block online/offline
     public void updateUserStatus( String state){
-        Online_Offline_Service service = new Online_Offline_Service();
-        service.updateUserStatus(state, this);
+        Online_Offline_Service.updateUserStatus(state, this);
     }
 
     @Override
@@ -311,7 +323,98 @@ public class Dashboard_Activity extends AppCompatActivity implements Dashboard_v
         super.onPause();
         updateUserStatus("offline");
     }
-    //TODO:  block online/offline
+
+    //TODO: check all permission for App
+    protected void checkPermission(){
+        if(ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+                + ContextCompat.checkSelfPermission(
+                this,Manifest.permission.ACCESS_FINE_LOCATION)
+                + ContextCompat.checkSelfPermission(
+                this,Manifest.permission.ACCESS_COARSE_LOCATION)
+                + ContextCompat.checkSelfPermission(
+                this,Manifest.permission.READ_EXTERNAL_STORAGE)
+                + ContextCompat.checkSelfPermission(
+                this,Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED){
+
+            // Do something, when permissions not granted
+            if(ActivityCompat.shouldShowRequestPermissionRationale(
+                    this,Manifest.permission.CAMERA)
+                    || ActivityCompat.shouldShowRequestPermissionRationale(
+                    this,Manifest.permission.READ_EXTERNAL_STORAGE)
+                    || ActivityCompat.shouldShowRequestPermissionRationale(
+                    this,Manifest.permission.WRITE_EXTERNAL_STORAGE)){
+                // If we should give explanation of requested permissions
+
+                // Show an alert dialog here with request explanation
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setMessage("Camera, Read External and Write External, Your Geo-position" +
+                        "This permissions are needed for normal work.");
+                builder.setTitle("Please grant those permissions");
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        ActivityCompat.requestPermissions(
+                                Dashboard_Activity.this,
+                                new String[]{
+                                        Manifest.permission.CAMERA,
+                                        Manifest.permission.READ_EXTERNAL_STORAGE,
+                                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                                        Manifest.permission.ACCESS_FINE_LOCATION,
+                                        Manifest.permission.ACCESS_COARSE_LOCATION
+                                },
+                                App_Constants.ALL_APP_REQUEST_CODE
+                        );
+                    }
+                });
+                builder.setNeutralButton("Cancel",null);
+                AlertDialog dialog = builder.create();
+                dialog.show();
+            }else{
+                // Directly request for required permissions, without explanation
+                ActivityCompat.requestPermissions(
+                        this,
+                        new String[]{
+                                Manifest.permission.CAMERA,
+                                Manifest.permission.READ_EXTERNAL_STORAGE,
+                                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                                Manifest.permission.ACCESS_FINE_LOCATION,
+                                Manifest.permission.ACCESS_COARSE_LOCATION
+                        },
+                        App_Constants.ALL_APP_REQUEST_CODE
+                );
+            }
+        }else {
+            // Do something, when permissions are already granted
+            Log.d("Perm already granted", "yes");
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NotNull String[] permissions, @NotNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case App_Constants.ALL_APP_REQUEST_CODE: {
+                // When request is cancelled, the results array are empty
+                if (
+                        (grantResults.length > 0) &&
+                                (grantResults[0]
+                                        + grantResults[1]
+                                        + grantResults[2]
+                                        + grantResults[3]
+                                        + grantResults[4]
+                                        == PackageManager.PERMISSION_GRANTED
+                                )
+                ) {
+                    // Permissions are granted
+                    Toast.makeText(this, "Thanks, enjoy!", Toast.LENGTH_SHORT).show();
+                } else {
+                    // Permissions are denied
+                    Toast.makeText(this, "Permissions denied.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
+    }
 
     //todo: disable back btn
     @Override

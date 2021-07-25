@@ -21,7 +21,7 @@ public class Post_Recomm_ViewModel extends AndroidViewModel {
     }
 
     public void loadData(String searchText){
-        mutPostListFriends =  Recommendation_Repository.getInstance().getPostList(searchText);
+        mutPostListFriends =  Recommendation_Repository.instance.getPostList(searchText);
     }
 
     public LiveData<ArrayList<Model_Post>> getMutPostListFriends() {

@@ -1,4 +1,4 @@
-package com.example.myapplication.Notes_ROOM_MVVM;
+package com.example.myapplication.Notes_ROOM_MVVM.DataBase;
 
 import android.content.Context;
 
@@ -12,10 +12,13 @@ public abstract class Notes_Database extends RoomDatabase {
     private static final String DB_NAME = "notes_big_db";
     private static final Object LOCK = new Object();
 
+    //TODO: ленивый сигнлтон, но с синхронайз ( дает потокобезопасноть, но достаточно медленно)
     public static Notes_Database getInstance(Context context){
         synchronized (LOCK) {
             if (database == null) {
-                database = Room.databaseBuilder(context, Notes_Database.class, DB_NAME).build();
+                database = Room.databaseBuilder(context, Notes_Database.class, DB_NAME)
+                        .fallbackToDestructiveMigration()
+                        .build();
             }
         }
         return database;
