@@ -9,7 +9,7 @@
 Презентация проекта  -- https://www.behance.net/portfolio/editor?project_id=121487617 
 
 ## Подробное описание
-* все приложение использует MVP / MVVM, Repository (From firebase to MutableLiveData / from Firebase to Room), Singleton (везде по возможности методом "Static field");
+* все приложение использует MVP / MVVM, Repository (From firebase to MutableLiveData / from Firebase to Room), Singleton (везде по возможности методом "Static field"), use DataBinding;
 * все данные пользователя находятся в Friebase storage / Realtime DB;
 * Чат (сообщения, загрузка / репост фото, репост постов, удаление / изменение сообщений, уведомления о новом сообщении / пользователь начал вам писать);
 * Посты (создание / редактирование, комментарии и возможность лайкать, как в инсте с анимацией);
