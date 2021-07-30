@@ -1,5 +1,7 @@
 package com.example.myapplication.main.Screens.Posts.Posts_By_Recommendation_MVVM;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
@@ -93,7 +95,7 @@ public class  Recommendation_Repository {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                Log.d("Cant load posts", String.valueOf(error));
             }
         });
 

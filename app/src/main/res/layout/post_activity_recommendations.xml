@@ -8,11 +8,13 @@
     xmlns:tools="http://schemas.android.com/tools">
 
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.constraintlayout.motion.widget.MotionLayout
+        android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:animateLayoutChanges="true"
         android:background="#19979696"
+        app:layoutDescription="@xml/post_activity_recommendations_xml_constraintlayout_scene"
         tools:context=".main.Screens.Posts.Posts_By_Friends_MVP.Post_Activity_Friends">
 
 
@@ -20,12 +22,13 @@
             android:id="@+id/nestedScrollView"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:layout_marginTop="50dp"
             android:animateLayoutChanges="true"
-            android:layout_marginTop="20dp"
             app:layout_constraintBottom_toTopOf="@+id/bottomNavigation"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/search_rec">
+            app:layout_constraintTop_toBottomOf="@+id/search_rec"
+            app:layout_constraintTop_toTopOf="parent">
 
 
             <androidx.recyclerview.widget.RecyclerView
@@ -39,14 +42,13 @@
             android:id="@+id/search_rec"
             android:layout_width="350dp"
             android:layout_height="30dp"
-            android:layout_margin="5dp"
             android:layout_marginTop="10dp"
             android:animateLayoutChanges="true"
             android:background="@drawable/custom_search_apex"
+            app:layout_constraintBottom_toTopOf="@id/checkLay"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/checkLay"
             app:theme="@style/ApexSearchView" />
 
         <RelativeLayout
@@ -116,11 +118,12 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:indeterminate="true"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.motion.widget.MotionLayout>
 
 </layout>

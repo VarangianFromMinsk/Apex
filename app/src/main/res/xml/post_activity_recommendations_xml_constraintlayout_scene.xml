@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MotionScene 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:motion="http://schemas.android.com/apk/res-auto">
+
+    <Transition
+        motion:constraintSetEnd="@+id/end"
+        motion:constraintSetStart="@id/start"
+        motion:duration="2000">
+        <OnSwipe
+            motion:dragDirection="dragDown"
+            motion:touchAnchorId="@+id/postRecRecyclerView"/>
+       <KeyFrameSet>
+
+           <KeyPosition
+               motion:motionTarget="@+id/nestedScrollView"
+               motion:framePosition="75"
+               motion:keyPositionType="deltaRelative"
+               motion:percentX="0.1"
+               motion:percentY="0.1" />
+           <KeyPosition
+               motion:motionTarget="@+id/search_rec"
+               motion:keyPositionType="deltaRelative"
+               motion:percentX="0.3"
+               motion:percentY="0.3" />
+       </KeyFrameSet>
+    </Transition>
+
+    <ConstraintSet android:id="@+id/start">
+        <Constraint
+            android:id="@+id/search_rec"
+            motion:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="350dp"
+            android:layout_height="30dp"
+            motion:layout_constraintBottom_toTopOf="@id/checkLay"
+            motion:layout_constraintTop_toTopOf="parent"
+            motion:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="10dp"
+            android:visibility="visible" />
+    </ConstraintSet>
+
+    <ConstraintSet android:id="@+id/end">
+        <Constraint
+            android:id="@+id/search_rec"
+            motion:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="100dp"
+            android:layout_height="30dp"
+            motion:layout_constraintBottom_toTopOf="@id/checkLay"
+            motion:layout_constraintTop_toTopOf="parent"
+            motion:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="10dp"
+            android:visibility="gone"
+            motion:transitionEasing="linear"
+            motion:pathMotionArc="flip" />
+        <Constraint
+            android:id="@+id/nestedScrollView"
+            motion:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            motion:layout_constraintBottom_toTopOf="@+id/bottomNavigation"
+            motion:layout_constraintTop_toBottomOf="@+id/search_rec"
+            motion:layout_constraintTop_toTopOf="parent"
+            motion:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="15dp" />
+
+    </ConstraintSet>
+</MotionScene>

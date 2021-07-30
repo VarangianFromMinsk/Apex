@@ -6,10 +6,6 @@ import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -17,9 +13,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ProgressBar;
 import android.widget.SearchView;
-import android.widget.TextView;
 
 import com.example.myapplication.databinding.PostActivityRecommendationsBinding;
 import com.example.myapplication.main.Screens.Dashboard_MVP.Dashboard_Activity;
@@ -31,10 +25,8 @@ import com.example.myapplication.main.Screens.Posts.Posts_By_Recommendation_MVVM
 import com.example.myapplication.main.Screens.User_List_4_States_MVVM.User_List_Activity;
 import com.example.myapplication.main.Screens.User_Profile_MVVM.User_Profile_Activity;
 import com.example.myapplication.main.Screens.Music.Music_List_Activity_MVVM.Music_List_Activity;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
-
-import org.jetbrains.annotations.NotNull;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -84,6 +76,7 @@ public class Post_Activity_Recommendations extends AppCompatActivity {
         updateUserStatus("online");
     }
 
+
     private void initialization() {
         binding = DataBindingUtil.setContentView(this, R.layout.post_activity_recommendations);
 
@@ -97,6 +90,9 @@ public class Post_Activity_Recommendations extends AppCompatActivity {
         binding.postRecommendationsTextBtn.animate().scaleX(1.14f).scaleY(1.14f).setDuration(300);
         binding.postRecToFriendsTextBtn.animate().scaleX(1).scaleY(1).setDuration(200);
     }
+
+
+
 
     private void createRecyclerViewAndFirstLoadData() {
         // part of recyclerview
@@ -116,41 +112,11 @@ public class Post_Activity_Recommendations extends AppCompatActivity {
             @Override
             public void onChanged(ArrayList<Model_Post> posts) {
                 postAdapter.setPostListRec(posts);
-                binding.progressbarPostRecActivity.setVisibility(View.GONE);
-            }
-        });
-
-        createScrollListener();
-    }
-
-    private void createScrollListener() {
-
-
-        binding.postRecRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(@NotNull RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-
-                if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
-
+                if(posts.isEmpty()){
+                    binding.progressbarPostRecActivity.setVisibility(View.VISIBLE);
                 }
-
-                if (!recyclerView.canScrollVertically(-1) && newState == RecyclerView.SCROLL_STATE_DRAGGING)  {
-                    if(layoutManager.findFirstVisibleItemPosition()==0){
-                       // searchView.setVisibility(View.VISIBLE);
-                      //  searchView.animate().alpha(1).translationY(0).setDuration(200).scaleY(1).scaleX(1);
-                    }
-                }
-                if(newState == RecyclerView.SCROLL_STATE_DRAGGING){
-                    //scrolling
-                    binding.searchRec.animate().alpha(0.0f).translationY(-200).setDuration(400).scaleY(0.7f).scaleX(0.7f).setListener(new AnimatorListenerAdapter() {
-                        @Override
-                        public void onAnimationEnd(Animator animation) {
-                            super.onAnimationEnd(animation);
-                            binding.searchRec.setVisibility(View.GONE);
-                        }
-                    });
-
+                else{
+                    binding.progressbarPostRecActivity.setVisibility(View.GONE);
                 }
             }
         });
@@ -273,5 +239,6 @@ public class Post_Activity_Recommendations extends AppCompatActivity {
     public void onBackPressed() {
         //disable
     }
+
 
 }
