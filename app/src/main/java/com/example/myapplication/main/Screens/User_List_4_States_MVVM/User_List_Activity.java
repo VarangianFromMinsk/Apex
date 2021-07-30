@@ -17,14 +17,13 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ProgressBar;
 import android.widget.SearchView;
-import android.widget.TextView;
 
+import com.example.myapplication.databinding.UserListActivityBinding;
+import com.example.myapplication.main.Models.Model_User;
 import com.example.myapplication.main.Screens.Dashboard_MVP.Dashboard_Activity;
 import com.example.myapplication.R;
 import com.example.myapplication.Services.Online_Offline_Service;
-import com.example.myapplication.main.Models.Model_User;
 import com.example.myapplication.main.Screens.Chat_Activity_MVP.Chat_Main_Activity;
 import com.example.myapplication.main.Screens.Posts.Posts_By_Friends_MVP.Post_Activity_Friends;
 import com.example.myapplication.main.Screens.User_Profile_MVVM.User_Profile_Activity;
@@ -35,7 +34,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import java.util.ArrayList;
 import java.util.Objects;
 
-//TODO: используем DataBinging тут через ViewModel
 
 public class User_List_Activity extends AppCompatActivity  {
 
@@ -52,22 +50,16 @@ public class User_List_Activity extends AppCompatActivity  {
     private boolean isThisShareImage = false;
     private String imageShare;
 
-    private ProgressBar progressBar;
-    private TextView countTv;
     private int countNumber;
-
-    private BottomNavigationView upNavigationMenu;
-    private BottomNavigationView bottomNavigationView;
-    private SearchView searchView;
-
-    private SwipeRefreshLayout swipeRefreshLayout;
-
     private String mainSwitch;
     private String myUid = "";
 
     private String textCount;
 
     private User_List_ViewModel viewModel;
+
+    //todo: указываем тег <layout>, пересобираем проект и получаем сгенерированный класс как ниже
+    private UserListActivityBinding userListActivityBinding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,10 +72,8 @@ public class User_List_Activity extends AppCompatActivity  {
 
         viewModel = new ViewModelProvider(this).get(User_List_ViewModel.class);
 
-
-        //todo: Пробуем биндинг, чатсь тут, часть в Xml
-       // binding = DataBindingUtil.setContentView(this, R.layout.user_list_activity);
-
+        //todo: инициализируем Data Binding
+        userListActivityBinding = DataBindingUtil.setContentView(this, R.layout.user_list_activity);
 
         initialization();
 
@@ -109,19 +99,10 @@ public class User_List_Activity extends AppCompatActivity  {
 
     //todo: main methods
     private void initialization(){
-
-        upNavigationMenu = findViewById(R.id.upNavigation);
-        bottomNavigationView = findViewById(R.id.bottomNavigation);
-        upNavigationMenu.setVisibility(View.VISIBLE);
-
-        swipeRefreshLayout = findViewById(R.id.swipeLayUserList);
-        searchView = findViewById(R.id.searchInUserList);
-        progressBar =  findViewById(R.id.progressbarInUserList);
+        userListActivityBinding.upNavigation.setVisibility(View.VISIBLE);
 
         FirebaseAuth auth = FirebaseAuth.getInstance();
         myUid = auth.getUid();
-
-        countTv = findViewById(R.id.numberUsersList);
     }
 
     private void getMainIntent() {
@@ -134,7 +115,7 @@ public class User_List_Activity extends AppCompatActivity  {
 
     private void createRecyclerViewAndFirstLoad(){
         //TODO: part of recyclerview
-        userRecyclerView = findViewById(R.id.userListRecyclerView);
+        userRecyclerView = userListActivityBinding.userListRecyclerView;
         layoutManager = new LinearLayoutManager(this);
         userRecyclerView.setLayoutManager(layoutManager);
 
@@ -158,7 +139,7 @@ public class User_List_Activity extends AppCompatActivity  {
             @Override
             public void onChanged(ArrayList<Model_User> users) {
                 userAdapter.setUserList(users);
-                progressBar.setVisibility(View.GONE);
+                userListActivityBinding.progressbarInUserList.setVisibility(View.GONE);
                 setCount(users);
             }
         });
@@ -166,7 +147,7 @@ public class User_List_Activity extends AppCompatActivity  {
     }
 
     private void initSearchUser(){
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        userListActivityBinding.searchInUserList.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 if(!TextUtils.isEmpty(query)){
@@ -233,7 +214,7 @@ public class User_List_Activity extends AppCompatActivity  {
 
             isThisRepost = false;
 
-            upNavigationMenu.setVisibility(View.GONE);
+            userListActivityBinding.upNavigation.setVisibility(View.GONE);
         }
         else if(isThisShareImage){
             Intent intent = new Intent(User_List_Activity.this, Chat_Main_Activity.class);
@@ -245,7 +226,7 @@ public class User_List_Activity extends AppCompatActivity  {
 
             isThisShareImage = false;
 
-            upNavigationMenu.setVisibility(View.GONE);
+            userListActivityBinding.upNavigation.setVisibility(View.GONE);
         }
         else{
             //todo: Normal user list
@@ -260,16 +241,16 @@ public class User_List_Activity extends AppCompatActivity  {
 
     public  void initRefreshLayout() {
 
-        swipeRefreshLayout.setColorSchemeResources(R.color.purple_500);
+        userListActivityBinding.swipeLayUserList.setColorSchemeResources(R.color.purple_500);
 
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        userListActivityBinding.swipeLayUserList.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 Intent intent = getIntent();
                 finish();
                 overridePendingTransition(0, 0);
                 startActivity(intent);
-                swipeRefreshLayout.setRefreshing(false);
+                userListActivityBinding.swipeLayUserList.setRefreshing(false);
             }
         });
     }
@@ -301,7 +282,10 @@ public class User_List_Activity extends AppCompatActivity  {
         else if(mainSwitch.equals("ban")){
             textCount = "Blocked by you:  " + countNumber;
         }
-        countTv.setText(textCount);
+
+        //todo: use Binding Instead of TextView with findViewById
+        //countTv.setText(textCount);
+        userListActivityBinding.numberUsersList.setText(textCount);
     }
 
     //TODO: Block online/offline
@@ -323,9 +307,9 @@ public class User_List_Activity extends AppCompatActivity  {
 
 
     public void updateNavigationMenu(){
-        bottomNavigationView.setSelectedItemId(R.id.userChat_nav);
+        userListActivityBinding.bottomNavigation.setSelectedItemId(R.id.userChat_nav);
         //PerformItemSelectedListener
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+        userListActivityBinding.bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch(item.getItemId()){
@@ -360,19 +344,19 @@ public class User_List_Activity extends AppCompatActivity  {
     public void updateUpperNavigationMenu(){
         //todo: set Dashboard selected
         if(mainSwitch.equals("all")){
-            upNavigationMenu.setSelectedItemId(R.id.All_nav);
+            userListActivityBinding.upNavigation.setSelectedItemId(R.id.All_nav);
         }
         else if(mainSwitch.equals("friends")){
-            upNavigationMenu.setSelectedItemId(R.id.Friends_nav);
+            userListActivityBinding.upNavigation.setSelectedItemId(R.id.Friends_nav);
         }
         else if(mainSwitch.equals("requests")){
-            upNavigationMenu.setSelectedItemId(R.id.Request_nav);
+            userListActivityBinding.upNavigation.setSelectedItemId(R.id.Request_nav);
         }
         else if(mainSwitch.equals("ban")){
-            upNavigationMenu.setSelectedItemId(R.id.Ban_nav);
+            userListActivityBinding.upNavigation.setSelectedItemId(R.id.Ban_nav);
         }
         //todo: PerformItemSelectedListener
-        upNavigationMenu.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+        userListActivityBinding.upNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -448,14 +432,14 @@ public class User_List_Activity extends AppCompatActivity  {
     }
 
     private void disableUpperMenuAndAnotherStaff(){
-        upNavigationMenu.setEnabled(false);
-        bottomNavigationView.setEnabled(false);
+        userListActivityBinding.upNavigation.setEnabled(false);
+        userListActivityBinding.bottomNavigation.setEnabled(false);
     }
 
     //todo: disable click back
     @Override
     public void onBackPressed() {
-
+        //disable
     }
 
 }

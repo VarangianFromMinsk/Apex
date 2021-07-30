@@ -5,7 +5,6 @@ import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
 
-import com.example.myapplication.Notes_ROOM_MVVM.DataBase.Model_Note;
 import com.example.myapplication.main.Models.Model_Song;
 import java.util.List;
 

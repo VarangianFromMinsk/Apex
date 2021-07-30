@@ -1,101 +1,126 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:animateLayoutChanges="true"
-    android:background="#19979696"
-    tools:context=".main.Screens.Posts.Posts_By_Friends_MVP.Post_Activity_Friends">
 
-    <androidx.core.widget.NestedScrollView
+<!-- TODO: Using DataBinding-->
+
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:animateLayoutChanges="true"
-        android:layout_below="@+id/checkLay"
-        android:layout_marginTop="-30dp"
-        android:layout_above="@+id/bottomNavigation">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/postRecRecyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            />
-
-    </androidx.core.widget.NestedScrollView>
+        android:background="#19979696"
+        tools:context=".main.Screens.Posts.Posts_By_Friends_MVP.Post_Activity_Friends">
 
 
-    <SearchView
-        android:id="@+id/action_search_rec"
-        android:layout_width="350dp"
-        android:layout_height="30dp"
-        android:layout_centerHorizontal="true"
-        android:animateLayoutChanges="true"
-        android:layout_margin="5dp"
-        app:theme="@style/ApexSearchView"
-        android:background="@drawable/custom_search_apex"/>
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/nestedScrollView"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:animateLayoutChanges="true"
+            android:layout_marginTop="20dp"
+            app:layout_constraintBottom_toTopOf="@+id/bottomNavigation"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/search_rec">
 
-    <RelativeLayout
-        android:id="@+id/checkLay"
-        android:layout_width="210dp"
-        android:layout_height="50dp"
-        android:layout_below="@+id/action_search_rec"
-        android:layout_centerHorizontal="true">
 
-        <ImageView
-            android:layout_width="200dp"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/postRecRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </androidx.core.widget.NestedScrollView>
+
+        <SearchView
+            android:id="@+id/search_rec"
+            android:layout_width="350dp"
             android:layout_height="30dp"
-            android:background="#00FFFFFF"
-            android:src="@drawable/background_serchview_focused"
-            tools:ignore="ContentDescription" />
+            android:layout_margin="5dp"
+            android:layout_marginTop="10dp"
+            android:animateLayoutChanges="true"
+            android:background="@drawable/custom_search_apex"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/checkLay"
+            app:theme="@style/ApexSearchView" />
 
-        <TextView
-            android:id="@+id/postRecToFriendsTextBtn"
+        <RelativeLayout
+            android:id="@+id/checkLay"
+            android:layout_width="210dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/search_rec">
+
+            <ImageView
+                android:layout_width="200dp"
+                android:layout_height="30dp"
+                android:adjustViewBounds="true"
+                android:background="#00FFFFFF"
+                android:src="@drawable/background_serchview_focused"
+                tools:ignore="ContentDescription" />
+
+            <TextView
+                android:id="@+id/postRecToFriendsTextBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="7dp"
+                android:alpha="0.5"
+                android:scaleX="1.14"
+                android:scaleY="1.14"
+                android:text="@string/From_friends"
+                android:textColor="@color/purple_500"
+                android:textSize="12sp"
+                tools:ignore="SmallSp" />
+
+            <TextView
+                android:id="@+id/postRecommendationsTextBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="7dp"
+                android:layout_marginEnd="22dp"
+                android:text="@string/recommendations"
+                android:textColor="@color/purple_500"
+                android:textSize="12sp"
+                tools:ignore="RelativeOverlap,SmallSp" />
+
+        </RelativeLayout>
+
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottomNavigation"
+            android:layout_width="0dp"
+            android:layout_height="45dp"
+            android:animateLayoutChanges="true"
+            app:itemBackground="@color/white"
+            app:itemIconTint="@drawable/selector"
+            app:itemTextColor="@drawable/selector"
+            app:labelVisibilityMode="unlabeled"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:menu="@menu/menu_navigation" />
+
+        <ProgressBar
+            android:id="@+id/progressbarPostRecActivity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="7dp"
-            android:scaleY="1.14"
-            android:scaleX="1.14"
-            android:textSize="12sp"
-            android:alpha="0.5"
-            android:text="@string/From_friends"
-            android:textColor="@color/purple_500"
-            tools:ignore="SmallSp" />
+            android:layout_centerInParent="true"
+            android:indeterminate="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/postRecommendationsTextBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_marginEnd="22dp"
-            android:layout_marginTop="7dp"
-            android:textSize="12sp"
-            android:text="@string/recommendations"
-            android:textColor="@color/purple_500"
-            tools:ignore="RelativeOverlap,SmallSp" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </RelativeLayout>
-
-
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:layout_width="match_parent"
-        android:animateLayoutChanges="true"
-        app:labelVisibilityMode="unlabeled"
-        android:layout_height="45dp"
-        android:id="@+id/bottomNavigation"
-        app:itemBackground="@color/white"
-        app:itemTextColor="@drawable/selector"
-        app:itemIconTint="@drawable/selector"
-        app:menu="@menu/menu_navigation"
-        android:layout_alignParentBottom="true"/>
-
-    <ProgressBar
-        android:id="@+id/progressbarPostRecActivity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:indeterminate="true"/>
-
-</RelativeLayout>
+</layout>

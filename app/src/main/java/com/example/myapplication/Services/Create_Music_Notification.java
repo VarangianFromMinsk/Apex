@@ -18,7 +18,6 @@ import androidx.core.app.NotificationManagerCompat;
 import com.example.myapplication.R;
 import com.example.myapplication.main.Models.Model_Song;
 import com.example.myapplication.main.Screens.Music.Music_List_Activity_MVVM.Music_List_Activity;
-import com.example.myapplication.main.Screens.Music.Music_Player_Activity_And_Service_MVP.Music_Player_Activity;
 
 import java.util.concurrent.ExecutionException;
 

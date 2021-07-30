@@ -1,18 +1,14 @@
 package com.example.myapplication.main.Screens.Music.Music_List_Activity_MVVM;
 
 import android.app.Application;
-import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.myapplication.Notes_ROOM_MVVM.DataBase.Model_Note;
-import com.example.myapplication.Notes_ROOM_MVVM.Notes_ViewModel;
 import com.example.myapplication.main.Models.Model_Song;
 import com.example.myapplication.main.Screens.Music.Music_List_Activity_MVVM.DataBase.Music_Database;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -24,7 +20,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Music_List_ViewModel extends AndroidViewModel {

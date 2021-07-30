@@ -6,7 +6,6 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
-import com.example.myapplication.Notes_ROOM_MVVM.DataBase.Model_Note;
 import com.example.myapplication.main.Models.Model_Song;
 
 @Database(entities = {Model_Song.class} , version = 1, exportSchema = false)

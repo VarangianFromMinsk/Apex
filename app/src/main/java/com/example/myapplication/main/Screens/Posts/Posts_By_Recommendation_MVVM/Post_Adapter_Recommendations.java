@@ -27,6 +27,8 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import javax.inject.Inject;
+
 public class Post_Adapter_Recommendations extends RecyclerView.Adapter<Post_Adapter_Recommendations.RecommendationsViewHolder>  {
 
     private final Context context;
@@ -49,6 +51,7 @@ public class Post_Adapter_Recommendations extends RecyclerView.Adapter<Post_Adap
     }
 
     //TODO: main Constructor
+    @Inject
     public Post_Adapter_Recommendations(Context context) {
         this.context = context;
 
@@ -102,7 +105,7 @@ public class Post_Adapter_Recommendations extends RecyclerView.Adapter<Post_Adap
             public void onClick(View v) {
                 Intent intent = new Intent(context, Post_Comment_Activity.class);
                 intent.putExtra("postId", pId);
-                context.startActivity(intent);
+                context.startActivity(intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
             }
         });
     }

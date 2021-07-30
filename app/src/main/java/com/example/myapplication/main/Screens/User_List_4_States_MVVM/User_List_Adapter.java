@@ -11,17 +11,18 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.myapplication.R;
+import com.example.myapplication.databinding.RowUserBinding;
 import com.example.myapplication.main.Models.Model_Message;
 import com.example.myapplication.main.Models.Model_User;
 import com.github.library.bubbleview.BubbleTextView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -72,8 +73,11 @@ public class User_List_Adapter extends RecyclerView.Adapter<User_List_Adapter.Ch
     @NonNull
     @Override
     public ChatUserViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_user, parent, false);
-        return new ChatUserViewHolder(view,listener);
+       // View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_user, parent, false);
+       // return new ChatUserViewHolder(view,listener);
+
+        RowUserBinding rowUserBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),R.layout.row_user, parent, false);
+        return new ChatUserViewHolder(rowUserBinding,listener);
     }
 
     @Override
@@ -83,17 +87,17 @@ public class User_List_Adapter extends RecyclerView.Adapter<User_List_Adapter.Ch
         String hisUid = userList.get(position).getFirebaseId();
 
         //todo: set values
-        holder.UserNameChatList.setText(currentUser.getName());
-        holder.dayLastConnection.setText(currentUser.getDayOnline());
-        holder.timeLastConnection.setText(currentUser.getTimeonline());
-        holder.onOffLine.setText(currentUser.getOnline());
+        holder.userBinding.UserNameChatList.setText(currentUser.getName());
+        holder.userBinding.dayLastConnection.setText(currentUser.getDayOnline());
+        holder.userBinding.timeLastConnection.setText(currentUser.getTimeonline());
+        holder.userBinding.onOffLine.setText(currentUser.getOnline());
 
         //todo: init elements
-        holder.addFriendBtn.setVisibility(View.GONE);
-        holder.addFriendRequestBtn.setVisibility(View.VISIBLE);
-        holder.addFriendRequestBtn.setImageResource(R.drawable.add_friends);
-        holder.blockBtn.setVisibility(View.VISIBLE);
-        holder.blockBtn.setImageResource(R.drawable.block);
+        holder.userBinding.addToFriend.setVisibility(View.GONE);
+        holder.userBinding.addRequestToFriend.setVisibility(View.VISIBLE);
+        holder.userBinding.addRequestToFriend.setImageResource(R.drawable.add_friends);
+        holder.userBinding.blockBtn.setVisibility(View.VISIBLE);
+        holder.userBinding.blockBtn.setImageResource(R.drawable.block);
 
 
         //todo: for chat with yourself
@@ -145,10 +149,10 @@ public class User_List_Adapter extends RecyclerView.Adapter<User_List_Adapter.Ch
                         theLastMessage = message.getText();
 
                         if(theLastMessage != null){
-                            holder.lastMessage.setText(String.valueOf("' " + theLastMessage + " '"));
+                            holder.userBinding.lastMessage.setText(String.valueOf("' " + theLastMessage + " '"));
                         }else if(message.getImageUrl() != null){
-                            holder.lastMessage.setText(String.valueOf(" Image "));
-                            holder.lastMessage.setTextSize(16);
+                            holder.userBinding.lastMessage.setText(String.valueOf(" Image "));
+                            holder.userBinding.lastMessage.setTextSize(16);
                         }
                     }
                 }
@@ -170,7 +174,7 @@ public class User_List_Adapter extends RecyclerView.Adapter<User_List_Adapter.Ch
     }
 
     private void addFriendsAction(ChatUserViewHolder holder, String hisUid) {
-        holder.addFriendRequestBtn.setOnClickListener(new View.OnClickListener() {
+        holder.userBinding.addRequestToFriend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 addFriendRequest(hisUid, holder);
@@ -179,22 +183,22 @@ public class User_List_Adapter extends RecyclerView.Adapter<User_List_Adapter.Ch
     }
 
     private void blokeAction(ChatUserViewHolder holder, int position, String hisUid) {
-        holder.blockBtn.setOnClickListener(new View.OnClickListener() {
+        holder.userBinding.blockBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(userList.get(position).isBlocked()){
 
                     unBlockedUser(hisUid, holder, position);
 
-                    holder.addFriendRequestBtn.setVisibility(View.VISIBLE);
+                    holder.userBinding.addRequestToFriend.setVisibility(View.VISIBLE);
                     userList.get(position).setBlocked(false);
                 }
                 else{
                     blockedUser(hisUid, holder, position);
 
-                    holder.addFriendRequestBtn.setVisibility(View.GONE);
-                    holder.addFriendBtn.setVisibility(View.GONE);
-                    holder.blockBtn.setImageResource(R.drawable.block_on);
+                    holder.userBinding.addRequestToFriend.setVisibility(View.GONE);
+                    holder.userBinding.addToFriend.setVisibility(View.GONE);
+                    holder.userBinding.blockBtn.setImageResource(R.drawable.block_on);
                     //todo: staff of request
                     deleteFriendRequest(hisUid, holder);
                     deleteFriendRequestHis(hisUid, holder);
@@ -208,32 +212,32 @@ public class User_List_Adapter extends RecyclerView.Adapter<User_List_Adapter.Ch
         try {
             if(!currentUser.getAvatarMockUpResourse().equals("")){
                 //Picasso.get().load(currentUser.getAvatarMockUpResourse()).placeholder(R.drawable.default_avatar).into(holder.avatarImageView);
-                Glide.with(holder.avatarImageView.getContext()).load(currentUser.getAvatarMockUpResourse()).into(holder.avatarImageView);
+                Glide.with(holder.userBinding.avatarImageView.getContext()).load(currentUser.getAvatarMockUpResourse()).into(holder.userBinding.avatarImageView);
             }
             else{
-                holder.avatarImageView.setImageResource(R.drawable.default_avatar);
+                holder.userBinding.avatarImageView.setImageResource(R.drawable.default_avatar);
             }
         }catch (Exception ignored){}
     }
 
     private void setColorOnlineOffline(Model_User currentUser, ChatUserViewHolder holder) {
         if(currentUser.getOnline().equals("online")){
-            holder.onOffLine.setTextColor(Color.parseColor("#7AC537"));
+            holder.userBinding.onOffLine.setTextColor(Color.parseColor("#7AC537"));
         }else {
-            holder.onOffLine.setTextColor(Color.parseColor("#D32121"));
+            holder.userBinding.onOffLine.setTextColor(Color.parseColor("#D32121"));
         }
     }
 
     private void chatWithYourself(Model_User currentUser, ChatUserViewHolder holder) {
         if(currentUser.getFirebaseId().equals(myUid)){
-            holder.UserNameChatList.setText(String.valueOf("Notes"));
-            holder.dayLastConnection.setText("");
-            holder.timeLastConnection.setText("");
-            holder.blockBtn.setVisibility(View.GONE);
-            holder.onOffLine.setVisibility(View.GONE);
+            holder.userBinding.UserNameChatList.setText(String.valueOf("Notes"));
+            holder.userBinding.dayLastConnection.setText("");
+            holder.userBinding.timeLastConnection.setText("");
+            holder.userBinding.blockBtn.setVisibility(View.GONE);
+            holder.userBinding.onOffLine.setVisibility(View.GONE);
 
-            holder.addFriendRequestBtn.setVisibility(View.GONE);
-            holder.addFriendBtn.setVisibility(View.GONE);
+            holder.userBinding.addRequestToFriend.setVisibility(View.GONE);
+            holder.userBinding.addToFriend.setVisibility(View.GONE);
         }
     }
 
@@ -246,9 +250,9 @@ public class User_List_Adapter extends RecyclerView.Adapter<User_List_Adapter.Ch
                         for(DataSnapshot ds : snapshot.getChildren()) {
                             if(ds.exists()){
                                 //todo: blocked
-                                holder.isImBlockedRed.setVisibility(View.VISIBLE);
-                                holder.addFriendRequestBtn.setVisibility(View.GONE);
-                                holder.addFriendBtn.setVisibility(View.GONE);
+                                holder.userBinding.blockByAnotherUser.setVisibility(View.VISIBLE);
+                                holder.userBinding.addRequestToFriend.setVisibility(View.GONE);
+                                holder.userBinding.addToFriend.setVisibility(View.GONE);
                             }
                         }
                     }
@@ -298,16 +302,16 @@ public class User_List_Adapter extends RecyclerView.Adapter<User_List_Adapter.Ch
                         for(DataSnapshot ds : snapshot.getChildren()) {
                             try{
                                 if(ds.exists()){
-                                    holder.addFriendRequestBtn.setVisibility(View.GONE);
-                                    holder.blockBtn.setImageResource(R.drawable.block_on);
+                                    holder.userBinding.addRequestToFriend.setVisibility(View.GONE);
+                                    holder.userBinding.blockBtn.setImageResource(R.drawable.block_on);
                                     //todo: staff of requests
                                     deleteFriendRequest(hisUid, holder);
                                     deleteFriendRequestHis(hisUid, holder);
-                                    holder.addFriendBtn.setVisibility(View.GONE);
+                                    holder.userBinding.addToFriend.setVisibility(View.GONE);
                                     userList.get(position).setBlocked(true);
                                 }
                                 else{
-                                    holder.addFriendRequestBtn.setVisibility(View.VISIBLE);
+                                    holder.userBinding.addRequestToFriend.setVisibility(View.VISIBLE);
                                     userList.get(position).setBlocked(false);
                                 }
                             }catch (Exception ignored){}
@@ -456,10 +460,10 @@ public class User_List_Adapter extends RecyclerView.Adapter<User_List_Adapter.Ch
                         for(DataSnapshot ds : snapshot.getChildren()) {
                             if(ds.exists()){
                                 //blocked
-                                holder.addFriendRequestBtn.setImageResource(R.drawable.user_friend_request);
+                                holder.userBinding.addRequestToFriend.setImageResource(R.drawable.user_friend_request);
                             }
                             else{
-                                holder.addFriendRequestBtn.setImageResource(R.drawable.add_friends);
+                                holder.userBinding.addRequestToFriend.setImageResource(R.drawable.add_friends);
                             }
 
                         }
@@ -479,11 +483,11 @@ public class User_List_Adapter extends RecyclerView.Adapter<User_List_Adapter.Ch
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         for(DataSnapshot ds : snapshot.getChildren()) {
                             if(ds.exists()){
-                                holder.addFriendRequestBtn.setImageResource(R.drawable.user_friend);
-                                holder.addFriendBtn.setVisibility(View.GONE);
+                                holder.userBinding.addRequestToFriend.setImageResource(R.drawable.user_friend);
+                                holder.userBinding.addToFriend.setVisibility(View.GONE);
                             }
                             else{
-                                holder.addFriendRequestBtn.setImageResource(R.drawable.add_friends);
+                                holder.userBinding.addRequestToFriend.setImageResource(R.drawable.add_friends);
                             }
 
 
@@ -504,12 +508,12 @@ public class User_List_Adapter extends RecyclerView.Adapter<User_List_Adapter.Ch
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         for(DataSnapshot ds : snapshot.getChildren()) {
                             if(ds.exists()){
-                                holder.addFriendBtn.setVisibility(View.VISIBLE);
-                                holder.addFriendRequestBtn.setImageResource(R.drawable.user_friend_request);
+                                holder.userBinding.addToFriend.setVisibility(View.VISIBLE);
+                                holder.userBinding.addRequestToFriend.setImageResource(R.drawable.user_friend_request);
                                 addUserToFriend(hisUid,holder);
                             }
                             else{
-                                holder.addFriendRequestBtn.setImageResource(R.drawable.add_friends);
+                                holder.userBinding.addRequestToFriend.setImageResource(R.drawable.add_friends);
 
                             }
 
@@ -524,7 +528,7 @@ public class User_List_Adapter extends RecyclerView.Adapter<User_List_Adapter.Ch
 
     private void addUserToFriend(String hisUid, ChatUserViewHolder holder) {
 
-        holder.addFriendBtn.setOnClickListener(new View.OnClickListener() {
+        holder.userBinding.addToFriend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //delete User from Request in My
@@ -559,35 +563,13 @@ public class User_List_Adapter extends RecyclerView.Adapter<User_List_Adapter.Ch
 
     public static class ChatUserViewHolder extends RecyclerView.ViewHolder {
 
-        private final ImageView avatarImageView;
-        private final TextView UserNameChatList;
-        private final TextView dayLastConnection;
-        private final TextView timeLastConnection;
-        private final TextView onOffLine;
-        private final BubbleTextView lastMessage;
-        private final ImageButton blockBtn;
-        private final ImageButton addFriendRequestBtn;
-        private final ImageButton addFriendBtn;
-        private final ImageView isImBlockedRed;
-        private ProgressBar progressBar;
-        private final RecyclerView recyclerView;
+        private final RowUserBinding userBinding;
 
 
-        public ChatUserViewHolder(@NonNull View itemView, OnUserClickListener listener) {
-            super(itemView);
+        public ChatUserViewHolder(@NonNull RowUserBinding userBinding, OnUserClickListener listener) {
+            super(userBinding.getRoot());
 
-            avatarImageView = itemView.findViewById(R.id.avatarImageView);
-            UserNameChatList = itemView.findViewById(R.id.UserNameChatList);
-            dayLastConnection = itemView.findViewById(R.id.dayLastConnection);
-            timeLastConnection = itemView.findViewById(R.id.timeLastConnection);
-            onOffLine = itemView.findViewById(R.id.onOffLine);
-            lastMessage = itemView.findViewById(R.id.userLastMessage);
-            blockBtn = itemView.findViewById(R.id.blockBtn);
-            addFriendRequestBtn =  itemView.findViewById(R.id.addRequestToFriend);
-            addFriendBtn =  itemView.findViewById(R.id.addToFriend);
-            isImBlockedRed = itemView.findViewById(R.id.blockByAnotherUser);
-            recyclerView = itemView.findViewById(R.id.userListRecyclerView);
-
+            this.userBinding = userBinding;
 
             /*itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

@@ -2,7 +2,6 @@ package com.example.myapplication.main.Screens.Posts.Posts_By_Friends_MVP;
 
 import androidx.annotation.NonNull;
 
-import com.example.myapplication.Services.Check_Permission_Service;
 import com.example.myapplication.main.Models.Model_Post;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -14,8 +13,6 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.inject.Inject;
 
 public class Post_Friends_Presenter {
 
