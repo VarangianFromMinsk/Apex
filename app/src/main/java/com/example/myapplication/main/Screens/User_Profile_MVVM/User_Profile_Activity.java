@@ -48,7 +48,6 @@ import com.example.myapplication.main.Screens.Dashboard_MVP.Dashboard_Activity;
 import com.example.myapplication.R;
 import com.example.myapplication.Services.App_Constants;
 import com.example.myapplication.Services.Check_Permission_Service;
-import com.example.myapplication.Services.Online_Offline_Service;
 import com.example.myapplication.main.Screens.Settings.Settings_Activity;
 import com.example.myapplication.main.Models.Model_Post;
 import com.example.myapplication.main.Models.Model_User;
@@ -901,7 +900,7 @@ public class User_Profile_Activity extends AppCompatActivity {
 
     //todo: block online/offline and location
     public void updateUserStatus( String state){
-        Online_Offline_Service.updateUserStatus(state, this);
+        //Online_Offline_Service.updateUserStatus(state, this);
     }
 
     @Override

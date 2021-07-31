@@ -15,13 +15,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.SearchView;
 
+import com.example.myapplication.Services.Check_Internet_Connection_Exist;
+import com.example.myapplication.Services.Online_Offline_User_Service_To_Firebase;
 import com.example.myapplication.databinding.PostActivityRecommendationsBinding;
 import com.example.myapplication.main.Screens.Dashboard_MVP.Dashboard_Activity;
 import com.example.myapplication.R;
-import com.example.myapplication.Services.Online_Offline_Service;
 import com.example.myapplication.main.Models.Model_Post;
 import com.example.myapplication.main.Screens.Posts.Posts_By_Friends_MVP.Post_Activity_Friends;
-import com.example.myapplication.main.Screens.Posts.Posts_By_Recommendation_MVVM.di.App;
+import com.example.myapplication.Common_Dagger_App_Class.App;
 import com.example.myapplication.main.Screens.User_List_4_States_MVVM.User_List_Activity;
 import com.example.myapplication.main.Screens.User_Profile_MVVM.User_Profile_Activity;
 import com.example.myapplication.main.Screens.Music.Music_List_Activity_MVVM.Music_List_Activity;
@@ -45,11 +46,18 @@ public class Post_Activity_Recommendations extends AppCompatActivity {
     @Inject
     Post_Adapter_Recommendations postAdapter;
 
+    @Inject
+    Check_Internet_Connection_Exist checkInternetService;
+
+    @Inject
+    Online_Offline_User_Service_To_Firebase controller;
+
+
     //TODO: create dataBinding
     private PostActivityRecommendationsBinding binding;
 
     //TODO: create viewModel
-    Post_Recomm_ViewModel viewModel;
+    private Post_Recomm_ViewModel viewModel;
 
 
     @Override
@@ -65,6 +73,8 @@ public class Post_Activity_Recommendations extends AppCompatActivity {
 
         updateNavigationMenu();
 
+        checkNetworkState();
+
         startAnimation();
 
         initSearchUser();
@@ -72,27 +82,31 @@ public class Post_Activity_Recommendations extends AppCompatActivity {
         createRecyclerViewAndFirstLoadData();
 
         initFriendsBtn();
-
-        updateUserStatus("online");
     }
 
-
+    //TODO: main
     private void initialization() {
         binding = DataBindingUtil.setContentView(this, R.layout.post_activity_recommendations);
 
         //todo: предоставь (inject) все зависимости в этот класс
-        ((App) getApplication()).getAppComponent().inject(this);
+        ((App) getApplication()).getpostsRecComponent().inject(this);
 
         viewModel = new ViewModelProvider(this).get(Post_Recomm_ViewModel.class);
+
+        //TODO: lifecycle
+        getLifecycle().addObserver(controller);
+    }
+
+    private void checkNetworkState() {
+        if(!checkInternetService.checkInternet(this)){
+            showSnackBar("Internet disable", null, null);
+        }
     }
 
     private void startAnimation() {
         binding.postRecommendationsTextBtn.animate().scaleX(1.14f).scaleY(1.14f).setDuration(300);
         binding.postRecToFriendsTextBtn.animate().scaleX(1).scaleY(1).setDuration(200);
     }
-
-
-
 
     private void createRecyclerViewAndFirstLoadData() {
         // part of recyclerview
@@ -106,18 +120,24 @@ public class Post_Activity_Recommendations extends AppCompatActivity {
         postAdapter.setPostListRec(new ArrayList<Model_Post>());
         binding.postRecRecyclerView.setAdapter(postAdapter);
 
+        viewModel.getShowLoad().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean state) {
+                if(state){
+                    binding.progressbarPostRecActivity.setVisibility(View.VISIBLE);
+                }
+                else{
+                    binding.progressbarPostRecActivity.setVisibility(View.GONE);
+                }
+            }
+        });
+
         loadPosts();
 
         viewModel.getMutPostListFriends().observe(this, new Observer<ArrayList<Model_Post>>() {
             @Override
             public void onChanged(ArrayList<Model_Post> posts) {
                 postAdapter.setPostListRec(posts);
-                if(posts.isEmpty()){
-                    binding.progressbarPostRecActivity.setVisibility(View.VISIBLE);
-                }
-                else{
-                    binding.progressbarPostRecActivity.setVisibility(View.GONE);
-                }
             }
         });
 
@@ -174,23 +194,6 @@ public class Post_Activity_Recommendations extends AppCompatActivity {
         startActivity(intent);
     }
 
-    //TODO: Block online/offline
-    public void updateUserStatus( String state){
-        Online_Offline_Service.updateUserStatus(state, this);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        updateUserStatus("online");
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        updateUserStatus("offline");
-    }
-
     //TODO: another staff
     public void updateNavigationMenu(){
         //set Dashboard selected
@@ -207,9 +210,9 @@ public class Post_Activity_Recommendations extends AppCompatActivity {
                         return true;
 
                     case R.id.userChat_nav:
-                        Intent intentChat = new Intent(getApplicationContext(), User_List_Activity.class);
-                        intentChat.putExtra("typeOfUserList", "all");
-                        intentChat.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        Intent intentChat = new Intent(getApplicationContext(), User_List_Activity.class)
+                                .putExtra("typeOfUserList", "all")
+                                .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intentChat);
                         overridePendingTransition(0,0);
                         return true;
@@ -233,6 +236,10 @@ public class Post_Activity_Recommendations extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void showSnackBar(final String mainText, final String action, View.OnClickListener listener) {
+        Snackbar.make(findViewById(android.R.id.content), mainText, Snackbar.LENGTH_INDEFINITE).setAction(action, listener).show();
     }
 
     @Override

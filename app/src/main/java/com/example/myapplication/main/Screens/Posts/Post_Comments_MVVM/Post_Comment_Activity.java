@@ -38,7 +38,6 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.myapplication.R;
-import com.example.myapplication.Services.Online_Offline_Service;
 import com.example.myapplication.main.Models.Model_User;
 import com.example.myapplication.main.Screens.Posts.Add_Change_Post_MVP.Add_Change_Post_Activity;
 import com.example.myapplication.main.Models.Model_Comment;
@@ -404,6 +403,7 @@ public class Post_Comment_Activity extends AppCompatActivity {
                 intent.putExtra("pImage",pImage);
                 intent.putExtra("pTime",pTime);
                 intent.putExtra("pId", postId);
+                intent.putExtra("typeOfUserList", "all");
                 startActivity(intent);
             }
         });
@@ -498,7 +498,7 @@ public class Post_Comment_Activity extends AppCompatActivity {
 
     //TODO: Block online/offline
     public void updateUserStatus( String state){
-        Online_Offline_Service.updateUserStatus(state, this);
+        //Online_Offline_Service.updateUserStatus(state, this);
 
     }
 

@@ -15,22 +15,20 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.PopupMenu;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.content.res.AppCompatResources;
-import androidx.cardview.widget.CardView;
+import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat;
 
 import com.bumptech.glide.Glide;
 import com.example.myapplication.R;
+import com.example.myapplication.databinding.RowPostsFriendsBinding;
 import com.example.myapplication.main.Screens.Posts.Add_Change_Post_MVP.Add_Change_Post_Activity;
 import com.example.myapplication.main.Models.Model_Post;
 import com.example.myapplication.main.Screens.Posts.Post_Comments_MVVM.Post_Comment_Activity;
@@ -53,6 +51,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 import java.util.Objects;
+
+import javax.inject.Inject;
+
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
 public class Post_Adapter_Friends extends RecyclerView.Adapter<Post_Adapter_Friends.FriendsViewHolder> {
 
@@ -83,6 +85,7 @@ public class Post_Adapter_Friends extends RecyclerView.Adapter<Post_Adapter_Frie
 
 
     //TODO: main Constructor
+    @Inject
     public Post_Adapter_Friends(Context context) {
         this.context = context;
 
@@ -94,8 +97,10 @@ public class Post_Adapter_Friends extends RecyclerView.Adapter<Post_Adapter_Frie
     @NonNull
     @Override
     public FriendsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.row_posts_friends, parent, false);
-        return new FriendsViewHolder(view);
+        RowPostsFriendsBinding rowPostsFriendsBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),
+                R.layout.row_posts_friends,
+                parent, false);
+        return new FriendsViewHolder(rowPostsFriendsBinding);
     }
 
     @Override
@@ -122,11 +127,11 @@ public class Post_Adapter_Friends extends RecyclerView.Adapter<Post_Adapter_Frie
         String pTime = DateFormat.format("dd/MM/yyyy hh:mm aa", calendar).toString();
 
         //TODO: set other info
-        holder.uNameTv.setText(uName);
-        holder.pTimeTv.setText(pTime);
-        holder.pTitleTv.setText(pTitle);
-        holder.pDescriptionTv.setText(pDescription);
-        holder.pCommentsTv.setText(String.valueOf(pComments + " Comments"));
+        holder.postBinding.uNameTv.setText(uName);
+        holder.postBinding.pTimeTv.setText(pTime);
+        holder.postBinding.pTitleTv.setText(pTitle);
+        holder.postBinding.pDescriptionTv.setText(pDescription);
+        holder.postBinding.pCommentsTv.setText(String.valueOf(pComments + " Comments"));
 
 
         //TODO: set user avatar
@@ -136,15 +141,15 @@ public class Post_Adapter_Friends extends RecyclerView.Adapter<Post_Adapter_Frie
         // if ref = "noImage" - hide ImageView
         boolean isPostWithImage = false;
         if(pImage.equals("noImage")){
-            holder.pImageIv.setVisibility(View.GONE);
+            holder.postBinding.pImageIv.setVisibility(View.GONE);
         }
         else {
             isPostWithImage = true;
 
-            holder.pImageIv.setVisibility(View.VISIBLE);
+            holder.postBinding.pImageIv.setVisibility(View.VISIBLE);
             try{
                 //Picasso.get().load(pImage).into(holder.pImageIv);
-                Glide.with(holder.pImageIv.getContext()).load(pImage).into(holder.pImageIv);
+                Glide.with(holder.postBinding.pImageIv.getContext()).load(pImage).into(holder.postBinding.pImageIv);
             }catch (Exception ignored){}
         }
 
@@ -154,15 +159,15 @@ public class Post_Adapter_Friends extends RecyclerView.Adapter<Post_Adapter_Frie
 
 
         //TODO: init button clicks
-        holder.moreBtn.setOnClickListener(new View.OnClickListener() {
+        holder.postBinding.moreBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showMoreOptions(holder.moreBtn, uid, myUid, pId, pImage);
+                showMoreOptions(holder.postBinding.moreBtn, uid, myUid, pId, pImage);
             }
         });
 
         //TODO: init likeBtn
-        holder.likeBtn.setOnClickListener(new View.OnClickListener() {
+        holder.postBinding.likeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 isItLikeAnim = false;
@@ -182,15 +187,16 @@ public class Post_Adapter_Friends extends RecyclerView.Adapter<Post_Adapter_Frie
     }
 
     private void initClickOnAvatar(FriendsViewHolder holder, String uid) {
-        holder.uPictureIv.setOnClickListener(new View.OnClickListener() {
+        holder.postBinding.uPictureIv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 assert user != null;
                 String currentUser = user.getUid();
                 if(!currentUser.equals(uid)){
-                    Intent GoToProfile = new Intent(context, User_Profile_Activity.class);
-                    GoToProfile.putExtra("hisId",uid);
+                    Intent GoToProfile = new Intent(context, User_Profile_Activity.class)
+                            .putExtra("hisId",uid)
+                            .setFlags(FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity( GoToProfile);
                 }
                 else{
@@ -201,27 +207,29 @@ public class Post_Adapter_Friends extends RecyclerView.Adapter<Post_Adapter_Frie
     }
 
     private void initShareBtn(FriendsViewHolder holder, String pDescription, String uName, String pImage, String pTime, String pId) {
-        holder.shareBtn.setOnClickListener(new View.OnClickListener() {
+        holder.postBinding.shareBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, User_List_Activity.class);
-                intent.putExtra("Text", pDescription);
-                intent.putExtra("pUserName",uName);
-                intent.putExtra("pImage",pImage);
-                intent.putExtra("pTime",pTime);
-                intent.putExtra("pId", pId);
-
+                Intent intent = new Intent(context, User_List_Activity.class)
+                        .putExtra("Text", pDescription)
+                        .putExtra("pUserName",uName)
+                        .putExtra("pImage",pImage)
+                        .putExtra("pTime",pTime)
+                        .putExtra("pId", pId)
+                        .putExtra("typeOfUserList", "all")
+                        .setFlags(FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
             }
         });
     }
 
     private void initCommentBtn(FriendsViewHolder holder, String pId) {
-        holder.commentBtn.setOnClickListener(new View.OnClickListener() {
+        holder.postBinding.commentBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, Post_Comment_Activity.class);
-                intent.putExtra("postId", pId);
+                Intent intent = new Intent(context, Post_Comment_Activity.class)
+                        .putExtra("postId", pId)
+                        .setFlags(FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
             }
         });
@@ -230,7 +238,7 @@ public class Post_Adapter_Friends extends RecyclerView.Adapter<Post_Adapter_Frie
     private void setUserAvatar(FriendsViewHolder holder, String uAvatar) {
         try{
             //Picasso.get().load(uAvatar).placeholder(R.drawable.default_avatar).into(holder.uPictureIv);
-            Glide.with(holder.uPictureIv.getContext()).load(uAvatar).placeholder(R.drawable.default_avatar).into(holder.uPictureIv);
+            Glide.with(holder.postBinding.uPictureIv.getContext()).load(uAvatar).placeholder(R.drawable.default_avatar).into(holder.postBinding.uPictureIv);
         }catch (Exception ignored){ }
     }
 
@@ -257,14 +265,16 @@ public class Post_Adapter_Friends extends RecyclerView.Adapter<Post_Adapter_Frie
                     startDelete(pId,pImage);
                 }
                 else if(id == 1){
-                    Intent intent = new Intent(context, Add_Change_Post_Activity.class);
-                    intent.putExtra("key","editPost");
-                    intent.putExtra("editPostId",pId);
+                    Intent intent = new Intent(context, Add_Change_Post_Activity.class)
+                            .putExtra("key","editPost")
+                            .putExtra("editPostId",pId)
+                            .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(intent);
                 }
                 else if(id==2){
-                    Intent intent = new Intent(context, Post_Comment_Activity.class);
-                    intent.putExtra("postId", pId);
+                    Intent intent = new Intent(context, Post_Comment_Activity.class)
+                            .putExtra("postId", pId)
+                            .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(intent);
                 }
                 else if(id==3){
@@ -283,7 +293,7 @@ public class Post_Adapter_Friends extends RecyclerView.Adapter<Post_Adapter_Frie
 
     private void initDoubleCLick(FriendsViewHolder holder, boolean isPostWithImage, int position) {
         if(isPostWithImage){
-            holder.heartIv.setVisibility(View.VISIBLE);
+            holder.postBinding.pLikeClick.setVisibility(View.VISIBLE);
 
             Handler handler=new Handler();
             Runnable r=new Runnable(){
@@ -294,9 +304,9 @@ public class Post_Adapter_Friends extends RecyclerView.Adapter<Post_Adapter_Frie
                 }
             };
 
-            drawable = holder.heartIv.getDrawable();
+            drawable = holder.postBinding.pLikeClick.getDrawable();
 
-            holder.postCardView.setOnClickListener(new View.OnClickListener() {
+            holder.postBinding.postCardVIew.setOnClickListener(new View.OnClickListener() {
                 @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
                 @Override
                 public void onClick(View v) {
@@ -309,13 +319,13 @@ public class Post_Adapter_Friends extends RecyclerView.Adapter<Post_Adapter_Frie
 
                     if (doubleClick) {
                         //double click logic
-                        holder.heartIv.setVisibility(View.VISIBLE);
-                        holder.heartIv.setAlpha(1.0f);
+                        holder.postBinding.pLikeClick.setVisibility(View.VISIBLE);
+                        holder.postBinding.pLikeClick.setAlpha(1.0f);
                         isItLikeAnim = true;
 
                         if(drawable instanceof AnimatedVectorDrawableCompat){
                             AnimatedVectorDrawableCompat dAnimCompat = (AnimatedVectorDrawableCompat) AppCompatResources.getDrawable(context,R.drawable.avd_apex_like);
-                            holder.heartIv.setImageDrawable(dAnimCompat);
+                            holder.postBinding.pLikeClick.setImageDrawable(dAnimCompat);
                             assert dAnimCompat != null;
                             dAnimCompat.start();
                             setLikesAction(position, holder);
@@ -323,7 +333,7 @@ public class Post_Adapter_Friends extends RecyclerView.Adapter<Post_Adapter_Frie
                         }
                         else if (drawable instanceof AnimatedVectorDrawable){
                             AnimatedVectorDrawable dAnim = (AnimatedVectorDrawable) AppCompatResources.getDrawable(context,R.drawable.avd_apex_like);
-                            holder.heartIv.setImageDrawable(dAnim);
+                            holder.postBinding.pLikeClick.setImageDrawable(dAnim);
                             assert dAnim != null;
                             dAnim.start();
                             setLikesAction(position, holder);
@@ -343,7 +353,7 @@ public class Post_Adapter_Friends extends RecyclerView.Adapter<Post_Adapter_Frie
 
         }
         else{
-            holder.heartIv.setVisibility(View.GONE);
+            holder.postBinding.pLikeClick.setVisibility(View.GONE);
         }
     }
 
@@ -386,7 +396,7 @@ public class Post_Adapter_Friends extends RecyclerView.Adapter<Post_Adapter_Frie
                                                     if(post.getpId().equals(postId)){
                                                         int number = Integer.parseInt(post.getpLikes()) ;
                                                         postsRef.child(postId).child("pLikes").setValue("" + (number - 1));
-                                                        holder.pLikesTv.setText(String.valueOf((number - 1) + " Likes"));
+                                                        holder.postBinding.pLikesTv.setText(String.valueOf((number - 1) + " Likes"));
                                                     }
 
                                                 }
@@ -414,7 +424,7 @@ public class Post_Adapter_Friends extends RecyclerView.Adapter<Post_Adapter_Frie
                                                 if(post.getpId().equals(postId)){
                                                     int number = Integer.parseInt(post.getpLikes()) ;
                                                     postsRef.child(postId).child("pLikes").setValue("" + (number + 1));
-                                                    holder.pLikesTv.setText(String.valueOf((number + 1) + " Likes"));
+                                                    holder.postBinding.pLikesTv.setText(String.valueOf((number + 1) + " Likes"));
                                                 }
 
                                             }
@@ -449,19 +459,19 @@ public class Post_Adapter_Friends extends RecyclerView.Adapter<Post_Adapter_Frie
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot.child(postKey).hasChild(myUid)){
                     //TODO: user has liked this post
-                    holder.likeBtn.setCompoundDrawablesWithIntrinsicBounds(R.drawable.likeon,0,0,0);
-                    holder.likeBtn.setText(R.string.Liked);
+                    holder.postBinding.likeBtn.setCompoundDrawablesWithIntrinsicBounds(R.drawable.likeon,0,0,0);
+                    holder.postBinding.likeBtn.setText(R.string.Liked);
                     try{
-                    holder.pLikesTv.setText(String.valueOf(pLikes + " Likes"));
+                    holder.postBinding.pLikesTv.setText(String.valueOf(pLikes + " Likes"));
                     }catch (Exception ignored){}
 
                 }
                 else{
                     //TODO: user has not liked this post
-                    holder.likeBtn.setCompoundDrawablesWithIntrinsicBounds(R.drawable.likeoff,0,0,0);
-                    holder.likeBtn.setText(R.string.Like);
+                    holder.postBinding.likeBtn.setCompoundDrawablesWithIntrinsicBounds(R.drawable.likeoff,0,0,0);
+                    holder.postBinding.likeBtn.setText(R.string.Like);
                     try{
-                        holder.pLikesTv.setText(String.valueOf(pLikes + " Likes"));
+                        holder.postBinding.pLikesTv.setText(String.valueOf(pLikes + " Likes"));
                     }catch (Exception ignored){}
 
                 }
@@ -494,14 +504,11 @@ public class Post_Adapter_Friends extends RecyclerView.Adapter<Post_Adapter_Frie
         ProgressDialog pd = new ProgressDialog(context);
         pd.setMessage("Deleting");
 
-        //delete image using uri
-        //delete from database using post id
-
         StorageReference picRef = FirebaseStorage.getInstance().getReferenceFromUrl(pImage);
         picRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
-                //image deleted, now lets delete database
+                //todo: image deleted, now delete from database
                 Query fQuery = FirebaseDatabase.getInstance().getReference("Posts").orderByChild("pId").equalTo(pId);
                 fQuery.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
@@ -540,7 +547,7 @@ public class Post_Adapter_Friends extends RecyclerView.Adapter<Post_Adapter_Frie
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for(DataSnapshot ds : snapshot.getChildren()){
-                    //remove values from firebase where pId was matched
+                    //todo: remove values from firebase where pId was matched
                     ds.getRef().removeValue();
                     pd.dismiss();
                     Toast.makeText(context, "Deleted Success", Toast.LENGTH_SHORT).show();
@@ -564,43 +571,13 @@ public class Post_Adapter_Friends extends RecyclerView.Adapter<Post_Adapter_Frie
 
     public static class FriendsViewHolder extends RecyclerView.ViewHolder{
 
-        private final ImageView uPictureIv;
-        private final ImageView pImageIv;
-        private final TextView uNameTv;
-        private final TextView pTimeTv;
-        private final TextView pTitleTv;
-        private final TextView pDescriptionTv;
-        private final TextView pLikesTv;
-        private final TextView pCommentsTv;
-        private final ImageButton moreBtn;
-        private final Button likeBtn;
-        private final Button commentBtn;
-        private final Button shareBtn;
+        private final RowPostsFriendsBinding postBinding;
 
-        //TODO: like part
-        private final CardView postCardView;
-        private final ImageView heartIv;
+        public FriendsViewHolder(RowPostsFriendsBinding rowPostsFriendsBinding) {
+            super(rowPostsFriendsBinding.getRoot());
 
+            this.postBinding = rowPostsFriendsBinding;
 
-        public FriendsViewHolder(@NonNull View itemView) {
-            super(itemView);
-            uPictureIv = itemView.findViewById(R.id.uPictureIv);
-            pImageIv = itemView.findViewById(R.id.pImageIv);
-
-            uNameTv = itemView.findViewById(R.id.uNameTv);
-            pTimeTv = itemView.findViewById(R.id.pTimeTv);
-            pTitleTv = itemView.findViewById(R.id.pTitleTv);
-            pDescriptionTv = itemView.findViewById(R.id.pDescriptionTv);
-            pLikesTv = itemView.findViewById(R.id.pLikesTv);
-            pCommentsTv = itemView.findViewById(R.id.pCommentsTv);
-
-            moreBtn = itemView.findViewById(R.id.moreBtn);
-            likeBtn= itemView.findViewById(R.id.likeBtn);
-            commentBtn = itemView.findViewById(R.id.commentBtn);
-            shareBtn = itemView.findViewById(R.id.shareBtn);
-
-            postCardView = itemView.findViewById(R.id.postCardVIew);
-            heartIv = itemView.findViewById(R.id.pLikeClick);
         }
     }
 }

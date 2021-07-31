@@ -20,7 +20,6 @@ import android.widget.Toast;
 
 import com.example.myapplication.main.Screens.Dashboard_MVP.Dashboard_Activity;
 import com.example.myapplication.R;
-import com.example.myapplication.Services.Online_Offline_Service;
 import com.example.myapplication.main.Models.Model_Song;
 import com.example.myapplication.main.Screens.Posts.Posts_By_Friends_MVP.Post_Activity_Friends;
 import com.example.myapplication.main.Screens.User_List_4_States_MVVM.User_List_Activity;
@@ -207,7 +206,7 @@ public class Music_List_Activity extends AppCompatActivity {
 
     //todo: block online/offline and location
     public void updateUserStatus( String state){
-        Online_Offline_Service.updateUserStatus(state, this);
+        //Online_Offline_Service.updateUserStatus(state, this);
     }
 
     @Override

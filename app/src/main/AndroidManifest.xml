@@ -18,7 +18,7 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
-        android:name=".main.Screens.Posts.Posts_By_Recommendation_MVVM.di.App"
+        android:name=".Common_Dagger_App_Class.App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"

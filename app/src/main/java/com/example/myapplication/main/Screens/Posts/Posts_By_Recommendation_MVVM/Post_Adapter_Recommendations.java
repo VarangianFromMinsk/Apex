@@ -1,20 +1,18 @@
 package com.example.myapplication.main.Screens.Posts.Posts_By_Recommendation_MVVM;
 
+
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-
 import androidx.annotation.NonNull;
+import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.bumptech.glide.Glide;
 import com.example.myapplication.R;
+import com.example.myapplication.databinding.RowPostRecommendationsBinding;
 import com.example.myapplication.main.Models.Model_Post;
 import com.example.myapplication.main.Screens.Posts.Post_Comments_MVVM.Post_Comment_Activity;
 import com.google.firebase.auth.FirebaseAuth;
@@ -63,8 +61,10 @@ public class Post_Adapter_Recommendations extends RecyclerView.Adapter<Post_Adap
     @NonNull
     @Override
     public RecommendationsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.row_post_recommendations, parent, false);
-        return new RecommendationsViewHolder(view);
+        RowPostRecommendationsBinding rowPostRecommendationsBinding= DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),
+                R.layout.row_post_recommendations,
+                parent, false);
+        return new RecommendationsViewHolder(rowPostRecommendationsBinding);
     }
 
     @Override
@@ -79,8 +79,7 @@ public class Post_Adapter_Recommendations extends RecyclerView.Adapter<Post_Adap
 
         //TODO: set post image
         try{
-            //Picasso.get().load(pImage).into(holder.pImageIv);
-            Glide.with(holder.pImageIv.getContext()).load(pImage).into(holder.pImageIv);
+            Glide.with(holder.postBinding.pRecImageIv.getContext()).load(pImage).into(holder.postBinding.pRecImageIv);
         }catch (Exception ignored){}
 
         //TODO: init show more
@@ -91,7 +90,7 @@ public class Post_Adapter_Recommendations extends RecyclerView.Adapter<Post_Adap
     }
 
     private void initLikeMethod(RecommendationsViewHolder holder, int position) {
-        holder.layToSetLike.setOnClickListener(new View.OnClickListener() {
+        holder.postBinding.layToSetLike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 setLikesAction(position, holder);
@@ -100,7 +99,7 @@ public class Post_Adapter_Recommendations extends RecyclerView.Adapter<Post_Adap
     }
 
     private void initShowMore(RecommendationsViewHolder holder, String pId) {
-        holder.pImageIv.setOnClickListener(new View.OnClickListener() {
+        holder.postBinding.pRecImageIv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, Post_Comment_Activity.class);
@@ -133,7 +132,7 @@ public class Post_Adapter_Recommendations extends RecyclerView.Adapter<Post_Adap
                                     if(post.getpId().equals(postId)){
                                         int number = Integer.parseInt(post.getpLikes()) ;
                                         postsRef.child(postId).child("pLikes").setValue("" + (number - 1));
-                                        holder.countLike.setText(String.valueOf((number - 1)));
+                                        holder.postBinding.pLikesRecTv.setText(String.valueOf((number - 1)));
 
                                     }
                                 }
@@ -158,7 +157,7 @@ public class Post_Adapter_Recommendations extends RecyclerView.Adapter<Post_Adap
                                     if(post.getpId().equals(postId)){
                                         int number = Integer.parseInt(post.getpLikes()) ;
                                         postsRef.child(postId).child("pLikes").setValue("" + (number + 1));
-                                        holder.countLike.setText(String.valueOf((number + 1)));
+                                        holder.postBinding.pLikesRecTv.setText(String.valueOf((number + 1)));
                                     }
                                 }
                             }
@@ -186,16 +185,16 @@ public class Post_Adapter_Recommendations extends RecyclerView.Adapter<Post_Adap
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot.child(postKey).hasChild(myUid)){
                     //TODO: user has liked this post
-                    holder.likeIvRecommend.setImageResource(R.drawable.likeon);
+                    holder.postBinding.likeIvRecommend.setImageResource(R.drawable.likeon);
                     try{
-                        holder.countLike.setText(String.valueOf(pLikes));
+                        holder.postBinding.pLikesRecTv.setText(String.valueOf(pLikes));
                     }catch (Exception ignored){}
                 }
                 else{
                     //TODO: user has not liked this post
-                    holder.likeIvRecommend.setImageResource(R.drawable.likeoff);
+                    holder.postBinding.likeIvRecommend.setImageResource(R.drawable.likeoff);
                     try{
-                        holder.countLike.setText(String.valueOf(pLikes));
+                        holder.postBinding.pLikesRecTv.setText(String.valueOf(pLikes));
                     }catch (Exception ignored){}
                 }
             }
@@ -216,18 +215,11 @@ public class Post_Adapter_Recommendations extends RecyclerView.Adapter<Post_Adap
 
     public static class RecommendationsViewHolder extends RecyclerView.ViewHolder{
 
-        private final ImageView pImageIv;
-        private final ImageView likeIvRecommend;
-        private final TextView countLike;
-        private final RelativeLayout layToSetLike;
+        private final RowPostRecommendationsBinding postBinding;
 
-
-        public RecommendationsViewHolder(@NonNull View itemView) {
-            super(itemView);
-            pImageIv = itemView.findViewById(R.id.pRecImageIv);
-            likeIvRecommend = itemView.findViewById(R.id.likeIvRecommend);
-            countLike = itemView.findViewById(R.id.pLikesRecTv);
-            layToSetLike = itemView.findViewById(R.id.layToSetLike);
+        public RecommendationsViewHolder(RowPostRecommendationsBinding rowPostRecommendationsBinding) {
+            super(rowPostRecommendationsBinding.getRoot());
+            this.postBinding = rowPostRecommendationsBinding;
         }
     }
 

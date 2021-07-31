@@ -13,7 +13,6 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.myapplication.R;
-import com.example.myapplication.Services.Online_Offline_Service;
 import com.example.myapplication.main.Screens.User_List_4_States_MVVM.User_List_Activity;
 
 public class Show_Image_Activity extends AppCompatActivity implements Show_Image_view {
@@ -106,7 +105,7 @@ public class Show_Image_Activity extends AppCompatActivity implements Show_Image
 
     //TODO: Block online/offline
     public void updateUserStatus( String state){
-        Online_Offline_Service.updateUserStatus(state, this);
+        //Online_Offline_Service.updateUserStatus(state, this);
     }
 
     @Override

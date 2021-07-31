@@ -10,7 +10,7 @@ import dagger.Component;
 //todo: мост между даггером и зависимостями
 @Component(modules = {Post_Rec_Module.class,SecondModule.class})
 @Singleton
-public interface AppComponentDagger {
+public interface Posts_Rec_Component {
 
     //todo: должна быть сугобо активити/фрагмент которая получит зависимости
     void inject (Post_Activity_Recommendations postActivityRecommendations);

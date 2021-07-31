@@ -21,7 +21,6 @@ public class Post_Friends_Presenter {
     private String myUid;
     private boolean itsWork;
 
-
     private final Post_List_view view;
 
 
@@ -84,12 +83,8 @@ public class Post_Friends_Presenter {
                             @Override
                             public void onCancelled(@NonNull DatabaseError error) {
                                 view.disableProgressBar();
-                                view.showSnackBarNoInternet("no internet, check settings");
                             }
                         });
-
-
-
                         itsWork = false;
                     }
                 }

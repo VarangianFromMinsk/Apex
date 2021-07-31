@@ -1,22 +1,13 @@
 package com.example.myapplication.main.Screens.Posts.Posts_By_Recommendation_MVVM.di;
 
-import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.recyclerview.widget.GridLayoutManager;
-
-import com.example.myapplication.main.Screens.Posts.Posts_By_Recommendation_MVVM.Post_Activity_Recommendations;
+import com.example.myapplication.Services.Check_Internet_Connection_Exist;
+import com.example.myapplication.Services.Online_Offline_User_Service_To_Firebase;
 import com.example.myapplication.main.Screens.Posts.Posts_By_Recommendation_MVVM.Post_Adapter_Recommendations;
-import com.example.myapplication.main.Screens.Posts.Posts_By_Recommendation_MVVM.Post_Recomm_ViewModel;
-
 import javax.inject.Singleton;
-
-import dagger.BindsInstance;
-import dagger.Component;
 import dagger.Module;
 import dagger.Provides;
 
@@ -38,16 +29,15 @@ public class SecondModule {
     }
 
     @Provides
-    public Post_Recomm_ViewModel provideViewModel (AppCompatActivity activity) {
-        return new ViewModelProvider(activity).get(Post_Recomm_ViewModel.class);
+    @Singleton
+    Check_Internet_Connection_Exist provideCheckInternetConnection(){
+        return new Check_Internet_Connection_Exist();
     }
 
-
-  //  @Provides
-    // @Singleton
-  //  public SharedPreferences providePreferences(Context context) {
-  //      return context.getSharedPreferences().get
-  //  }
-
+    @Provides
+    @Singleton
+    Online_Offline_User_Service_To_Firebase provideObserverLifeCycle(SharedPreferences preferences, Context context){
+        return new Online_Offline_User_Service_To_Firebase(preferences, context);
+    }
 
 }

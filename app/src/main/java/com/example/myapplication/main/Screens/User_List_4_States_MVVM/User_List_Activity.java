@@ -23,7 +23,6 @@ import com.example.myapplication.databinding.UserListActivityBinding;
 import com.example.myapplication.main.Models.Model_User;
 import com.example.myapplication.main.Screens.Dashboard_MVP.Dashboard_Activity;
 import com.example.myapplication.R;
-import com.example.myapplication.Services.Online_Offline_Service;
 import com.example.myapplication.main.Screens.Chat_Activity_MVP.Chat_Main_Activity;
 import com.example.myapplication.main.Screens.Posts.Posts_By_Friends_MVP.Post_Activity_Friends;
 import com.example.myapplication.main.Screens.User_Profile_MVVM.User_Profile_Activity;
@@ -52,6 +51,7 @@ public class User_List_Activity extends AppCompatActivity  {
 
     private int countNumber;
     private String mainSwitch;
+    private boolean isItRepostAction;
     private String myUid = "";
 
     private String textCount;
@@ -110,6 +110,15 @@ public class User_List_Activity extends AppCompatActivity  {
         Bundle extras = intent.getExtras();
         if (extras != null) {
             mainSwitch = intent.getStringExtra("typeOfUserList");
+            try {
+                //todo: disable all bottom navigation and able backPressed when its REPOST
+                if(!intent.getStringExtra("pId").isEmpty()){
+                    isItRepostAction = true;
+                    userListActivityBinding.upNavigation.setVisibility(View.GONE);
+                    userListActivityBinding.bottomNavigation.setVisibility(View.GONE);
+                }
+            } catch (Exception ignored) {
+            }
         }
     }
 
@@ -290,7 +299,7 @@ public class User_List_Activity extends AppCompatActivity  {
 
     //TODO: Block online/offline
     public void updateUserStatus( String state){
-        Online_Offline_Service.updateUserStatus(state, this);
+        //Online_Offline_Service.updateUserStatus(state, this);
     }
 
     @Override
@@ -439,7 +448,9 @@ public class User_List_Activity extends AppCompatActivity  {
     //todo: disable click back
     @Override
     public void onBackPressed() {
+        if(isItRepostAction){
+            super.onBackPressed();
+        }
         //disable
     }
-
 }

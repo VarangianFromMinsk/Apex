@@ -12,6 +12,4 @@ public interface Post_List_view {
 
     void disableProgressBar();
 
-    void showSnackBarNoInternet(String text);
-
 }

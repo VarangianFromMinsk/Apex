@@ -26,8 +26,8 @@ public class  Recommendation_Repository {
     public static final Recommendation_Repository instance = new Recommendation_Repository();
 
     private final ArrayList<Model_Post> postListFriendsRepArray = new ArrayList<>();
-    private final DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Posts");
     private final MutableLiveData<ArrayList<Model_Post>> posts = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> showLoad = new MutableLiveData<>();
 
     private boolean itsWork = false;
 
@@ -42,6 +42,7 @@ public class  Recommendation_Repository {
     */
 
 
+    //todo: post part
     public MutableLiveData<ArrayList<Model_Post>> getPostList(String searchText){
 
         loadPosts(searchText);
@@ -55,7 +56,6 @@ public class  Recommendation_Repository {
 
         return posts;
     }
-
 
     public void loadPosts(String searchText){
         //TODO: var to load only one time
@@ -89,6 +89,7 @@ public class  Recommendation_Repository {
                         itsWork = false;
                     }
                     posts.postValue(postListFriendsRepArray);
+                    setShowProgressBar(postListFriendsRepArray.isEmpty());
                 }
 
             }
@@ -101,5 +102,16 @@ public class  Recommendation_Repository {
 
     }
 
+
+    //todo: progressbar part
+
+
+    public MutableLiveData<Boolean> getShowLoad() {
+        return showLoad;
+    }
+
+    public void setShowProgressBar(Boolean state){
+        showLoad.setValue(state);
+    }
 
 }

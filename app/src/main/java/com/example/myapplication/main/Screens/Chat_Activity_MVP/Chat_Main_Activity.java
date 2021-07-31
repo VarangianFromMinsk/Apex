@@ -39,7 +39,6 @@ import com.bumptech.glide.Glide;
 import com.example.myapplication.R;
 import com.example.myapplication.Services.App_Constants;
 import com.example.myapplication.Services.Check_Permission_Service;
-import com.example.myapplication.Services.Online_Offline_Service;
 import com.example.myapplication.main.Screens.Settings.Settings_Activity;
 import com.example.myapplication.main.Models.Model_Message;
 import com.example.myapplication.main.Screens.User_Profile_MVVM.User_Profile_Activity;
@@ -684,7 +683,7 @@ public class Chat_Main_Activity extends AppCompatActivity implements Chat_view {
 
     //TODO: Block online/offline
     public void updateUserStatus(String state) {
-        Online_Offline_Service.updateUserStatus(state, this);
+        //Online_Offline_Service.updateUserStatus(state, this);
     }
 
     @Override

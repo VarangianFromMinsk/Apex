@@ -30,7 +30,6 @@ import com.bumptech.glide.Glide;
 import com.example.myapplication.Services.App_Constants;
 import com.example.myapplication.main.Models.Model_ViewPager;
 import com.example.myapplication.R;
-import com.example.myapplication.Services.Online_Offline_Service;
 import com.example.myapplication.main.Screens.Dashboard_MVP.View_Pager_And_Shop_Activity.ViewPager_Adapter;
 import com.example.myapplication.main.Screens.Find_Selected_Or_My_User_Location.Users_FInd_Location;
 import com.example.myapplication.main.Screens.Posts.Posts_By_Friends_MVP.Post_Activity_Friends;
@@ -309,7 +308,7 @@ public class Dashboard_Activity extends AppCompatActivity implements Dashboard_v
 
     //TODO: block online/offline
     public void updateUserStatus( String state){
-        Online_Offline_Service.updateUserStatus(state, this);
+        //Online_Offline_Service.updateUserStatus(state, this);
     }
 
     @Override

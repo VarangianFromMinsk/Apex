@@ -24,7 +24,6 @@ import com.bumptech.glide.Glide;
 import com.example.myapplication.R;
 import com.example.myapplication.Services.App_Constants;
 import com.example.myapplication.Services.Check_Permission_Service;
-import com.example.myapplication.Services.Online_Offline_Service;
 import com.google.firebase.auth.FirebaseAuth;
 import java.util.Objects;
 
@@ -340,7 +339,7 @@ public class Add_Change_Post_Activity extends AppCompatActivity implements Add_C
 
     //TODO: Block online/offline
     public void updateUserStatus( String state){
-        Online_Offline_Service.updateUserStatus(state, this);
+        //Online_Offline_Service.updateUserStatus(state, this);
     }
 
     @Override

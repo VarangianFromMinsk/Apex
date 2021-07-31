@@ -18,6 +18,7 @@ import javax.inject.Inject;
 public class Post_Recomm_ViewModel extends AndroidViewModel {
 
     private MutableLiveData<ArrayList<Model_Post>> mutPostListFriends = new MutableLiveData<>();
+    private MutableLiveData<Boolean> showLoad = new MutableLiveData<>();
 
     //TODO: main constructor
     public Post_Recomm_ViewModel(@NonNull Application application) {
@@ -32,4 +33,8 @@ public class Post_Recomm_ViewModel extends AndroidViewModel {
         return mutPostListFriends;
     }
 
+    public MutableLiveData<Boolean> getShowLoad() {
+        showLoad =  Recommendation_Repository.instance.getShowLoad();
+        return showLoad;
+    }
 }
