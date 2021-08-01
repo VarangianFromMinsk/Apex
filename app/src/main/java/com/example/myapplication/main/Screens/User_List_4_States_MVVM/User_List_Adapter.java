@@ -86,6 +86,8 @@ public class User_List_Adapter extends RecyclerView.Adapter<User_List_Adapter.Ch
         Model_User currentUser = userList.get(position);
         String hisUid = userList.get(position).getFirebaseId();
 
+        holder.userBinding.lastMessage.setVisibility(View.VISIBLE);
+
         //todo: set values
         holder.userBinding.UserNameChatList.setText(currentUser.getName());
         holder.userBinding.dayLastConnection.setText(currentUser.getDayOnline());
@@ -149,10 +151,10 @@ public class User_List_Adapter extends RecyclerView.Adapter<User_List_Adapter.Ch
                         theLastMessage = message.getText();
 
                         if(theLastMessage != null){
-                            holder.userBinding.lastMessage.setText(String.valueOf("' " + theLastMessage + " '"));
+                            holder.userBinding.userLastMessage.setText(String.valueOf("' " + theLastMessage + " '"));
                         }else if(message.getImageUrl() != null){
-                            holder.userBinding.lastMessage.setText(String.valueOf(" Image "));
-                            holder.userBinding.lastMessage.setTextSize(16);
+                            holder.userBinding.userLastMessage.setText(String.valueOf(" Image "));
+                            holder.userBinding.userLastMessage.setTextSize(16);
                         }
                     }
                 }

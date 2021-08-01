@@ -4,9 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.widget.ImageView;
-
 import androidx.annotation.NonNull;
-
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -25,12 +23,15 @@ import java.util.HashMap;
 
 public class Add_Change_Post_Presenter {
 
+
     private final Add_Change_Post_view view;
 
     public Add_Change_Post_Presenter(Add_Change_Post_view view) {
         this.view = view;
     }
 
+
+    //todo: load post info
     public void loadData(String editPostId){
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Posts");
         Query fQuery = reference.orderByChild("pId").equalTo(editPostId);
@@ -80,7 +81,8 @@ public class Add_Change_Post_Presenter {
             //todo: get image from ImageView
             Bitmap bitmap = ((BitmapDrawable)imageIv.getDrawable()).getBitmap();
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            //image compress
+
+            //todo: image compress
             bitmap.compress(Bitmap.CompressFormat.PNG, 50, baos );
             byte[] data = baos.toByteArray();
 
@@ -91,7 +93,7 @@ public class Add_Change_Post_Presenter {
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     //todo: image uploaded to firebase storage, now get its uri
                     Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
-                    while (!uriTask.isSuccessful());
+                    while(!uriTask.isSuccessful());
 
                     String downloadUri = uriTask.getResult().toString();
 
@@ -110,7 +112,7 @@ public class Add_Change_Post_Presenter {
                         hashMap.put("pLikes", "0");
                         hashMap.put("pComments", "0");
 
-                        //todo: path to store data
+
                         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Posts");
                         ref.child(timeStamp).setValue(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
@@ -143,7 +145,7 @@ public class Add_Change_Post_Presenter {
             hashMap.put("pLikes", "0");
             hashMap.put("pComments", "0");
 
-            //path to store data
+
             DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Posts");
             ref.child(timeStamp).setValue(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
@@ -160,6 +162,7 @@ public class Add_Change_Post_Presenter {
     }
 
     public void updateWasWithImage(String editImage, ImageView imageIv, String myUid, String name, String email, String avatar, String title, String description, String editPostId){
+
         StorageReference mPictureRef = FirebaseStorage.getInstance().getReferenceFromUrl(editImage);
         mPictureRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
@@ -243,7 +246,7 @@ public class Add_Change_Post_Presenter {
                 //todo: image uploaded, get uri
                 Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
                 while(!uriTask.isSuccessful());
-
+                
                 String downloadUri = uriTask.getResult().toString();
                 if(uriTask.isSuccessful()) {
                     //uri is received< upload into database

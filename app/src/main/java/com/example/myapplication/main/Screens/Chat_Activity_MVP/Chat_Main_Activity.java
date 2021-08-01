@@ -25,6 +25,7 @@ import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.util.Pair;
 import android.view.View;
 import android.widget.Button;
@@ -39,6 +40,7 @@ import com.bumptech.glide.Glide;
 import com.example.myapplication.R;
 import com.example.myapplication.Services.App_Constants;
 import com.example.myapplication.Services.Check_Permission_Service;
+import com.example.myapplication.Services.Online_Offline_User_Service_To_Firebase;
 import com.example.myapplication.main.Screens.Settings.Settings_Activity;
 import com.example.myapplication.main.Models.Model_Message;
 import com.example.myapplication.main.Screens.User_Profile_MVVM.User_Profile_Activity;
@@ -185,8 +187,6 @@ public class Chat_Main_Activity extends AppCompatActivity implements Chat_view {
         sendMessageButton = findViewById(R.id.sendMessageButton);
 
         messageEditText = findViewById(R.id.messageEditText);
-
-        myName = "DefaultUser";
         messageListView = findViewById(R.id.massageList);
         avatar = findViewById(R.id.avatarInChatImageView);
 
@@ -340,6 +340,8 @@ public class Chat_Main_Activity extends AppCompatActivity implements Chat_view {
 
         presenter.pushCommonMessage(message, typeOfMessage, downloadUri, shareImage, pDescription, uName, pImage,
                 pId, this, locale, myName, recipientUserId, auth, myUid, myAvatarUrl, text);
+
+        Log.d("myName", myName + myUid);
     }
 
     //todo: create list and get info about messages and users
@@ -631,6 +633,8 @@ public class Chat_Main_Activity extends AppCompatActivity implements Chat_view {
 
                 pushCommonMessage(message, "repostMessage", null, null, pDescription, uName, pImage, pId);
 
+                Log.d("myName", myName + myUid);
+
             }
         }
     }
@@ -683,7 +687,7 @@ public class Chat_Main_Activity extends AppCompatActivity implements Chat_view {
 
     //TODO: Block online/offline
     public void updateUserStatus(String state) {
-        //Online_Offline_Service.updateUserStatus(state, this);
+        Online_Offline_User_Service_To_Firebase.updateUserStatus(state, this);
     }
 
     @Override

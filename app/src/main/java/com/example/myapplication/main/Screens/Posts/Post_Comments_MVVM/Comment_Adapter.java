@@ -19,10 +19,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.myapplication.R;
+import com.example.myapplication.databinding.RowCommentBinding;
 import com.example.myapplication.main.Models.Model_Comment;
 import com.example.myapplication.main.Screens.User_Profile_MVVM.User_Profile_Activity;
 import com.google.firebase.database.DataSnapshot;
@@ -34,6 +36,8 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
+
+import javax.inject.Inject;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -66,8 +70,10 @@ public class Comment_Adapter extends RecyclerView.Adapter<Comment_Adapter.HyHold
     @NonNull
     @Override
     public HyHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.row_comment, parent, false);
-        return new HyHolder(view);
+        RowCommentBinding rowCommentBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),
+                R.layout.row_comment,
+                parent, false);
+        return new HyHolder(rowCommentBinding);
     }
 
     @Override
@@ -86,9 +92,9 @@ public class Comment_Adapter extends RecyclerView.Adapter<Comment_Adapter.HyHold
         String pTime = DateFormat.format("dd/MM/yyyy hh:mm aa", calendar).toString();
 
         //TODO: set data
-        holder.nameTv.setText(name);
-        holder.commentTv.setText(comment);
-        holder.timeTv.setText(pTime);
+        holder.binding.nameTv.setText(name);
+        holder.binding.commentTv.setText(comment);
+        holder.binding.timeTv.setText(pTime);
 
         //TODO: setAvatar
         initAvatar(holder, image);
@@ -103,7 +109,7 @@ public class Comment_Adapter extends RecyclerView.Adapter<Comment_Adapter.HyHold
     private void initAvatar(HyHolder holder, String image) {
         try{
             //Picasso.get().load(image).placeholder(R.drawable.default_avatar).into(holder.avatarIv);
-            Glide.with(holder.avatarIv.getContext()).load(image).placeholder(R.drawable.default_avatar).into(holder.avatarIv);
+            Glide.with(holder.binding.avatarIv.getContext()).load(image).placeholder(R.drawable.default_avatar).into(holder.binding.avatarIv);
         }catch (Exception ignored){
         }
     }
@@ -148,6 +154,7 @@ public class Comment_Adapter extends RecyclerView.Adapter<Comment_Adapter.HyHold
 
                         }
                         else if(id == 1){
+                            Toast.makeText(context, "Coming soon", Toast.LENGTH_SHORT).show();
                             //TODO working
                         }
                         else if(id==2){
@@ -155,7 +162,7 @@ public class Comment_Adapter extends RecyclerView.Adapter<Comment_Adapter.HyHold
                             Intent GoToProfile = new Intent(activity, User_Profile_Activity.class);
                             GoToProfile.putExtra("hisId", uid);
 
-                            Pair<View, String> pairPostImage = Pair.create(holder.avatarIv, "avatar");
+                            Pair<View, String> pairPostImage = Pair.create(holder.binding.avatarIv, "avatar");
 
                             ActivityOptions activityOptions = null;
                             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
@@ -207,18 +214,12 @@ public class Comment_Adapter extends RecyclerView.Adapter<Comment_Adapter.HyHold
 
     public static class HyHolder extends RecyclerView.ViewHolder{
 
-        private final CircleImageView avatarIv;
-        private final TextView nameTv;
-        private final TextView commentTv;
-        private final TextView timeTv;
+        private final RowCommentBinding binding;
 
+        public HyHolder(RowCommentBinding rowCommentBinding) {
+            super(rowCommentBinding.getRoot());
 
-        public HyHolder(@NonNull View itemView) {
-            super(itemView);
-            avatarIv = itemView.findViewById(R.id.avatarIv);
-            nameTv = itemView.findViewById(R.id.nameTv);
-            commentTv = itemView.findViewById(R.id.commentTv);
-            timeTv = itemView.findViewById(R.id.timeTv);
+            this.binding = rowCommentBinding;
         }
     }
 }

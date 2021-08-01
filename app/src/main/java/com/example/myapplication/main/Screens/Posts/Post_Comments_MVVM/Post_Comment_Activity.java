@@ -3,16 +3,13 @@ package com.example.myapplication.main.Screens.Posts.Post_Comments_MVVM;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.content.res.AppCompatResources;
-import androidx.cardview.widget.CardView;
-import androidx.core.widget.NestedScrollView;
+import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat;
 
 import android.app.ActivityOptions;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.drawable.AnimatedVectorDrawable;
@@ -21,74 +18,61 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
+import android.text.format.DateFormat;
 import android.util.Pair;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.PopupMenu;
-import android.widget.ProgressBar;
 import android.widget.ScrollView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.myapplication.Common_Dagger_App_Class.App;
 import com.example.myapplication.R;
+import com.example.myapplication.Services.Check_Internet_Connection_Exist;
+import com.example.myapplication.Services.Online_Offline_User_Service_To_Firebase;
+import com.example.myapplication.databinding.PostCommentActivityBinding;
 import com.example.myapplication.main.Models.Model_User;
 import com.example.myapplication.main.Screens.Posts.Add_Change_Post_MVP.Add_Change_Post_Activity;
 import com.example.myapplication.main.Models.Model_Comment;
 import com.example.myapplication.main.Models.Model_Post;
 import com.example.myapplication.main.Screens.Posts.Posts_By_Friends_MVP.Post_Activity_Friends;
+import com.example.myapplication.main.Screens.Show_Image_MVP.Show_Image_Activity;
 import com.example.myapplication.main.Screens.User_List_4_States_MVVM.User_List_Activity;
 import com.example.myapplication.main.Screens.User_Profile_MVVM.User_Profile_Activity;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Locale;
 import java.util.Objects;
-import de.hdodenhof.circleimageview.CircleImageView;
+
+import javax.inject.Inject;
 
 public class Post_Comment_Activity extends AppCompatActivity {
 
     private String myUid, myEmail, myName, myAvatar, postId, pLikes, pDescr, hisName, pImage, pTime, uid;
 
-    //todo: views
-    private ImageView uPictureIv, pImageIv;
-    private TextView uNameTv, pTimeTv, pTitleTv, pDescriptionTv, pLikesTv, pCommentsTv, noComments;
-    private ImageButton moreBtn;
-    private Button likeBtn, shareBtn;
-
-    //todo: action views
-    private ProgressDialog pd;
-    private ProgressBar progressBar;
-    private NestedScrollView scroll;
-
-    //todo: add comment views
-    private EditText commentEt;
-    private ImageButton sendBtn;
-    private CircleImageView cAvatarIv;
-
-    //like part
-    private CardView postCardView;
-    private ImageView heartIv;
-
-    //for double click
+    //todo: for double click
     private boolean  doubleClick = false;
     private Drawable drawable;
     private boolean isItLikeAnim = false;
 
-    //todo: comment recycler
-    private RecyclerView recyclerView;
-    private LinearLayoutManager layoutManager;
-    private Comment_Adapter commentAdapter;
-    private DatabaseReference usersDatabaseReference;
+    @Inject
+    LinearLayoutManager layoutManager;
 
+    @Inject
+    Check_Internet_Connection_Exist checkInternetService;
 
+    @Inject
+    Online_Offline_User_Service_To_Firebase controller;
+
+    private PostCommentActivityBinding binding;
     private Comment_ViewModel viewModel;
+    private Comment_Adapter commentAdapter;
 
 
     @Override
@@ -104,7 +88,7 @@ public class Post_Comment_Activity extends AppCompatActivity {
 
         getMainIntent();
 
-        viewModel = new ViewModelProvider(this).get(Comment_ViewModel.class);
+        checkNetworkState();
 
         loadCurrentUserInfo();
 
@@ -130,30 +114,14 @@ public class Post_Comment_Activity extends AppCompatActivity {
     //TODO: main methods
     private void initialization(){
 
-        progressBar = (ProgressBar) findViewById(R.id.progressbarInUPostComment);
+        ((App) getApplication()).getPostCommentComponent().inject(this);
 
-        uPictureIv = findViewById(R.id.uPictureIv);
-        pImageIv = findViewById(R.id.pImageIv);
-        uNameTv = findViewById(R.id.uNameTv);
-        pTimeTv = findViewById(R.id.pTimeTv);
-        pTitleTv = findViewById(R.id.pTitleTv);
-        pDescriptionTv = findViewById(R.id.pDescriptionTv);
-        pLikesTv = findViewById(R.id.pLikesTv);
-        pCommentsTv = findViewById(R.id.pCommentsTv);
-        moreBtn = findViewById(R.id.moreBtn);
-        likeBtn = findViewById(R.id.likeBtn);
-        shareBtn = findViewById(R.id.shareBtn);
+        binding = DataBindingUtil.setContentView(this, R.layout.post_comment_activity);
 
-        noComments = findViewById(R.id.noCommentsInPostComment);
+        viewModel = new ViewModelProvider(this).get(Comment_ViewModel.class);
 
-        commentEt = findViewById(R.id.commentEt);
-        sendBtn = findViewById(R.id.sendBtn);
-        cAvatarIv = findViewById(R.id.cAvatarIv);
-
-        scroll = (NestedScrollView) this.findViewById(R.id.scrollViewPostComment);
-
-        postCardView = findViewById(R.id.cardInPostComment);
-        heartIv = findViewById(R.id.pLikeClickComment);
+        //TODO: lifecycle
+        getLifecycle().addObserver(controller);
 
         //TODO: get current user id
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -164,9 +132,14 @@ public class Post_Comment_Activity extends AppCompatActivity {
     private void getMainIntent(){
         Intent intent =getIntent();
         Bundle extras = intent.getExtras();
-
         if(extras != null){
             postId = intent.getStringExtra("postId");
+        }
+    }
+
+    private void checkNetworkState() {
+        if(!checkInternetService.checkInternet(this)){
+            showSnackBar("Internet disable", null, null);
         }
     }
 
@@ -179,7 +152,7 @@ public class Post_Comment_Activity extends AppCompatActivity {
                 myName = user.getName();
                 myEmail = user.getEmail();
                 try {
-                    Glide.with(cAvatarIv.getContext()).load(myAvatar).placeholder(R.drawable.default_avatar).into(cAvatarIv);
+                    Glide.with(binding.cAvatarIv.getContext()).load(myAvatar).placeholder(R.drawable.default_avatar).into(binding.cAvatarIv);
                     //Picasso.get().load(myAvatar).placeholder(R.drawable.default_avatar).into(cAvatarIv);
                 }catch (Exception ignored){}
             }
@@ -202,48 +175,51 @@ public class Post_Comment_Activity extends AppCompatActivity {
                 uid = post.getUid();
 
                 //TODO: set data
-                pTitleTv.setText(post.getpTitle());
-                pDescriptionTv.setText(pDescr);
-                pLikesTv.setText(String.valueOf(post.getpLikes() + " Likes"));
-                pTimeTv.setText(pTime);
-                pCommentsTv.setText(String.valueOf(post.getpComments() + " Comments"));
-                uNameTv.setText(hisName);
+                binding.pTitleTv.setText(post.getpTitle());
+                binding.pDescriptionTv.setText(pDescr);
+                binding.pLikesTv.setText(String.valueOf(post.getpLikes() + " Likes"));
+
+                Calendar calendar = Calendar.getInstance(Locale.getDefault());
+                calendar.setTimeInMillis(Long.parseLong(pTime));
+                String pTimeCorrect = DateFormat.format("dd/MM/yyyy hh:mm aa", calendar).toString();
+                binding.pTimeTv.setText(pTimeCorrect);
+
+                binding.pCommentsTv.setText(String.valueOf(post.getpComments() + " Comments"));
+                binding.uNameTv.setText(hisName);
 
                 //TODO: set image
                 if(pImage.equals("noImage")){
                     //TODO: hide imageView
-                    heartIv.setVisibility(View.GONE);
-                    pImageIv.setVisibility(View.GONE);
+                    binding.pLikeClickComment.setVisibility(View.GONE);
+                    binding.pImageIv.setVisibility(View.GONE);
                 }
                 else {
-                    heartIv.setVisibility(View.VISIBLE);
-                    pImageIv.setVisibility(View.VISIBLE);
+                    binding.pLikeClickComment.setVisibility(View.VISIBLE);
+                    binding.pImageIv.setVisibility(View.VISIBLE);
 
                     likeAnimation();
 
                     //TODO: set image in post
                     try{
-                        Glide.with(pImageIv.getContext()).load(pImage).into(pImageIv);
+                        Glide.with(binding.pImageIv.getContext()).load(pImage).into(binding.pImageIv);
                     }catch (Exception ignored){ }
                 }
 
                 //TODO: set avatar, who was posted that
                 String hisAvatar = post.getuAvatar();
                 try{
-                    Glide.with(uPictureIv.getContext()).load(hisAvatar).placeholder(R.drawable.default_avatar).into(uPictureIv);
+                    Glide.with(binding.uPictureIv.getContext()).load(hisAvatar).placeholder(R.drawable.default_avatar).into(binding.uPictureIv);
                 }catch (Exception ignored){}
             }
         });
     }
 
     private void createRecyclerViewAndLoadComments() {
-        //TODO: part of recyclerview
-        recyclerView = findViewById(R.id.recyclerViewForComments);
-        layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
+        //layoutManager = new LinearLayoutManager(this);
+        binding.recyclerViewForComments.setLayoutManager(layoutManager);
         commentAdapter = new Comment_Adapter(this, myUid, postId, Post_Comment_Activity.this);
         commentAdapter.setCommentList(new ArrayList<Model_Comment>());
-        recyclerView.setAdapter(commentAdapter);
+        binding.recyclerViewForComments.setAdapter(commentAdapter);
 
 
         //TODO: part of VM observes
@@ -252,8 +228,8 @@ public class Post_Comment_Activity extends AppCompatActivity {
             @Override
             public void onChanged(ArrayList<Model_Comment> comments) {
                 commentAdapter.setCommentList(comments);
-                noComments.setVisibility(View.GONE);
-                progressBar.setVisibility(View.GONE);
+                binding.noCommentsInPostComment.setVisibility(View.GONE);
+                binding.progressbarInUPostComment.setVisibility(View.GONE);
             }
         });
     }
@@ -265,13 +241,13 @@ public class Post_Comment_Activity extends AppCompatActivity {
             public void onChanged(String state) {
                 if(state.equals("true")){
                     //user has liked this post
-                    likeBtn.setCompoundDrawablesWithIntrinsicBounds(R.drawable.likeon,0,0,0);
-                    likeBtn.setText(R.string.Liked);
+                    binding.likeBtn.setCompoundDrawablesWithIntrinsicBounds(R.drawable.likeon,0,0,0);
+                    binding.likeBtn.setText(R.string.Liked);
                 }
                 else{
                     //user has not liked this post
-                    likeBtn.setCompoundDrawablesWithIntrinsicBounds(R.drawable.likeoff,0,0,0);
-                    likeBtn.setText(R.string.Like);
+                    binding.likeBtn.setCompoundDrawablesWithIntrinsicBounds(R.drawable.likeoff,0,0,0);
+                    binding.likeBtn.setText(R.string.Like);
                 }
             }
         });
@@ -279,7 +255,7 @@ public class Post_Comment_Activity extends AppCompatActivity {
     }
 
     private void likePostBtn(){
-        likeBtn.setOnClickListener(new View.OnClickListener() {
+        binding.likeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 isItLikeAnim = false;
@@ -304,9 +280,9 @@ public class Post_Comment_Activity extends AppCompatActivity {
             }
         };
 
-        drawable = heartIv.getDrawable();
+        drawable = binding.pLikeClickComment.getDrawable();
 
-        postCardView.setOnClickListener(new View.OnClickListener() {
+        binding.cardInPostComment.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             public void onClick(View v) {
@@ -319,14 +295,14 @@ public class Post_Comment_Activity extends AppCompatActivity {
 
                 if (doubleClick) {
                     //double click logic
-                    heartIv.setAlpha(1.0f);
+                    binding.pLikeClickComment.setAlpha(1.0f);
 
                     if(drawable instanceof AnimatedVectorDrawableCompat){
                         isItLikeAnim = true;
                         //todo: action with data
                         likePostAction();
                         AnimatedVectorDrawableCompat dAnimCompat = (AnimatedVectorDrawableCompat) AppCompatResources.getDrawable(Post_Comment_Activity.this,R.drawable.avd_apex_like);
-                        heartIv.setImageDrawable(dAnimCompat);
+                        binding.pLikeClickComment.setImageDrawable(dAnimCompat);
                         assert dAnimCompat != null;
                         dAnimCompat.start();
 
@@ -336,7 +312,7 @@ public class Post_Comment_Activity extends AppCompatActivity {
                         //todo: action with data
                         likePostAction();
                         AnimatedVectorDrawable dAnim = (AnimatedVectorDrawable) AppCompatResources.getDrawable(Post_Comment_Activity.this,R.drawable.avd_apex_like);
-                        heartIv.setImageDrawable(dAnim);
+                        binding.pLikeClickComment.setImageDrawable(dAnim);
                         assert dAnim != null;
                         dAnim.start();
                     }
@@ -348,18 +324,22 @@ public class Post_Comment_Activity extends AppCompatActivity {
                     isItLikeAnim = false;
                     doubleClick=true;
                     handler.postDelayed(r, 500);
+
+                    //todo: showImageFullScreen
+                    Intent intent = new Intent(Post_Comment_Activity.this, Show_Image_Activity.class);
+                    intent.putExtra("imageURL", pImage);
+                    overridePendingTransition(0, 0);
+                    startActivity(intent);
                 }
 
             }
         });
 
 
-
-
     }
 
     private void postCommentBtn(){
-        sendBtn.setOnClickListener(new View.OnClickListener() {
+        binding.sendBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 postComment();
@@ -369,7 +349,7 @@ public class Post_Comment_Activity extends AppCompatActivity {
 
     private void postComment() {
 
-        String comment = commentEt.getText().toString().trim();
+        String comment = binding.commentEt.getText().toString().trim();
 
         //TODO: check validate
         if(TextUtils.isEmpty(comment)){
@@ -378,46 +358,48 @@ public class Post_Comment_Activity extends AppCompatActivity {
         else {
             String timeStamp = String.valueOf(System.currentTimeMillis());
             viewModel.commentAction(postId, timeStamp, comment, myUid, myEmail, myAvatar, myName);
-            commentEt.setText("");
+            binding.commentEt.setText("");
         }
 
     }
 
     //TODO: additional staff
     private void scrollToBottom(){
-        scroll.post(new Runnable() {
+        binding.scrollViewPostComment.post(new Runnable() {
             @Override
             public void run() {
-                scroll.fullScroll(ScrollView.FOCUS_DOWN);
+                binding.scrollViewPostComment.fullScroll(ScrollView.FOCUS_DOWN);
             }
         });
     }
 
     private void initShareBtn() {
-        shareBtn.setOnClickListener(new View.OnClickListener() {
+        binding.shareBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Post_Comment_Activity.this, User_List_Activity.class);
-                intent.putExtra("Text", pDescr);
-                intent.putExtra("pUserName",hisName);
-                intent.putExtra("pImage",pImage);
-                intent.putExtra("pTime",pTime);
-                intent.putExtra("pId", postId);
-                intent.putExtra("typeOfUserList", "all");
+                Intent intent = new Intent(Post_Comment_Activity.this, User_List_Activity.class)
+                        .putExtra("Text", pDescr)
+                        .putExtra("pUserName",hisName)
+                        .putExtra("pImage",pImage)
+                        .putExtra("pTime",pTime)
+                        .putExtra("pId", postId)
+                        .putExtra("typeOfUserList", "all")
+                        .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
             }
         });
     }
 
     private void initShowProfile() {
-        uPictureIv.setOnClickListener(new View.OnClickListener() {
+        binding.uPictureIv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(!myUid.equals(uid)){
-                    Intent GoToProfile = new Intent(Post_Comment_Activity.this, User_Profile_Activity.class);
-                    GoToProfile.putExtra("hisId",uid);
+                    Intent GoToProfile = new Intent(Post_Comment_Activity.this, User_Profile_Activity.class)
+                            .putExtra("hisId",uid)
+                            .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
-                    Pair<View, String> pairPostImage = Pair.create(uPictureIv, "avatar");
+                    Pair<View, String> pairPostImage = Pair.create(binding.uPictureIv, "avatar");
 
                     ActivityOptions activityOptions = null;
                     if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
@@ -437,14 +419,14 @@ public class Post_Comment_Activity extends AppCompatActivity {
     }
 
     private void initMoreBtn() {
-        moreBtn.setOnClickListener(new View.OnClickListener() {
+        binding.moreBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PopupMenu popupMenu = new PopupMenu(Post_Comment_Activity.this,moreBtn, Gravity.END);
+                PopupMenu popupMenu = new PopupMenu(Post_Comment_Activity.this,binding.moreBtn, Gravity.END);
 
                 //show delete option is only created by current user
                 if(uid.equals(myUid)){
-                    moreBtn.setVisibility(View.VISIBLE);
+                    binding.moreBtn.setVisibility(View.VISIBLE);
                     popupMenu.getMenu().add(Menu.NONE,0,0,"Delete");
                     popupMenu.getMenu().add(Menu.NONE,1,0,"Change");
                 }
@@ -462,10 +444,17 @@ public class Post_Comment_Activity extends AppCompatActivity {
                             startDelete(postId,pImage);
                         }
                         else if(id == 1){
-                            Intent intent = new Intent(Post_Comment_Activity.this, Add_Change_Post_Activity.class);
-                            intent.putExtra("key","editPost");
-                            intent.putExtra("editPostId",postId);
+                            Intent intent = new Intent(Post_Comment_Activity.this, Add_Change_Post_Activity.class)
+                                    .putExtra("key","editPost")
+                                    .putExtra("editPostId",postId)
+                                    .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(intent);
+                        }
+                        else if(id == 2){
+                            Toast.makeText(Post_Comment_Activity.this, "Coming soon", Toast.LENGTH_SHORT).show();
+                        }
+                        else if(id == 3){
+                            Toast.makeText(Post_Comment_Activity.this, "Coming soon", Toast.LENGTH_SHORT).show();
                         }
                         return false;
                     }
@@ -489,29 +478,15 @@ public class Post_Comment_Activity extends AppCompatActivity {
 
     private void deleteWithImage(String pId, String pImage) {
         viewModel.deleteWithImageAction(pImage, pId);
-        startActivity(new Intent(Post_Comment_Activity.this, Post_Activity_Friends.class));
+        startActivity(new Intent(Post_Comment_Activity.this, Post_Activity_Friends.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
     }
 
     private void deleteWithoutImage(String pId) {
         viewModel.deleteWithoutImageAction(pId);
+        startActivity(new Intent(Post_Comment_Activity.this, Post_Activity_Friends.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
     }
 
-    //TODO: Block online/offline
-    public void updateUserStatus( String state){
-        //Online_Offline_Service.updateUserStatus(state, this);
-
+    private void showSnackBar(final String mainText, final String action, View.OnClickListener listener) {
+        Snackbar.make(findViewById(android.R.id.content), mainText, Snackbar.LENGTH_INDEFINITE).setAction(action, listener).show();
     }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        updateUserStatus("online");
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        updateUserStatus("offline");
-    }
-
 }

@@ -28,6 +28,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.myapplication.Services.App_Constants;
+import com.example.myapplication.Services.Online_Offline_User_Service_To_Firebase;
 import com.example.myapplication.main.Models.Model_ViewPager;
 import com.example.myapplication.R;
 import com.example.myapplication.main.Screens.Dashboard_MVP.View_Pager_And_Shop_Activity.ViewPager_Adapter;
@@ -308,7 +309,7 @@ public class Dashboard_Activity extends AppCompatActivity implements Dashboard_v
 
     //TODO: block online/offline
     public void updateUserStatus( String state){
-        //Online_Offline_Service.updateUserStatus(state, this);
+        Online_Offline_User_Service_To_Firebase.updateUserStatus(state, this);
     }
 
     @Override

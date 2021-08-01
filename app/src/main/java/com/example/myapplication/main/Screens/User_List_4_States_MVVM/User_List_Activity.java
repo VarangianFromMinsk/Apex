@@ -19,6 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.SearchView;
 
+import com.example.myapplication.Services.Online_Offline_User_Service_To_Firebase;
 import com.example.myapplication.databinding.UserListActivityBinding;
 import com.example.myapplication.main.Models.Model_User;
 import com.example.myapplication.main.Screens.Dashboard_MVP.Dashboard_Activity;
@@ -37,7 +38,6 @@ import java.util.Objects;
 public class User_List_Activity extends AppCompatActivity  {
 
     private ArrayList<Model_User> userArrayList;
-    private RecyclerView userRecyclerView;
     private User_List_Adapter userAdapter;
     private LinearLayoutManager layoutManager;
 
@@ -124,7 +124,7 @@ public class User_List_Activity extends AppCompatActivity  {
 
     private void createRecyclerViewAndFirstLoad(){
         //TODO: part of recyclerview
-        userRecyclerView = userListActivityBinding.userListRecyclerView;
+        RecyclerView userRecyclerView = userListActivityBinding.userListRecyclerView;
         layoutManager = new LinearLayoutManager(this);
         userRecyclerView.setLayoutManager(layoutManager);
 
@@ -299,7 +299,7 @@ public class User_List_Activity extends AppCompatActivity  {
 
     //TODO: Block online/offline
     public void updateUserStatus( String state){
-        //Online_Offline_Service.updateUserStatus(state, this);
+        Online_Offline_User_Service_To_Firebase.updateUserStatus(state, this);
     }
 
     @Override

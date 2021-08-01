@@ -18,6 +18,7 @@ import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.Toast;
 
+import com.example.myapplication.Services.Online_Offline_User_Service_To_Firebase;
 import com.example.myapplication.main.Screens.Dashboard_MVP.Dashboard_Activity;
 import com.example.myapplication.R;
 import com.example.myapplication.main.Models.Model_Song;
@@ -206,7 +207,7 @@ public class Music_List_Activity extends AppCompatActivity {
 
     //todo: block online/offline and location
     public void updateUserStatus( String state){
-        //Online_Offline_Service.updateUserStatus(state, this);
+        Online_Offline_User_Service_To_Firebase.updateUserStatus(state, this);
     }
 
     @Override

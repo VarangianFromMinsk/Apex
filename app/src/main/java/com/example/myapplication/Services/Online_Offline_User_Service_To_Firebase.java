@@ -45,7 +45,8 @@ public class Online_Offline_User_Service_To_Firebase implements DefaultLifecycle
         updateUserStatus("offline", context);
     }
 
-    public void updateUserStatus(String state, Context context){
+    //todo: пока статик, потом через даггер и lifeCycle
+    public static void updateUserStatus(String state, Context context){
         String saveCurrentDate, saveCurrentTime;
 
         //todo: staff to onile/offline
@@ -81,15 +82,14 @@ public class Online_Offline_User_Service_To_Firebase implements DefaultLifecycle
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if(state.equals("online")) {
-                    preferences.edit().putBoolean("isUserOnline", true).apply();
+                   // preferences.edit().putBoolean("isUserOnline", true).apply();
                 }
                 else{
-                    preferences.edit().putBoolean("isUserOnline", false).apply();
+                  //  preferences.edit().putBoolean("isUserOnline", false).apply();
                 }
 
             }
         });
     }
-
 
 }

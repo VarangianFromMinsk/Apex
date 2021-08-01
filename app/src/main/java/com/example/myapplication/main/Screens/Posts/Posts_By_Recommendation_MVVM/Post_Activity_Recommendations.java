@@ -205,14 +205,13 @@ public class Post_Activity_Recommendations extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch(item.getItemId()){
                     case R.id.dashboard_nav:
-                        startActivity(new Intent(getApplicationContext(), Dashboard_Activity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+                        startActivity(new Intent(getApplicationContext(), Dashboard_Activity.class));
                         overridePendingTransition(0,0);
                         return true;
 
                     case R.id.userChat_nav:
                         Intent intentChat = new Intent(getApplicationContext(), User_List_Activity.class)
-                                .putExtra("typeOfUserList", "all")
-                                .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                .putExtra("typeOfUserList", "all");
                         startActivity(intentChat);
                         overridePendingTransition(0,0);
                         return true;
@@ -223,12 +222,12 @@ public class Post_Activity_Recommendations extends AppCompatActivity {
                         return true;
 
                     case R.id.musicPlayer_nav:
-                        startActivity(new Intent(getApplicationContext(), Music_List_Activity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+                        startActivity(new Intent(getApplicationContext(), Music_List_Activity.class));
                         overridePendingTransition(0,0);
                         return true;
 
                     case R.id.myProfile_nav:
-                        startActivity(new Intent(getApplicationContext(), User_Profile_Activity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+                        startActivity(new Intent(getApplicationContext(), User_Profile_Activity.class));
                         overridePendingTransition(0,0);
                         return true;
                 }

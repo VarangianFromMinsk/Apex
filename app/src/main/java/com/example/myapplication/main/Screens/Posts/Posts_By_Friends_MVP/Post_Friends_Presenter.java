@@ -56,7 +56,6 @@ public class Post_Friends_Presenter {
                         assert post != null;
                         hisUid = post.getUid();
 
-
                         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("users");
                         Query queryFriends = ref.child(myUid).child("Friends").orderByChild("uid").equalTo(hisUid);
                         queryFriends .addListenerForSingleValueEvent(new ValueEventListener() {

@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.myapplication.R;
+import com.example.myapplication.Services.Online_Offline_User_Service_To_Firebase;
 import com.example.myapplication.main.Screens.User_List_4_States_MVVM.User_List_Activity;
 
 public class Show_Image_Activity extends AppCompatActivity implements Show_Image_view {
@@ -68,18 +69,21 @@ public class Show_Image_Activity extends AppCompatActivity implements Show_Image
         Intent intent = getIntent();
         image = intent.getStringExtra("imageURL");
 
-        if(intent!=null){
+
+        try {
             Glide.with(showImage).load(image).into(showImage);
-        }
+        } catch (Exception ignored) {}
+
     }
 
     private void initShareBtn() {
         shareImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Show_Image_Activity.this, User_List_Activity.class);
-                intent.putExtra("check", "true");
-                intent.putExtra("imageURL", image);
+                Intent intent = new Intent(Show_Image_Activity.this, User_List_Activity.class)
+                        .putExtra("check", "true")
+                        .putExtra("imageURL", image)
+                        .putExtra("typeOfUserList", "all");
                 startActivity(intent);
             }
         });
@@ -105,7 +109,7 @@ public class Show_Image_Activity extends AppCompatActivity implements Show_Image
 
     //TODO: Block online/offline
     public void updateUserStatus( String state){
-        //Online_Offline_Service.updateUserStatus(state, this);
+        Online_Offline_User_Service_To_Firebase.updateUserStatus(state, this);
     }
 
     @Override

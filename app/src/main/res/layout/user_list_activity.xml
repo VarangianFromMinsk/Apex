@@ -2,8 +2,7 @@
 
 <!-- TODO: Using DataBinding-->
 
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
@@ -11,9 +10,9 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
         android:animateLayoutChanges="true"
         android:background="#19979696"
+        android:orientation="vertical"
         tools:context=".main.Screens.User_List_4_States_MVVM.User_List_Activity">
 
 
@@ -41,19 +40,19 @@
                 <SearchView
                     android:id="@+id/searchInUserList"
                     android:layout_width="match_parent"
-                    android:animateLayoutChanges="true"
-                    android:layout_below="@+id/upNavigation"
                     android:layout_height="30dp"
+                    android:layout_below="@+id/upNavigation"
                     android:layout_margin="10dp"
-                    app:theme="@style/ApexSearchView"
-                    android:background="@drawable/custom_search_apex" />
+                    android:animateLayoutChanges="true"
+                    android:background="@drawable/custom_search_apex"
+                    app:theme="@style/ApexSearchView" />
 
                 <TextView
                     android:id="@+id/numberUsersList"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="-10dp"
                     android:layout_below="@+id/searchInUserList"
+                    android:layout_marginTop="-10dp"
                     android:textColor="@color/purple_500" />
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -79,12 +78,12 @@
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottomNavigation"
             android:layout_width="match_parent"
-            app:labelVisibilityMode="unlabeled"
             android:layout_height="45dp"
             android:layout_alignParentBottom="true"
             app:itemBackground="@color/white"
             app:itemIconTint="@drawable/selector"
             app:itemTextColor="@drawable/selector"
+            app:labelVisibilityMode="unlabeled"
             app:menu="@menu/menu_navigation">
 
         </com.google.android.material.bottomnavigation.BottomNavigationView>

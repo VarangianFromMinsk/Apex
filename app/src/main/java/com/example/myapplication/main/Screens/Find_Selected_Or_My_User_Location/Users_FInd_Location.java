@@ -31,6 +31,7 @@ import com.directions.route.RoutingListener;
 import com.example.myapplication.BuildConfig;
 import com.example.myapplication.R;
 import com.example.myapplication.Services.App_Constants;
+import com.example.myapplication.Services.Online_Offline_User_Service_To_Firebase;
 import com.firebase.geofire.GeoFire;
 import com.firebase.geofire.GeoLocation;
 import com.firebase.geofire.GeoQuery;
@@ -713,6 +714,6 @@ public class Users_FInd_Location extends FragmentActivity implements OnMapReadyC
 
     //todo: block online/offline and location
     public void updateUserStatus( String state){
-        //Online_Offline_Service.updateUserStatus(state, this);
+        Online_Offline_User_Service_To_Firebase.updateUserStatus(state, this);
     }
 }

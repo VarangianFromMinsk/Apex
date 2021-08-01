@@ -44,7 +44,9 @@
         <activity
             android:name=".main.Screens.Find_Selected_Or_My_User_Location.Users_FInd_Location"
             android:label="@string/title_activity_users__f_ind__location" />
-        <activity android:name=".main.Screens.Additional.Splash_Screen_Activity.Splash_Screen_Activity">
+        <activity android:name=".main.Screens.Additional.Splash_Screen_Activity.Splash_Screen_Activity"
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"
+            android:screenOrientation="sensorPortrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

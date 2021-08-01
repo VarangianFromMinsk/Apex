@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 
 import android.media.RingtoneManager;
+import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Build;
 
@@ -92,10 +93,18 @@ public class Firebase_Notification_Service extends FirebaseMessagingService {
     private void showAvatar(String hisImage){
         Download_Image_Task downloadImage = new Download_Image_Task();
         try {
-            avatarBitmap = downloadImage.execute(hisImage).get();
+            Bitmap sourceBitmap = downloadImage.execute(hisImage).get();
+            int dimension = getSquareCropDimensionForBitmap(sourceBitmap);
+            avatarBitmap = ThumbnailUtils.extractThumbnail(sourceBitmap, dimension, dimension);
+
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    public int getSquareCropDimensionForBitmap(Bitmap bitmap) {
+        //todo: use the smallest dimension of the image to crop to
+        return Math.min(bitmap.getWidth(), bitmap.getHeight());
     }
 
     private void createNormalNotification(String title, String message, String hisId, String hisImage){

@@ -39,23 +39,22 @@ public class Chat_Presenter {
     private final Chat_view view;
 
     private String myName = "";
-    private String  myAvatarUrl = "";
+    private String myAvatarUrl = "";
 
     public Chat_Presenter(Chat_view view) {
         this.view = view;
     }
 
     //todo: start writting
-    public void showIsHisWritingToYou(String recipientUserId){
+    public void showIsHisWritingToYou(String recipientUserId) {
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
         ref.child("StartWriting").child(recipientUserId)
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        if(snapshot.exists()){
+                        if (snapshot.exists()) {
                             view.showIfWriting(true);
-                        }
-                        else{
+                        } else {
                             view.showIfWriting(false);
                         }
 
@@ -68,12 +67,12 @@ public class Chat_Presenter {
                 });
     }
 
-    public void createStartWriting(String myFirebaseId, String recipientUserId){
+    public void createStartWriting(String myFirebaseId, String recipientUserId) {
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("StartWriting").child(myFirebaseId);
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(!snapshot.exists()){
+                if (!snapshot.exists()) {
                     Model_Start_Writing modelStartWriting = new Model_Start_Writing();
                     modelStartWriting.setSender(myFirebaseId);
                     modelStartWriting.setRecipient(recipientUserId);
@@ -89,13 +88,13 @@ public class Chat_Presenter {
         });
     }
 
-    public void deleteStartWriting(String myFirebaseId){
+    public void deleteStartWriting(String myFirebaseId) {
         try {
             DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("StartWriting").child(myFirebaseId);
             ref.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    if(snapshot.exists()){
+                    if (snapshot.exists()) {
                         ref.removeValue();
                     }
                 }
@@ -105,17 +104,18 @@ public class Chat_Presenter {
 
                 }
             });
-        }catch (Exception ignored){}
+        } catch (Exception ignored) {
+        }
     }
 
     //todo: load avatar and another info about stranger user
-    public void loadRecipientUserInfo(String recipientUserId){
+    public void loadRecipientUserInfo(String recipientUserId) {
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("users");
         Query userQuery = ref.orderByChild("firebaseId").equalTo(recipientUserId);
         userQuery.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for(DataSnapshot ds : snapshot.getChildren()){
+                for (DataSnapshot ds : snapshot.getChildren()) {
                     String hisImage = "" + ds.child("avatarMockUpResourse").getValue();
                     view.loadHisInfoAndAvatar(hisImage);
                 }
@@ -128,18 +128,18 @@ public class Chat_Presenter {
         });
     }
 
-    public void isHeOnline(String recipientUserId){
+    public void isHeOnline(String recipientUserId) {
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("users");
         DatabaseReference userRef = ref.child(recipientUserId);
         userRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot.hasChild("online")) {
+                if (snapshot.hasChild("online")) {
                     String lastTimeConnection = Objects.requireNonNull(snapshot.child("timeonline").getValue()).toString();
-                    view.isHeOnlineCheckComplete(true,lastTimeConnection);
-                }else{
+                    view.isHeOnlineCheckComplete(true, lastTimeConnection);
+                } else {
                     String lastTimeConnection = Objects.requireNonNull(snapshot.child("timeonline").getValue()).toString();
-                    view.isHeOnlineCheckComplete(false,lastTimeConnection);
+                    view.isHeOnlineCheckComplete(false, lastTimeConnection);
                 }
             }
 
@@ -152,20 +152,22 @@ public class Chat_Presenter {
 
 
     //todo: load info about current user
-    public void loadInfoAboutUser(String myUid){
+    public void loadInfoAboutUser(String myUid) {
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("users");
-        Query query = ref.child(myUid).orderByChild("firebaseId").equalTo(myUid);
-        query .addListenerForSingleValueEvent(new ValueEventListener() {
+        Query query = ref.orderByChild("firebaseId").equalTo(myUid);
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for(DataSnapshot ds : snapshot.getChildren()){
-                    if(ds.exists()){
-                        Model_User user = ds.getValue(Model_User.class);
-                        myName = user.getName();
-                        try{
-                            myAvatarUrl =  user.getAvatarMockUpResourse();
-                        }catch (Exception ignored){}
+                for (DataSnapshot ds : snapshot.getChildren()) {
+
+                    Model_User user = ds.getValue(Model_User.class);
+                    assert user != null;
+                    myName = user.getName();
+                    try {
+                        myAvatarUrl = user.getAvatarMockUpResourse();
+                    } catch (Exception ignored) {
                     }
+
                     view.infoAboutUser(myName, myAvatarUrl);
                 }
             }
@@ -179,7 +181,7 @@ public class Chat_Presenter {
     }
 
     //todo: load messages
-    public void loadMessages(FirebaseAuth auth, String recipientUserId){
+    public void loadMessages(FirebaseAuth auth, String recipientUserId) {
         DatabaseReference messagesDatabaseReference = FirebaseDatabase.getInstance().getReference().child("messages");
 
         ChildEventListener messagesChildEventListener = new ChildEventListener() {
@@ -228,11 +230,11 @@ public class Chat_Presenter {
     public void pushCommonMessage(Model_Message message, String typeOfMessage, Uri downloadUri, String shareImage,
                                   String pDescription, String uName, String pImage, String pId,
                                   Chat_Main_Activity activity, Locale locale, String myName, String recipientUserId,
-                                  FirebaseAuth auth, String myFirebaseId, String myAvatarUrl, String text){
+                                  FirebaseAuth auth, String myFirebaseId, String myAvatarUrl, String text) {
 
         String messageForNotification = "";
 
-        if(!typeOfMessage.equals("repostMessage")){
+        if (!typeOfMessage.equals("repostMessage")) {
             //todo: path if it repost
             message.setIsThatRepost("false");
             message.setPostId(null);
@@ -257,8 +259,7 @@ public class Chat_Presenter {
                     messageForNotification = String.valueOf("User shared image");
                     break;
             }
-        }
-        else{
+        } else {
             //todo: path if its repost
             message.setIsThatRecord("false");
             message.setRecordUrl(null);
@@ -272,7 +273,7 @@ public class Chat_Presenter {
         }
 
         //todo: common path
-        message.setSender(auth.getCurrentUser().getUid());
+        message.setSender(Objects.requireNonNull(auth.getCurrentUser()).getUid());
         message.setRecipient(recipientUserId);
 
         Calendar calForTime = Calendar.getInstance();
@@ -299,7 +300,7 @@ public class Chat_Presenter {
 
 
     //todo: notification
-    private void getHisTokenAndSendNotificationData(String messageForHis, String hisId, String myName, String myFirebaseId, String myAvatarUrl, Chat_Main_Activity activity){
+    private void getHisTokenAndSendNotificationData(String messageForHis, String hisId, String myName, String myFirebaseId, String myAvatarUrl, Chat_Main_Activity activity) {
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("users").child(hisId);
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -334,14 +335,14 @@ public class Chat_Presenter {
 
     private void sendNotification(JSONObject to, Chat_Main_Activity activity) {
 
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, App_Constants.NOTIFICATION_URL, to, response ->{
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, App_Constants.NOTIFICATION_URL, to, response -> {
 
-        },error->{
+        }, error -> {
 
-        }){
+        }) {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String,String> map = new HashMap<>();
+                Map<String, String> map = new HashMap<>();
                 map.put("Authorization", "key=" + App_Constants.SERVER_KEY);
                 map.put("Content-Type", "application/json");
                 return map;
@@ -354,7 +355,7 @@ public class Chat_Presenter {
         };
 
         RequestQueue requestQueue = Volley.newRequestQueue(activity);
-        request.setRetryPolicy(new DefaultRetryPolicy(30000,DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        request.setRetryPolicy(new DefaultRetryPolicy(30000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         requestQueue.add(request);
 
     }

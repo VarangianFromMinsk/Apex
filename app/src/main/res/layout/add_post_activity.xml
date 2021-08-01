@@ -1,85 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:animateLayoutChanges="true"
-    android:background="#19979696"
-    tools:context=".main.Screens.Posts.Add_Change_Post_MVP.Add_Change_Post_Activity">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <RelativeLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:animateLayoutChanges="true"
+        android:background="#19979696"
+        tools:context=".main.Screens.Posts.Add_Change_Post_MVP.Add_Change_Post_Activity">
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/addPostCard"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:cardCornerRadius="10dp"
-            app:cardElevation="3dp"
-            android:layout_marginBottom="3dp"
-            android:layout_marginTop="3dp"
-            android:layout_margin="10dp"
-            app:cardBackgroundColor="@color/white">
+            android:layout_height="wrap_content">
 
-            <LinearLayout
+            <androidx.cardview.widget.CardView
+                android:id="@+id/addPostCard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="2dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="2dp"
-                android:animateLayoutChanges="true"
-                android:orientation="vertical">
+                android:layout_margin="10dp"
+                android:layout_marginTop="3dp"
+                android:layout_marginBottom="3dp"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="3dp">
 
-                <EditText
-                    android:id="@+id/pTitleEt"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="10dp"
-                    android:textColorHint="#C1555454"
-                    android:hint="@string/enter_title"
-                    android:singleLine="true"
-                    android:importantForAutofill="no"
-                    android:inputType="textCapSentences|textMultiLine" />
+                    android:layout_marginStart="2dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="2dp"
+                    android:animateLayoutChanges="true"
+                    android:orientation="vertical">
 
-                <ImageView
-                    android:background="@drawable/default_add_pick_post"
-                    android:id="@+id/pImageIv"
-                    android:layout_width="match_parent"
-                    android:layout_height="400dp"
-                    android:scaleType="centerCrop"
-                    android:contentDescription="@string/chooseimageincreatepost" />
+                    <EditText
+                        android:id="@+id/pTitleEt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/enter_title"
+                        android:importantForAutofill="no"
+                        android:inputType="textCapSentences|textMultiLine"
+                        android:padding="10dp"
+                        android:singleLine="true"
+                        android:textColorHint="#C1555454" />
 
-                <EditText
-                    android:id="@+id/pDescriptionEt"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="10dp"
-                    android:hint="@string/enter_description"
-                    android:textColorHint="#D2555454"
-                    android:inputType="textCapSentences|textMultiLine"
-                    android:minHeight="120dp"
-                    android:gravity="start"
-                    android:importantForAutofill="no" />
+                    <ImageView
+                        android:id="@+id/pImageIv"
+                        android:layout_width="match_parent"
+                        android:layout_height="400dp"
+                        android:background="@drawable/default_add_pick_post"
+                        android:contentDescription="@string/chooseimageincreatepost"
+                        android:scaleType="centerCrop" />
 
-            </LinearLayout>
+                    <EditText
+                        android:id="@+id/pDescriptionEt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:hint="@string/enter_description"
+                        android:importantForAutofill="no"
+                        android:inputType="textCapSentences|textMultiLine"
+                        android:minHeight="120dp"
+                        android:padding="10dp"
+                        android:textColorHint="#D2555454" />
 
-        </androidx.cardview.widget.CardView>
+                </LinearLayout>
 
-        <Button
-            android:id="@+id/pUploadBtn"
-            android:layout_width="200dp"
-            android:layout_height="60dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginBottom="15dp"
-            android:layout_below="@+id/addPostCard"
-            android:layout_centerHorizontal="true"
-            android:text="@string/publish"
-            android:textColor="#6B0A00"
-            app:backgroundTint="#FFFFFF" />
+            </androidx.cardview.widget.CardView>
 
-    </RelativeLayout>
+            <Button
+                android:id="@+id/pUploadBtn"
+                android:layout_width="200dp"
+                android:layout_height="60dp"
+                android:layout_below="@+id/addPostCard"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="15dp"
+                android:text="@string/publish"
+                android:textColor="#6B0A00"
+                app:backgroundTint="#FFFFFF" />
+
+        </RelativeLayout>
 
 
-</ScrollView>
+    </ScrollView>
+</layout>

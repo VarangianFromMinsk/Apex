@@ -125,43 +125,6 @@ public class Post_Activity_Friends extends AppCompatActivity implements Post_Lis
         //TODO: перелистывает как VIEWPAGER + тонко настроить растояние и анимацию
        // SnapHelper snapHelper = new LinearSnapHelper();
        // snapHelper.attachToRecyclerView(recyclerView);
-
-        createScrollListener();
-    }
-
-    private void createScrollListener() {
-
-        postBinding.postRecyclerViewFrinds.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(@NotNull RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
-
-                }
-
-                if (!recyclerView.canScrollVertically(-1) && newState == RecyclerView.SCROLL_STATE_IDLE)  {
-                    //reached top
-                    if(layoutManager.findFirstCompletelyVisibleItemPosition() == 0){
-                        // Its at top
-                        postBinding.swipeLayFriendsPost.setEnabled(true);
-                    }
-
-                }
-                if(newState == RecyclerView.SCROLL_STATE_DRAGGING){
-                    //scrolling
-                    postBinding.actionSearch.animate().alpha(0.0f).translationY(-200).setDuration(500).setListener(new AnimatorListenerAdapter() {
-                        @Override
-                        public void onAnimationEnd(Animator animation) {
-                            super.onAnimationEnd(animation);
-                            postBinding.actionSearch.setVisibility(View.GONE);
-                        }
-                    });
-
-                    postBinding.swipeLayFriendsPost.setEnabled(false);
-                }
-            }
-        });
-
     }
 
     private void initSearchUser() {
@@ -171,8 +134,10 @@ public class Post_Activity_Friends extends AppCompatActivity implements Post_Lis
                 //call when user press
                 if (!TextUtils.isEmpty(query)) {
                     searchPosts(query);
+                    postBinding.swipeLayFriendsPost.setEnabled(false);
                 } else {
                     loadPosts();
+                    postBinding.swipeLayFriendsPost.setEnabled(true);
                 }
                 return false;
             }
@@ -181,8 +146,10 @@ public class Post_Activity_Friends extends AppCompatActivity implements Post_Lis
             public boolean onQueryTextChange(String newText) {
                 if (!TextUtils.isEmpty(newText)) {
                     searchPosts(newText);
+                    postBinding.swipeLayFriendsPost.setEnabled(false);
                 } else {
                     loadPosts();
+                    postBinding.swipeLayFriendsPost.setEnabled(true);
                 }
                 return false;
             }
@@ -234,7 +201,9 @@ public class Post_Activity_Friends extends AppCompatActivity implements Post_Lis
     }
 
     public void startActAddPost(View view) {
-        startActivity(new Intent(Post_Activity_Friends.this, Add_Change_Post_Activity.class));
+        startActivity(new Intent(Post_Activity_Friends.this, Add_Change_Post_Activity.class)
+                .putExtra("key","createPost")
+                .putExtra("editPostId",""));
     }
 
     @Override
@@ -264,13 +233,12 @@ public class Post_Activity_Friends extends AppCompatActivity implements Post_Lis
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.dashboard_nav:
-                        startActivity(new Intent(getApplicationContext(), Dashboard_Activity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+                        startActivity(new Intent(getApplicationContext(), Dashboard_Activity.class));
                         overridePendingTransition(0, 0);
                         return true;
                     case R.id.userChat_nav:
                         Intent intentChat = new Intent(getApplicationContext(), User_List_Activity.class);
                         intentChat.putExtra("typeOfUserList", "all");
-                        intentChat.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intentChat);
                         overridePendingTransition(0,0);
                         return true;
@@ -279,11 +247,11 @@ public class Post_Activity_Friends extends AppCompatActivity implements Post_Lis
                         overridePendingTransition(0, 0);
                         return true;
                     case R.id.musicPlayer_nav:
-                        startActivity(new Intent(getApplicationContext(), Music_List_Activity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+                        startActivity(new Intent(getApplicationContext(), Music_List_Activity.class));
                         overridePendingTransition(0, 0);
                         return true;
                     case R.id.myProfile_nav:
-                        startActivity(new Intent(getApplicationContext(), User_Profile_Activity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+                        startActivity(new Intent(getApplicationContext(), User_Profile_Activity.class));
                         overridePendingTransition(0, 0);
                         return true;
                 }
