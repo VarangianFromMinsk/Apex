@@ -118,7 +118,9 @@
 
     <!-- TODO: Sing_in_activity-->
     <string name="logIn">Log in</string>
-    <string name="SingUp">Or Sign Up</string>
+    <string name="Or_Log_in">Or Log in</string>
+    <string name="register">Register</string>
+    <string name="new_account">New account</string>
 
     <!-- TODO: Finds_Location-->
      <string name="find_nearest_user">Find nearest user</string>

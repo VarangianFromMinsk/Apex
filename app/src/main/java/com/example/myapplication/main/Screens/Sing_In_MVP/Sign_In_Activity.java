@@ -2,6 +2,7 @@ package com.example.myapplication.main.Screens.Sing_In_MVP;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.motion.widget.MotionLayout;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -63,6 +64,8 @@ public class Sign_In_Activity extends AppCompatActivity implements Sing_In_view{
         checkHasUserBeenSigned();
 
         onCLickRecoverPassword();
+
+        toggleLoginMode();
     }
 
     //TODO: main
@@ -82,8 +85,8 @@ public class Sign_In_Activity extends AppCompatActivity implements Sing_In_view{
         recoverPassword  = findViewById(R.id.recoverForgottenPassword);
         loginSingUpButton = findViewById(R.id.loginSingUpButton);
 
-        rePasswordEditText.setVisibility(View.GONE);
-        nameEditText.setVisibility(View.GONE);
+       // rePasswordEditText.setVisibility(View.GONE);
+      //  nameEditText.setVisibility(View.GONE);
     }
 
     public void videoBack(){
@@ -177,23 +180,30 @@ public class Sign_In_Activity extends AppCompatActivity implements Sing_In_view{
         }
     }
 
-    public void toggleLoginMode(View view) {
+    public void toggleLoginMode() {
 
-        if(loginModeActive) {         // todo: login action
-            loginModeActive = false;
-            rePasswordEditText.setVisibility(View.GONE);
-            nameEditText.setVisibility(View.GONE);
-            loginSingUpButton.setText(R.string.logIn);
-            toggleLoginSingUPTextView.setText(R.string.SingUp);
-            recoverPassword.setVisibility(View.VISIBLE);
-        } else {    // todo: register action
-            loginModeActive = true;
-            rePasswordEditText.setVisibility(View.VISIBLE);
-            nameEditText.setVisibility(View.VISIBLE);
-            loginSingUpButton.setText(R.string.SingUp);
-            toggleLoginSingUPTextView.setText(R.string.logIn);
-            recoverPassword.setVisibility(View.GONE);
-        }
+        toggleLoginSingUPTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(loginModeActive) {         // todo: login action
+                    loginModeActive = false;
+                    //  rePasswordEditText.setVisibility(View.GONE);
+                    //  nameEditText.setVisibility(View.GONE);
+                    loginSingUpButton.setText(R.string.logIn);
+                    toggleLoginSingUPTextView.setText(R.string.new_account);
+                    // recoverPassword.setVisibility(View.VISIBLE);
+                    ((MotionLayout)findViewById(R.id.motionLaySingIn)).transitionToEnd();
+                } else {    // todo: register action
+                    loginModeActive = true;
+                    // rePasswordEditText.setVisibility(View.VISIBLE);
+                    // nameEditText.setVisibility(View.VISIBLE);
+                    loginSingUpButton.setText(R.string.register);
+                    toggleLoginSingUPTextView.setText(R.string.Or_Log_in);
+                    // recoverPassword.setVisibility(View.GONE);
+                    ((MotionLayout)findViewById(R.id.motionLaySingIn)).transitionToStart();
+                }
+            }
+        });
 
     }
 

@@ -86,10 +86,11 @@ public class Post_Activity_Recommendations extends AppCompatActivity {
 
     //TODO: main
     private void initialization() {
-        binding = DataBindingUtil.setContentView(this, R.layout.post_activity_recommendations);
 
         //todo: предоставь (inject) все зависимости в этот класс
-        ((App) getApplication()).getpostsRecComponent().inject(this);
+        ((App) getApplication()).getCommonComponent().inject(this);
+
+        binding = DataBindingUtil.setContentView(this, R.layout.post_activity_recommendations);
 
         viewModel = new ViewModelProvider(this).get(Post_Recomm_ViewModel.class);
 

@@ -1,29 +1,33 @@
 package com.example.myapplication.main.Screens.Show_Image_MVP;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
 
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.myapplication.Common_Dagger_App_Class.App;
 import com.example.myapplication.R;
 import com.example.myapplication.Services.Online_Offline_User_Service_To_Firebase;
+import com.example.myapplication.databinding.ShowImageActivityBinding;
 import com.example.myapplication.main.Screens.User_List_4_States_MVVM.User_List_Activity;
+
+import javax.inject.Inject;
 
 public class Show_Image_Activity extends AppCompatActivity implements Show_Image_view {
 
-    private ImageView showImage;
+    @Inject
+    Online_Offline_User_Service_To_Firebase controller;
+
     private String image;
-    private Button shareImage, saveImageBtn;
-    private ImageButton backBtn;
 
     private Show_Image_Presenter presenter;
+
+    private ShowImageActivityBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,8 +38,6 @@ public class Show_Image_Activity extends AppCompatActivity implements Show_Image
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-        presenter = new Show_Image_Presenter(this);
-
         initialization();
 
         initBackBtn();
@@ -45,19 +47,22 @@ public class Show_Image_Activity extends AppCompatActivity implements Show_Image
         initShareBtn();
 
         initSaveBtn();
-
-        updateUserStatus("online");
     }
 
     private void initialization(){
-        backBtn = findViewById(R.id.backBtn);
-        shareImage = findViewById(R.id.shareImageChatChat);
-        showImage = findViewById(R.id.showImageForChat);
-        saveImageBtn = findViewById(R.id.saveImageInGallery);
+
+        ((App) getApplication()).getCommonComponent().inject(this);
+
+        binding = DataBindingUtil.setContentView(this, R.layout.show_image_activity);
+
+        presenter = new Show_Image_Presenter(this);
+
+        //TODO: lifecycle
+        getLifecycle().addObserver(controller);
     }
 
     private void initBackBtn() {
-        backBtn.setOnClickListener(new View.OnClickListener() {
+        binding.backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onBackPressed();
@@ -71,13 +76,13 @@ public class Show_Image_Activity extends AppCompatActivity implements Show_Image
 
 
         try {
-            Glide.with(showImage).load(image).into(showImage);
+            Glide.with(binding.showImageForChat).load(image).into(binding.showImageForChat);
         } catch (Exception ignored) {}
 
     }
 
     private void initShareBtn() {
-        shareImage.setOnClickListener(new View.OnClickListener() {
+        binding.shareImageChatChat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Show_Image_Activity.this, User_List_Activity.class)
@@ -90,7 +95,7 @@ public class Show_Image_Activity extends AppCompatActivity implements Show_Image
     }
 
     private void initSaveBtn() {
-        saveImageBtn.setOnClickListener(new View.OnClickListener() {
+        binding.saveImageInGallery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 saveImageToGallery();
@@ -99,7 +104,7 @@ public class Show_Image_Activity extends AppCompatActivity implements Show_Image
     }
 
     private void saveImageToGallery() {
-        presenter.saveImageInGallery(showImage,this);
+        presenter.saveImageInGallery(binding.showImageForChat,this);
     }
 
     @Override
@@ -107,20 +112,4 @@ public class Show_Image_Activity extends AppCompatActivity implements Show_Image
         Toast.makeText(this, "Saved", Toast.LENGTH_SHORT).show();
     }
 
-    //TODO: Block online/offline
-    public void updateUserStatus( String state){
-        Online_Offline_User_Service_To_Firebase.updateUserStatus(state, this);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        updateUserStatus("online");
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        updateUserStatus("offline");
-    }
 }

@@ -70,11 +70,6 @@ public class User_List_Activity extends AppCompatActivity  {
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-        viewModel = new ViewModelProvider(this).get(User_List_ViewModel.class);
-
-        //todo: инициализируем Data Binding
-        userListActivityBinding = DataBindingUtil.setContentView(this, R.layout.user_list_activity);
-
         initialization();
 
         getMainIntent();
@@ -99,6 +94,12 @@ public class User_List_Activity extends AppCompatActivity  {
 
     //todo: main methods
     private void initialization(){
+
+        viewModel = new ViewModelProvider(this).get(User_List_ViewModel.class);
+
+        //todo: инициализируем Data Binding
+        userListActivityBinding = DataBindingUtil.setContentView(this, R.layout.user_list_activity);
+
         userListActivityBinding.upNavigation.setVisibility(View.VISIBLE);
 
         FirebaseAuth auth = FirebaseAuth.getInstance();

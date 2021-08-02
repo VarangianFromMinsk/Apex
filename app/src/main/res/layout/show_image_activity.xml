@@ -1,86 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:animateLayoutChanges="true"
-    android:background="#000000"
-    tools:context=".main.Screens.Show_Image_MVP.Show_Image_Activity">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toEndOf="@+id/backBtn"
-        android:text="@string/show_image"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="15dp"
-        android:textColor="@color/white"
-        android:textSize="16sp"
-        android:textStyle="bold" />
-
-
-    <ImageButton
-        android:id="@+id/backBtn"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:background="#00FFFFFF"
-        android:rotationY="180"
-        app:srcCompat="@drawable/back"
-        tools:ignore="ContentDescription" />
-
-    <ImageView
-        android:id="@+id/showImageForChat"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:adjustViewBounds="true"
-        android:scaleType="centerCrop"
-        android:layout_marginTop="50dp"
-        android:layout_above="@+id/showSaveImageBtns"
-        android:transitionName="avatar"
-        tools:ignore="ContentDescription,UnusedAttribute" />
+        android:animateLayoutChanges="true"
+        android:background="#000000"
+        tools:context=".main.Screens.Show_Image_MVP.Show_Image_Activity">
 
-    <ImageView
-        android:layout_width="2dp"
-        android:layout_height="40dp"
-        android:layout_centerHorizontal="true"
-        android:background="@color/white"
-        android:layout_marginTop="5dp"
-        android:layout_below="@+id/showImageForChat"
-        tools:ignore="ContentDescription" />
-
-    <LinearLayout
-        android:id="@+id/showSaveImageBtns"
-        android:layout_alignParentBottom="true"
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <Button
-            android:id="@+id/shareImageChatChat"
-            android:layout_width="0dp"
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:layout_weight="1"
-            android:text="@string/share"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="15dp"
+            android:layout_toEndOf="@+id/backBtn"
+            android:text="@string/show_image"
             android:textColor="@color/white"
-            app:backgroundTint="@color/black"
-            tools:ignore="ButtonStyle" />
+            android:textSize="16sp"
+            android:textStyle="bold" />
 
-        <Button
-            android:id="@+id/saveImageInGallery"
-            android:layout_width="0dp"
-            android:layout_weight="1"
+
+        <ImageButton
+            android:id="@+id/backBtn"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="#00FFFFFF"
+            android:rotationY="180"
+            app:srcCompat="@drawable/back"
+            tools:ignore="ContentDescription" />
+
+        <ImageView
+            android:id="@+id/showImageForChat"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/showSaveImageBtns"
+            android:layout_marginTop="50dp"
+            android:adjustViewBounds="true"
+            android:transitionName="avatar"
+            tools:ignore="ContentDescription,UnusedAttribute" />
+
+        <ImageView
+            android:layout_width="2dp"
+            android:layout_height="40dp"
+            android:layout_below="@+id/showImageForChat"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="5dp"
+            android:background="@color/white"
+            tools:ignore="ContentDescription" />
+
+        <LinearLayout
+            android:id="@+id/showSaveImageBtns"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:backgroundTint="@color/black"
-            android:layout_margin="5dp"
-            android:text="@string/save"
-            android:textColor="@color/white"
-            tools:ignore="ButtonStyle" />
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal">
 
-    </LinearLayout>
+            <Button
+                android:id="@+id/shareImageChatChat"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:layout_weight="1"
+                android:text="@string/share"
+                android:textColor="@color/white"
+                app:backgroundTint="@color/black"
+                tools:ignore="ButtonStyle" />
 
+            <Button
+                android:id="@+id/saveImageInGallery"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:layout_weight="1"
+                android:text="@string/save"
+                android:textColor="@color/white"
+                app:backgroundTint="@color/black"
+                tools:ignore="ButtonStyle" />
 
+        </LinearLayout>
 
-</RelativeLayout>
+    </RelativeLayout>
+
+</layout>

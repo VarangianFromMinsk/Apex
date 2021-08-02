@@ -114,7 +114,7 @@ public class Post_Comment_Activity extends AppCompatActivity {
     //TODO: main methods
     private void initialization(){
 
-        ((App) getApplication()).getPostCommentComponent().inject(this);
+        ((App) getApplication()).getCommonComponent().inject(this);
 
         binding = DataBindingUtil.setContentView(this, R.layout.post_comment_activity);
 

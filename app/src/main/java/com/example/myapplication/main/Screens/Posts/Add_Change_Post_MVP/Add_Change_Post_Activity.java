@@ -86,7 +86,7 @@ public class Add_Change_Post_Activity extends AppCompatActivity implements Add_C
     //TODO: main
     private void initialization() {
 
-        ((App) getApplication()).getPostAddChangeComponent().inject(this);
+        ((App) getApplication()).getCommonComponent().inject(this);
 
         binding = DataBindingUtil.setContentView(this, R.layout.add_post_activity);
 

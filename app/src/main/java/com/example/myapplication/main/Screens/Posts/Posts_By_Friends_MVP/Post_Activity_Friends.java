@@ -93,7 +93,7 @@ public class Post_Activity_Friends extends AppCompatActivity implements Post_Lis
     //TODO: main
     private void initialization() {
 
-        ((App) getApplication()).getPostsFriendComponent().inject(this);
+        ((App) getApplication()).getCommonComponent().inject(this);
 
         presenter = new Post_Friends_Presenter(this);
 
