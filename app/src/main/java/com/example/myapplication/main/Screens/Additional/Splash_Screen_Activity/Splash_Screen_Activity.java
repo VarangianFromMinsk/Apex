@@ -30,8 +30,7 @@ public class Splash_Screen_Activity extends AppCompatActivity {
                     sleep(2000);
                 }catch (Exception ignored){
                 }finally {
-                    Intent intent = new Intent(Splash_Screen_Activity.this, Sign_In_Activity.class)
-                            .addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                    Intent intent = new Intent(Splash_Screen_Activity.this, Sign_In_Activity.class);
                     overridePendingTransition(0, 0);
                     startActivity(intent);
                 }
