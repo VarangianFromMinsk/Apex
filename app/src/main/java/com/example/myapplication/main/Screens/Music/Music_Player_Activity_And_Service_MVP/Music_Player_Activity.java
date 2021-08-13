@@ -17,6 +17,7 @@ import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -40,6 +41,7 @@ import com.example.myapplication.Services.Create_Music_Notification;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Objects;
@@ -101,7 +103,7 @@ public class Music_Player_Activity extends AppCompatActivity implements SharedPr
 
         getMainIntent();
 
-        if (checkIsUrlReachable()) {
+      //  if (checkIsUrlReachable()) {
 
             loadDataAndCreatePlayer();
 
@@ -131,9 +133,9 @@ public class Music_Player_Activity extends AppCompatActivity implements SharedPr
             toMusicList();
 
             initNotification();
-        } else {
-            FirebaseReachedLimit();
-        }
+      //  } else {
+      //      FirebaseReachedLimit();
+     //   }
 
     }
 
@@ -181,23 +183,39 @@ public class Music_Player_Activity extends AppCompatActivity implements SharedPr
 
     }
 
-    private boolean checkIsUrlReachable() {
-        try {
-            URL url = new URL(currentMusicUrl);
-            HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
-            int code = connection.getResponseCode();
-
-            if (code == 200) {
-                return true;
-            } else {
-                return false;
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
+//    private boolean checkIsUrlReachable() {
+//
+//        CheckFirebaseLimit checkFirebaseLimit = new CheckFirebaseLimit();
+//        return checkFirebaseLimit.execute(currentMusicUrl);
+//    }
+//
+//    class CheckFirebaseLimit extends AsyncTask<String,Integer,Boolean> {
+//
+//
+//        @Override
+//        protected Boolean doInBackground(String... strings) {
+//            try {
+//                URL url = new URL(currentMusicUrl);
+//                HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
+//                int code = connection.getResponseCode();
+//
+//                if (code == 200) {
+//                    return true;
+//                } else {
+//                    return false;
+//                }
+//
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//            return false;
+//        }
+//
+//        @Override
+//        protected void onPostExecute(Boolean aBoolean) {
+//            super.onPostExecute(aBoolean);
+//        }
+//    }
 
     private void loadDataAndCreatePlayer() {
 
