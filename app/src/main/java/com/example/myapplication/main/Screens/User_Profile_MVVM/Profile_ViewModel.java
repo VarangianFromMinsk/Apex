@@ -29,6 +29,11 @@ public class Profile_ViewModel extends AndroidViewModel {
 
     private MutableLiveData<String> isInternetGO = new MutableLiveData<>();
 
+    private MutableLiveData<ArrayList<String>> images = new MutableLiveData<>();
+    private MutableLiveData<Integer> currentNumberOfSelectedImages = new MutableLiveData<>();
+
+    private MutableLiveData<ArrayList<String>> shareImages = new MutableLiveData<>();
+
     //TODO: main constructor
     public Profile_ViewModel(@NonNull Application application) {
         super(application);
@@ -120,4 +125,24 @@ public class Profile_ViewModel extends AndroidViewModel {
         return isInternetGO;
     }
 
+
+
+
+    //TODO: check number of selected images
+    public void changeCurrentNumber(int number){
+        Profile_Repository.getInstance().changeCurrentNumber(number);
+    }
+
+    public MutableLiveData<Integer> getCurrentNumberOfSelectedImages() {
+        currentNumberOfSelectedImages = Profile_Repository.getInstance().getCurrentNumberOfSelectedImages();
+        return currentNumberOfSelectedImages;
+    }
+
+    public void shareImages(ArrayList<String> images){
+        shareImages.setValue(images);
+    }
+
+    public MutableLiveData<ArrayList<String>> getShareImages() {
+        return shareImages;
+    }
 }

@@ -1,498 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    android:id="@+id/backProfileAll"
+
+<layout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:background="#19979696"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".main.Screens.User_Profile_MVVM.User_Profile_Activity">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/swipeLayUserProfile"
+    <RelativeLayout
+        android:id="@+id/backProfileAll"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/bottomNavigation">
+        android:layout_height="match_parent"
+        android:background="#19979696"
+        tools:context=".main.Screens.User_Profile_MVVM.User_Profile_Activity">
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_above="@id/bottomNavigation"
             android:animateLayoutChanges="true"
             android:orientation="vertical">
 
-            <RelativeLayout
+            <androidx.constraintlayout.motion.widget.MotionLayout
                 android:id="@+id/scrollViewProfile"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="#00ECEAEA">
+                android:layout_height="match_parent"
+                android:background="#00ECEAEA"
+                app:layoutDescription="@xml/user_profile_activity_xml_scrollviewprofile_scene">
 
-                <RelativeLayout
-                    android:id="@+id/backgroundFromAvatar"
-                    android:layout_width="match_parent"
-                    android:animateLayoutChanges="true"
-                    android:layout_height="285dp">
+                <androidx.fragment.app.FragmentContainerView
+                    android:id="@+id/upBlockUserInfoFragment"
+                    android:layout_width="0dp"
+                    android:layout_height="285dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-                    <ImageView
-                        android:id="@+id/backInUserProfile"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="#BFBDBD"
-                        android:scaleType="centerCrop"
-                        tools:ignore="ContentDescription" />
-
-                    <RelativeLayout
-                        android:layout_width="40dp"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_marginEnd="5dp"
-                        android:layout_marginTop="10dp"
-                        android:background="@drawable/background_for_btn_user_profile">
-
-                        <ImageButton
-                            android:id="@+id/settingsButtonInProfile"
-                            android:onClick="GoToSettingsFromProfile"
-                            android:layout_width="45dp"
-                            android:layout_height="45dp"
-                            android:background="#00FFFFFF"
-                            app:srcCompat="@drawable/settings_white"
-                            tools:ignore="ContentDescription,UsingOnClickInXml" />
-
-                        <ImageButton
-                            android:id="@+id/passwordButtonInProfile"
-                            android:layout_width="45dp"
-                            android:layout_height="45dp"
-                            android:layout_below="@+id/settingsButtonInProfile"
-                            android:background="#00FFFFFF"
-                            app:srcCompat="@drawable/key"
-                            tools:ignore="ContentDescription" />
-
-                        <ImageButton
-                            android:id="@+id/singOutButtonInProfile"
-                            android:onClick="singOutFromUserProfile"
-                            android:layout_marginTop="15dp"
-                            android:layout_width="45dp"
-                            android:layout_height="45dp"
-                            android:layout_below="@+id/passwordButtonInProfile"
-                            android:background="#00FFFFFF"
-                            app:srcCompat="@drawable/exit_white"
-                            tools:ignore="ContentDescription,UsingOnClickInXml" />
-
-                    </RelativeLayout>
-
-
-                    <RelativeLayout
-                        android:id="@+id/relLayWithLocBtn"
-                        android:layout_width="180dp"
-                        android:layout_height="60dp"
-                        android:layout_marginTop="-20dp"
-                        android:layout_marginStart="-20dp"
-                        android:background="@drawable/background_for_btn_user_profile">
-
-                        <ImageButton
-                            android:id="@+id/addBackground"
-                            android:onClick="AddBackGround"
-                            android:layout_width="45dp"
-                            android:layout_height="45dp"
-                            android:layout_marginStart="25dp"
-                            android:layout_marginTop="20dp"
-                            android:background="#00FFFFFF"
-                            app:srcCompat="@drawable/add"
-                            tools:ignore="ContentDescription,UsingOnClickInXml" />
-
-                        <ImageButton
-                            android:id="@+id/addUserPhotoButtonInProfile"
-                            android:onClick="AddAvatar"
-                            android:layout_width="45dp"
-                            android:layout_height="45dp"
-                            android:layout_marginTop="18dp"
-                            android:layout_toEndOf="@+id/addBackground"
-                            android:background="#00FFFFFF"
-                            app:srcCompat="@drawable/addphoto_white"
-                            tools:ignore="ContentDescription,UsingOnClickInXml" />
-
-                        <ImageButton
-                            android:id="@+id/locationButtonInProfile"
-                            android:layout_width="45dp"
-                            android:layout_height="45dp"
-                            android:layout_marginTop="20dp"
-                            android:layout_marginStart="5dp"
-                            android:layout_toEndOf="@+id/addUserPhotoButtonInProfile"
-                            android:background="#00FFFFFF"
-                            app:srcCompat="@drawable/map"
-                            tools:ignore="ContentDescription" />
-
-
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:layout_width="360dp"
-                        android:layout_height="130dp"
-                        android:layout_marginBottom="40dp"
-                        android:layout_alignParentBottom="true"
-                        android:layout_alignParentStart="true">
-
-
-                        <de.hdodenhof.circleimageview.CircleImageView
-                            android:id="@+id/profileScreenAvatar"
-                            android:layout_width="90dp"
-                            android:layout_height="90dp"
-                            android:layout_alignParentTop="true"
-                            android:layout_marginStart="10dp"
-                            android:src="@drawable/default_avatar"
-                            app:civ_border_width="1dp"
-                            app:civ_border_color="@color/white"
-                            app:srcCompat="@drawable/default_avatar"
-                            android:layout_centerVertical="true"
-                            android:transitionName="avatar"
-                            tools:ignore="UnusedAttribute,VectorDrawableCompat" />
-
-
-                        <TextView
-                            android:id="@+id/profileScreenName"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="60dp"
-                            android:layout_marginStart="10dp"
-                            android:layout_toEndOf="@+id/profileScreenAvatar"
-                            android:fontFamily="serif"
-                            android:text="@string/name"
-                            android:textColor="#FFFFFF"
-                            android:textSize="24sp"
-                            android:transitionName="name"
-                            tools:ignore="UnusedAttribute" />
-
-                        <TextView
-                            android:id="@+id/profileScreenNickname"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@+id/profileScreenName"
-                            android:layout_marginStart="10dp"
-                            android:layout_toEndOf="@+id/profileScreenAvatar"
-                            android:includeFontPadding="false"
-                            android:text="@string/nick"
-                            android:textColor="#FFFFFF"
-                            android:textSize="18sp"
-                            android:textStyle="italic" />
-
-                        <RelativeLayout
-                            android:layout_width="150dp"
-                            android:layout_height="40dp"
-                            android:layout_marginTop="5dp"
-                            android:layout_marginStart="10dp"
-                            android:layout_below="@+id/profileScreenAvatar">
-
-                            <TextView
-                                android:id="@+id/onOffLineProfile"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:includeFontPadding="false"
-                                android:layout_marginStart="25dp"
-                                android:text="@string/offline"
-                                android:textColor="#FFFFFF"
-                                android:textSize="16sp"
-                                />
-
-                            <TextView
-                                android:id="@+id/timeOnlineProfile"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_below="@+id/onOffLineProfile"
-                                android:includeFontPadding="false"
-                                android:layout_marginStart="25dp"
-                                android:text="@string/time"
-                                android:textColor="#FFFFFF"
-                                android:textSize="14sp"
-                                />
-
-                        </RelativeLayout>
-
-
-
-                    </RelativeLayout>
-
-
-
-
-
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:id="@+id/cardViewProfile"
-                    android:layout_width="match_parent"
+                <androidx.fragment.app.FragmentContainerView
+                    android:id="@+id/controllerFragmentView"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:animateLayoutChanges="true"
-                    android:layout_below="@+id/backgroundFromAvatar"
-                    android:layout_marginTop="-40dp">
+                    android:layout_marginTop="245dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-                    <com.google.android.material.card.MaterialCardView
-                        android:id="@+id/profileCardPosts"
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        android:layout_margin="10dp"
-                        app:cardElevation="5dp"
-                        app:cardBackgroundColor="#63140B">
+                <androidx.fragment.app.FragmentContainerView
+                    android:id="@+id/layFragmentCommonInfoAboutUser"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/controllerFragmentView" />
 
-                        <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:padding="5dp">
-
-                            <ImageView
-                                android:id="@+id/postIvInProfileView"
-                                android:layout_width="30dp"
-                                android:layout_height="30dp"
-                                android:layout_centerHorizontal="true"
-                                android:layout_marginTop="5dp"
-                                app:srcCompat="@drawable/post_white"
-                                tools:ignore="ContentDescription" />
-
-                            <TextView
-                                android:id="@+id/countLeft"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_centerHorizontal="true"
-                                android:layout_below="@+id/postIvInProfileView"
-                                android:includeFontPadding="false"
-                                android:layout_marginTop="5dp"
-                                android:textColor="@color/white"
-                                android:text="-"
-                                android:textSize="20sp"
-                                tools:ignore="HardcodedText" />
-
-                            <TextView
-                                android:id="@+id/clouds_balance"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_below="@+id/countLeft"
-                                android:layout_centerHorizontal="true"
-                                android:includeFontPadding="false"
-                                android:text="@string/posts"
-                                android:textColor="#FFFFFF"
-                                android:textSize="18sp" />
-
-
-                        </RelativeLayout>
-
-                    </com.google.android.material.card.MaterialCardView>
-
-                    <com.google.android.material.card.MaterialCardView
-                        android:id="@+id/musicCardView"
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        android:layout_margin="10dp"
-                        android:layout_toEndOf="@+id/profileCardPosts"
-                        app:cardElevation="5dp"
-                        app:cardBackgroundColor="#63140B">
-
-                        <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:padding="5dp">
-
-                            <ImageView
-                                android:id="@+id/musicIvInProfileView"
-                                android:layout_width="30dp"
-                                android:layout_height="30dp"
-                                android:layout_centerHorizontal="true"
-                                android:layout_marginTop="5dp"
-                                app:srcCompat="@drawable/musicplayer_nav"
-                                tools:ignore="ContentDescription" />
-
-                            <TextView
-                                android:id="@+id/countRight"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_centerHorizontal="true"
-                                android:layout_below="@+id/musicIvInProfileView"
-                                android:layout_marginTop="5dp"
-                                android:includeFontPadding="false"
-                                android:textColor="@color/white"
-                                android:text="-"
-                                android:textSize="20sp"
-                                tools:ignore="HardcodedText" />
-
-                            <TextView
-                                android:id="@+id/music_balance"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_below="@+id/countRight"
-                                android:layout_centerHorizontal="true"
-                                android:includeFontPadding="false"
-                                android:textColor="@color/white"
-                                android:text="@string/tracks"
-                                android:textSize="18sp" />
-
-
-                        </RelativeLayout>
-
-                    </com.google.android.material.card.MaterialCardView>
-
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_below="@+id/cardViewProfile"
-                    android:animateLayoutChanges="true"
-                    android:layout_margin="7dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <TextView
-                        android:id="@+id/noPostsProfile"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:visibility="gone"
-                        android:text="@string/no_posts"
-                        android:textSize="30sp"
-                        android:textColor="#490902"
-                        android:layout_centerHorizontal="true"
-                        android:layout_centerVertical="true"/>
-
-                    <TextView
-                        android:id="@+id/noSongsProfile"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:visibility="gone"
-                        android:text="@string/no_songs"
-                        android:textSize="30sp"
-                        android:textColor="#490902"
-                        android:layout_centerHorizontal="true"
-                        android:layout_centerVertical="true"/>
-
-
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/postRecyclerViewUserProfile"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        />
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/songsRecyclerViewUserProfile"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        />
-
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/textFieldName"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/full_name"
-                        app:boxBackgroundColor="#00FFFFFF">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/nameInEdit"
-                            android:inputType="textNoSuggestions"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:drawablePadding="10dp"
-                            android:maxLength="25"
-                            android:text="@string/hide_text" />
-
-
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/textFieldEmail"
-                        android:layout_below="@+id/textFieldName"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/email"
-                        app:boxBackgroundColor="#00FFFFFF">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/emailInEdit"
-                            android:inputType="textNoSuggestions"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:maxLength="25"
-                            android:drawablePadding="10dp"
-                            android:text="@string/hide_text" />
-
-
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/textFieldNickName"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/textFieldEmail"
-                        android:hint="@string/nickname"
-                        app:boxBackgroundColor="#00FFFFFF">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/nicknameInEdit"
-                            android:inputType="textNoSuggestions"
-                            android:maxLength="25"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:drawablePadding="10dp" />
-
-
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/textFieldTelephone"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/textFieldNickName"
-                        android:hint="@string/telephone"
-                        app:boxBackgroundColor="#00FFFFFF">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/telephoneInEdit"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:digits="0,1,2,3,4,5,6,7,8,9,*,+"
-                            android:drawablePadding="10dp"
-                            android:inputType="textNoSuggestions"
-                            android:maxLength="25"/>
-
-
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <Button
-                        android:id="@+id/updateProfile"
-                        android:layout_width="300dp"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/textFieldTelephone"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginTop="10dp"
-                        android:onClick="update"
-                        android:text="@string/update"
-                        android:textColor="#490902"
-                        app:backgroundTint="#FFFFFF"
-                        tools:ignore="UsingOnClickInXml" />
-
-                    <ProgressBar
-                        android:id="@+id/progressBarInUserProfile"
-                        android:visibility="gone"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="60dp"
-                        android:layout_centerHorizontal="true"/>
-
-
-                </RelativeLayout>
-
-            </RelativeLayout>
+            </androidx.constraintlayout.motion.widget.MotionLayout>
 
         </androidx.core.widget.NestedScrollView>
 
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottomNavigation"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_alignParentBottom="true"
+            app:itemBackground="@color/white"
+            app:itemIconTint="@drawable/selector"
+            app:itemTextColor="@drawable/selector"
+            app:labelVisibilityMode="unlabeled"
+            app:menu="@menu/menu_navigation" />
 
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+    </RelativeLayout>
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottomNavigation"
-        android:layout_width="match_parent"
-        app:labelVisibilityMode="unlabeled"
-        android:layout_height="45dp"
-        app:itemBackground="@color/white"
-        app:itemTextColor="@drawable/selector"
-        app:itemIconTint="@drawable/selector"
-        app:menu="@menu/menu_navigation"
-        android:layout_alignParentBottom="true"/>
-
-</RelativeLayout>
-
+</layout>

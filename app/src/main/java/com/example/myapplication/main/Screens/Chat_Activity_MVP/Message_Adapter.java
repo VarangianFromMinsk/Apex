@@ -3,6 +3,7 @@ package com.example.myapplication.main.Screens.Chat_Activity_MVP;
 import android.app.Activity;
 import android.app.ActivityOptions;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -21,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.myapplication.R;
@@ -42,8 +44,10 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
@@ -56,17 +60,19 @@ public class Message_Adapter extends ArrayAdapter<Model_Message> {
     private final Activity activity;
 
     private String imageForCrop;
+    private ChangeMessage_Interface messageInterface;
 
     private String myUID;
 
 
-    public Message_Adapter(Activity context, int resource, List<Model_Message> messages) {
-        super(context, resource, messages);
+    public Message_Adapter(Activity activity, int resource, List<Model_Message> messages) {
+        super(activity, resource, messages);
 
         this.messages = messages;
-        this.activity = context;
-    }
+        this.activity = activity;
 
+        messageInterface = (ChangeMessage_Interface) activity;
+    }
 
 
     @Override
@@ -82,13 +88,13 @@ public class Message_Adapter extends ArrayAdapter<Model_Message> {
         int viewType = getItemViewType(position);
 
         //todo: Вызываем переопределенный метод ниже (их 2)
-        if(viewType == 0){
+        if (viewType == 0) {
             layoutResource = R.layout.chat_my_message_item;
         } else {
             layoutResource = R.layout.chat_your_message_item;
         }
 
-        if(convertView != null ){
+        if (convertView != null) {
             viewHolder = (ViewHolder) convertView.getTag();
         } else {
             convertView = layoutInflater.inflate(layoutResource, parent, false);
@@ -104,94 +110,72 @@ public class Message_Adapter extends ArrayAdapter<Model_Message> {
         boolean isText = modelMessage.getImageUrl() == null;
 
 
-        mainSwitchForType(isRecord,isRepost, isText, viewHolder, modelMessage);
+        mainSwitchForType(isRecord, isRepost, isText, viewHolder, modelMessage);
 
         setAvatarImageInChat(viewHolder, modelMessage);
 
-        setTransAnimation(viewHolder,modelMessage,parent);
+        setTransAnimation(viewHolder, modelMessage, parent);
 
-        deleteOrChangeMessage(viewHolder, modelMessage,position);
+        deleteOrChangeMessage(viewHolder, modelMessage, position);
 
         return convertView;
     }
 
     private void mainSwitchForType(boolean isRecord, boolean isRepost, boolean isText, ViewHolder viewHolder, Model_Message modelMessage) {
-        if(isRecord){
-            //todo: hide repost
-            viewHolder.postName.setVisibility(View.GONE);
-            viewHolder.postDescription.setVisibility(View.GONE);
-            viewHolder.postImage.setVisibility(View.GONE);
-            //todo: hide also
-            viewHolder.photoImageView.setVisibility(View.GONE);
-            viewHolder.messageTextView.setVisibility(View.GONE);
 
-            isThatCurrentDay(modelMessage, viewHolder);
-            viewHolder.timeOfMessage.setText(modelMessage.getTimeOfMessage());
-        }
-        else if(isRepost){
-            viewHolder.timeOfMessage.setText(modelMessage.getTimeOfMessage());
-            //todo: fill like post with image
-            if(modelMessage.getText().equals("Repost deleted")){
-                viewHolder.postName.setVisibility(View.VISIBLE);
-                viewHolder.postName.setText(R.string.Repost_deleted);
-            }
-            else{
-                viewHolder.postName.setText("Post by : " + modelMessage.getName());
-                viewHolder.postDescription.setText(modelMessage.getText());
-                viewHolder.postName.setVisibility(View.VISIBLE);
-                viewHolder.postDescription.setVisibility(View.VISIBLE);
-                //todo:check is that with image or not
-                if(isText){
-                    viewHolder.postImage.setVisibility(View.GONE);
-                }
-                else{
-                    try{
-                        viewHolder.postImage.setVisibility(View.VISIBLE);
-                        Glide.with(viewHolder.postImage.getContext()).load(modelMessage.getImageUrl()).into(viewHolder.postImage);
-                    }catch (Exception ignored){}
-                }
-            }
+        viewHolder.timeOfMessage.setText(modelMessage.getTimeOfMessage());
+        isThatCurrentDay(modelMessage, viewHolder);
 
-            isThatCurrentDay(modelMessage, viewHolder);
-        }
-        else{
-            if(isText){
-                //todo: hide post views
-                viewHolder.postName.setVisibility(View.GONE);
-                viewHolder.postDescription.setVisibility(View.GONE);
+        if (isRecord) {
+            changeStateOfPostCard(false, viewHolder);
+            changeStateMainLook(false, viewHolder);
+
+        } else if (isRepost) {
+
+            changeStateMainLook(false, viewHolder);
+            changeStateOfPostCard(true, viewHolder);
+
+            viewHolder.postName.setText(String.valueOf("Post by : " + modelMessage.getName()));
+            viewHolder.postDescription.setText(modelMessage.getText());
+
+            //todo:check is that with image or not
+            if (modelMessage.getImageUrl().equals("noImage")) {
                 viewHolder.postImage.setVisibility(View.GONE);
+            } else {
+                try {
+                    viewHolder.postImage.setVisibility(View.VISIBLE);
+                    Glide.with(viewHolder.postImage.getContext()).load(modelMessage.getImageUrl()).into(viewHolder.postImage);
+                } catch (Exception ignored) {
+                }
+            }
+
+        } else {
+
+            changeStateOfPostCard(false, viewHolder);
+
+            if (isText) {
 
                 viewHolder.messageTextView.setVisibility(View.VISIBLE);
                 viewHolder.photoImageView.setVisibility(View.GONE);
                 viewHolder.messageTextView.setText(modelMessage.getText());
-                viewHolder.timeOfMessage.setText(modelMessage.getTimeOfMessage());
-
-                isThatCurrentDay(modelMessage, viewHolder);
 
             } else {
 
-                //hide post views
-                viewHolder.postName.setVisibility(View.GONE);
-                viewHolder.postDescription.setVisibility(View.GONE);
-                viewHolder.postImage.setVisibility(View.GONE);
-
-                viewHolder.messageTextView.setVisibility(View.GONE); // change if want to image with text in one message
-
+                viewHolder.messageTextView.setVisibility(View.GONE);
                 viewHolder.photoImageView.setVisibility(View.VISIBLE);
-                Glide.with(viewHolder.photoImageView.getContext()).load(modelMessage.getImageUrl()).into(viewHolder.photoImageView);
 
-                viewHolder.timeOfMessage.setText(modelMessage.getTimeOfMessage());
+                try {
+                    Glide.with(viewHolder.photoImageView.getContext()).load(modelMessage.getImageUrl()).into(viewHolder.photoImageView);
+                } catch (Exception ignored) {
+                }
 
-                isThatCurrentDay(modelMessage, viewHolder);
 
-
-                //show image method
                 viewHolder.photoImageView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         //new method
-                        Intent intent = new Intent(activity, Show_Image_Activity.class);
-                        intent.putExtra("imageURL", modelMessage.getImageUrl());
+                        Intent intent = new Intent(activity, Show_Image_Activity.class)
+                                .putExtra("imageURL", modelMessage.getImageUrl());
 
                         activity.startActivity(intent);
 
@@ -240,27 +224,48 @@ public class Message_Adapter extends ArrayAdapter<Model_Message> {
         }
     }
 
+    private void changeStateMainLook(boolean state, ViewHolder viewHolder) {
+        if (state) {
+            viewHolder.photoImageView.setVisibility(View.VISIBLE);
+            viewHolder.messageTextView.setVisibility(View.VISIBLE);
+        } else {
+            viewHolder.photoImageView.setVisibility(View.GONE);
+            viewHolder.messageTextView.setVisibility(View.GONE);
+        }
+    }
+
+    private void changeStateOfPostCard(boolean state, ViewHolder viewHolder) {
+        if (state) {
+            viewHolder.postName.setVisibility(View.VISIBLE);
+            viewHolder.postDescription.setVisibility(View.VISIBLE);
+            viewHolder.postImage.setVisibility(View.VISIBLE);
+        } else {
+            viewHolder.postName.setVisibility(View.GONE);
+            viewHolder.postDescription.setVisibility(View.GONE);
+            viewHolder.postImage.setVisibility(View.GONE);
+        }
+    }
+
     private void deleteOrChangeMessage(ViewHolder viewHolder, Model_Message modelMessage, int position) {
         viewHolder.messageLayout.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                PopupMenu popupMenu = new PopupMenu(activity,viewHolder.messageLayout, Gravity.END);
-                if(!modelMessage.getIsThatRepost().contains("true") && modelMessage.getSender().equals(myUID) ){
-                    popupMenu.getMenu().add(Menu.NONE,0,0,"Delete");
+                PopupMenu popupMenu = new PopupMenu(activity, viewHolder.messageLayout, Gravity.END);
+                if (!modelMessage.getIsThatRepost().contains("true") && modelMessage.getSender().equals(myUID)) {
+                    popupMenu.getMenu().add(Menu.NONE, 0, 0, "Delete");
 
-                    if(modelMessage.getImageUrl() == null){
-                        popupMenu.getMenu().add(Menu.NONE,1,0,"Change");
+                    if (modelMessage.getImageUrl() == null) {
+                        popupMenu.getMenu().add(Menu.NONE, 1, 0, "Change");
                     }
-                }
-                else if (!modelMessage.getIsThatRepost().contains("true")){
-                    popupMenu.getMenu().add(Menu.NONE,2,0,"Save in Favorite");
+                } else if (!modelMessage.getIsThatRepost().contains("true")) {
+                    popupMenu.getMenu().add(Menu.NONE, 2, 0, "Save in Favorite");
                 }
 
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
                         int id = item.getItemId();
-                        if(id == 0){
+                        if (id == 0) {
 
                             AlertDialog.Builder builder = new AlertDialog.Builder(activity);
                             builder.setTitle("Delete");
@@ -269,7 +274,6 @@ public class Message_Adapter extends ArrayAdapter<Model_Message> {
                             builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-
                                     deleteMessage(position);
                                 }
                             });
@@ -281,12 +285,10 @@ public class Message_Adapter extends ArrayAdapter<Model_Message> {
                             });
                             builder.create().show();
 
-                        }
-                        else if(id == 1){
+                        } else if (id == 1) {
                             //working
                             changeMessage(position);
-                        }
-                        else if(id==2){
+                        } else if (id == 2) {
                             //working
                             Toast.makeText(activity, "Appear soon", Toast.LENGTH_LONG).show();
                         }
@@ -305,50 +307,22 @@ public class Message_Adapter extends ArrayAdapter<Model_Message> {
         String currentMessageKey = messages.get(position).getKeyMessage();
 
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("messages");
-        Query  query = ref.orderByChild("keyMessage").equalTo(currentMessageKey);
+        Query query = ref.orderByChild("keyMessage").equalTo(currentMessageKey);
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for(DataSnapshot ds : snapshot.getChildren()){
+                for (DataSnapshot ds : snapshot.getChildren()) {
                     Model_Message message = ds.getValue(Model_Message.class);
-                    try{
-                        if( !ds.child("imageUrl").exists() && message.getSender().equals(myUID)){
+                    try {
+                        if (!ds.child("imageUrl").exists() && message.getSender().equals(myUID)) {
                             String messageFromBase = message.getText();
-                            //hide
-                            Chat_Main_Activity.messageEditText.setVisibility(View.GONE);
-                            Chat_Main_Activity.sendMessageButton.setVisibility(View.GONE);
 
-                            //show new
-                           Chat_Main_Activity.changeEditText.setVisibility(View.VISIBLE);
-                            Chat_Main_Activity.changeBtn.setVisibility(View.VISIBLE);
-
-                            //set changing text
-                            Chat_Main_Activity.changeEditText.setText(messageFromBase);
-
-                            Chat_Main_Activity.changeBtn.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    String newMessage = Chat_Main_Activity.changeEditText.getText().toString().trim();
-                                    HashMap<String, Object> hashMap = new HashMap<>();
-                                    hashMap.put("text",newMessage);
-                                    ds.getRef().updateChildren(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<Void> task) {
-                                            //return state back
-                                            Chat_Main_Activity.messageEditText.setVisibility(View.VISIBLE);
-                                            Chat_Main_Activity.sendMessageButton.setVisibility(View.VISIBLE);
-
-                                            Chat_Main_Activity.changeEditText.setVisibility(View.GONE);
-                                            Chat_Main_Activity.changeBtn.setVisibility(View.GONE);
-                                        }
-                                    });
-                                }
-                            });
-
+                            messageInterface.changeMessageStart(messageFromBase, ds);
 
 
                         }
-                    }catch (Exception ignored){}
+                    } catch (Exception ignored) {
+                    }
                 }
             }
 
@@ -366,24 +340,23 @@ public class Message_Adapter extends ArrayAdapter<Model_Message> {
         String currentMessageKey = messages.get(position).getKeyMessage();
 
         DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference("messages");
-        Query  query = dbRef.orderByChild("keyMessage").equalTo(currentMessageKey);
+        Query query = dbRef.orderByChild("keyMessage").equalTo(currentMessageKey);
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for(DataSnapshot ds : snapshot.getChildren()){
-                    //Позволяем удалить только свое сообщение
-                    if(ds.child("sender").getValue().toString().equals(myUID)) {
-                        if(ds.child("imageUrl").exists()){
+                for (DataSnapshot ds : snapshot.getChildren()) {
+
+                    if (Objects.requireNonNull(ds.child("sender").getValue()).toString().equals(myUID)) {
+                        if (ds.child("imageUrl").exists()) {
                             ds.getRef().removeValue();
 
-                        }else{
+                        } else {
                             HashMap<String, Object> hashMap = new HashMap<>();
-                            hashMap.put("text","Msg deleted");
+                            hashMap.put("text", "Msg deleted");
                             ds.getRef().updateChildren(hashMap);
                         }
 
-                    }
-                    else{
+                    } else {
                         Toast.makeText(activity, "You can delete only your message", Toast.LENGTH_LONG).show();
                     }
                 }
@@ -396,7 +369,7 @@ public class Message_Adapter extends ArrayAdapter<Model_Message> {
 
     }
 
-    private void isThatCurrentDay(Model_Message modelMessage, ViewHolder viewHolder){
+    private void isThatCurrentDay(Model_Message modelMessage, ViewHolder viewHolder) {
         //create check for locale
         Locale locale = new Locale("ru");
         Locale.setDefault(locale);
@@ -409,19 +382,20 @@ public class Message_Adapter extends ArrayAdapter<Model_Message> {
         SimpleDateFormat currentDate = new SimpleDateFormat("EEE, MMM d, ''yy", locale);
         String saveCurrentDate = currentDate.format(calForDate.getTime());
 
-        try{
-            if(modelMessage.getDayOfMessage().equals(saveCurrentDate)){
+        try {
+            if (modelMessage.getDayOfMessage().equals(saveCurrentDate)) {
                 viewHolder.dayOfMessage.setVisibility(View.GONE);
 
-            }else{
+            } else {
                 viewHolder.dayOfMessage.setText(modelMessage.getDayOfMessage());
             }
-        }catch (Exception ignored){}
+        } catch (Exception ignored) {
+        }
     }
 
     private void setTransAnimation(ViewHolder viewHolder, Model_Message modelMessage, ViewGroup parent) {
         //todo: 1
-        try{
+        try {
             viewHolder.postCardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -434,16 +408,16 @@ public class Message_Adapter extends ArrayAdapter<Model_Message> {
                     if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
                         activityOptions = ActivityOptions.makeSceneTransitionAnimation((Activity) parent.getContext(), pairPostImage);
                         activity.startActivity(GoToPostComment, activityOptions.toBundle());
-                    }
-                    else{
+                    } else {
                         activity.startActivity(GoToPostComment);
                     }
                 }
             });
-        }catch (Exception ignored){}
+        } catch (Exception ignored) {
+        }
 
         //todo: 2
-        try{
+        try {
             viewHolder.avatarImage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -456,14 +430,14 @@ public class Message_Adapter extends ArrayAdapter<Model_Message> {
                     if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
                         activityOptions = ActivityOptions.makeSceneTransitionAnimation((Activity) parent.getContext(), pairPostImage);
                         activity.startActivity(GoToProfile, activityOptions.toBundle());
-                    }
-                    else{
-                        activity.startActivity( GoToProfile);
+                    } else {
+                        activity.startActivity(GoToProfile);
                     }
 
                 }
             });
-        }catch (Exception ignored){}
+        } catch (Exception ignored) {
+        }
     }
 
     private void setAvatarImageInChat(ViewHolder viewHolder, Model_Message modelMessage) {
@@ -472,22 +446,25 @@ public class Message_Adapter extends ArrayAdapter<Model_Message> {
         userQuery.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for(DataSnapshot ds : snapshot.getChildren()){
+                for (DataSnapshot ds : snapshot.getChildren()) {
                     String hisImage = "" + ds.child("avatarMockUpResourse").getValue();
-                    if(!hisImage.equals("")){
+                    if (!hisImage.equals("")) {
                         try {
                             viewHolder.avatarImage.setVisibility(View.VISIBLE);
                             // Picasso.get().load(hisImage).placeholder(R.drawable.default_avatar).into(viewHolder.avatarImage);
                             Glide.with(viewHolder.avatarImage.getContext()).load(hisImage).into(viewHolder.avatarImage);
 
-                        }catch (Exception ignored){}
-                    }else{
+                        } catch (Exception ignored) {
+                        }
+                    } else {
                         try {
                             viewHolder.avatarImage.setVisibility(View.GONE);
-                        }catch (Exception ignored){}
+                        } catch (Exception ignored) {
+                        }
                     }
                 }
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
@@ -501,7 +478,7 @@ public class Message_Adapter extends ArrayAdapter<Model_Message> {
 
         int flag;
         Model_Message modelMessage = messages.get(position);
-        if(modelMessage.isMine()){
+        if (modelMessage.isMine()) {
             flag = 0;
         } else {
             flag = 1;
@@ -532,8 +509,7 @@ public class Message_Adapter extends ArrayAdapter<Model_Message> {
         private final MaterialCardView postCardView;
 
 
-
-        public ViewHolder(View view){
+        public ViewHolder(View view) {
             photoImageView = view.findViewById(R.id.photoImageView);
             messageTextView = view.findViewById(R.id.messageTextView);
             timeOfMessage = view.findViewById(R.id.timeOfMessage);
@@ -553,3 +529,4 @@ public class Message_Adapter extends ArrayAdapter<Model_Message> {
     }
 
 }
+

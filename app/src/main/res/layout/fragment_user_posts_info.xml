@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout>
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="7dp"
+        android:animateLayoutChanges="true">
+
+        <TextView
+            android:id="@+id/noPostsProfile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text="@string/no_posts"
+            android:textColor="#490902"
+            android:textSize="30sp"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/noSongsProfile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text="@string/no_songs"
+            android:textColor="#490902"
+            android:textSize="30sp"
+            android:visibility="gone" />
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textFieldName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/full_name"
+            app:boxBackgroundColor="#00FFFFFF">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/nameInEdit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawablePadding="10dp"
+                android:inputType="textNoSuggestions"
+                android:maxLength="25"
+                android:text="@string/hide_text" />
+
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textFieldEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textFieldName"
+            android:hint="@string/email"
+            app:boxBackgroundColor="#00FFFFFF">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/emailInEdit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawablePadding="10dp"
+                android:inputType="textNoSuggestions"
+                android:maxLength="25"
+                android:text="@string/hide_text" />
+
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textFieldNickName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textFieldEmail"
+            android:hint="@string/nickname"
+            app:boxBackgroundColor="#00FFFFFF">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/nicknameInEdit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawablePadding="10dp"
+                android:inputType="textNoSuggestions"
+                android:maxLength="25" />
+
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textFieldTelephone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textFieldNickName"
+            android:hint="@string/telephone"
+            app:boxBackgroundColor="#00FFFFFF">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/telephoneInEdit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:digits="0,1,2,3,4,5,6,7,8,9,*,+"
+                android:drawablePadding="10dp"
+                android:inputType="textNoSuggestions"
+                android:maxLength="25" />
+
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/updateProfile"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textFieldTelephone"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:text="@string/update"
+            android:textColor="#490902"
+            app:backgroundTint="#FFFFFF"
+            tools:ignore="UsingOnClickInXml" />
+
+        <ProgressBar
+            android:id="@+id/progressBarInUserProfile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="60dp"
+            android:visibility="visible" />
+
+
+    </RelativeLayout>
+
+</layout>

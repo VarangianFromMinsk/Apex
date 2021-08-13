@@ -57,11 +57,13 @@
         <activity android:name=".main.Screens.Show_Image_MVP.Show_Image_Activity" />
         <activity android:name=".main.Screens.Posts.Post_Comments_MVVM.Post_Comment_Activity" />
         <activity android:name=".main.Screens.Posts.Add_Change_Post_MVP.Add_Change_Post_Activity" />
-        <activity android:name=".main.Screens.Posts.Posts_By_Friends_MVP.Post_Activity_Friends" />
+        <activity android:name=".main.Screens.Settings.Settings_Activity" />
+        <activity android:name=".main.Screens.Posts.Posts_By_Friends_MVVM.Post_Activity_Friends" />
         <activity
             android:name=".main.Screens.User_Profile_MVVM.User_Profile_Activity"
             android:windowSoftInputMode="adjustPan" />
-        <activity android:name=".main.Screens.User_List_4_States_MVVM.User_List_Activity" />
+        <activity android:name=".main.Screens.User_List_4_States_MVVM.User_List_Activity"
+            />
         <activity android:name=".main.Screens.Dashboard_MVP.Dashboard_Activity" />
         <activity android:name=".main.Screens.Chat_Activity_MVP.Chat_Main_Activity" />
         <activity android:name=".main.Screens.Additional.Kino_Json.Full_Kino_Info_Activity" />

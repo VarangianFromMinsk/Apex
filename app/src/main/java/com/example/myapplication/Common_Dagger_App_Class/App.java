@@ -6,6 +6,7 @@ import com.example.myapplication.di.Common_App_Component;
 import com.example.myapplication.di.Common_App_Module;
 import com.example.myapplication.di.DaggerCommon_App_Component;
 
+
 public class App extends Application {
 
     private Common_App_Component commonComponent;
@@ -14,7 +15,7 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
 
-        commonComponent = DaggerCommon_App_Component.builder()
+       commonComponent = DaggerCommon_App_Component.builder()
                 .common_App_Module(new Common_App_Module(this))
                 .build();
 
@@ -23,4 +24,5 @@ public class App extends Application {
     public Common_App_Component getCommonComponent() {
         return commonComponent;
     }
+
 }

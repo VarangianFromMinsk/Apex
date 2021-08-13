@@ -163,7 +163,7 @@ public class Firebase_Notification_Service extends FirebaseMessagingService {
                 .setContentTitle(title)
                 .setBadgeIconType(R.drawable.apex_512)
                 .setContentText(message)
-                .setSmallIcon(R.drawable.ic_launcher_foreground)
+                .setSmallIcon(R.drawable.apex_512)
                 .setLargeIcon(avatarBitmap)
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(true)

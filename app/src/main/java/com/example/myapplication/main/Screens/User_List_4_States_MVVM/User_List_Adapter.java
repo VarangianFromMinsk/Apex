@@ -2,6 +2,7 @@ package com.example.myapplication.main.Screens.User_List_4_States_MVVM;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,7 +37,7 @@ import java.util.Objects;
 public class User_List_Adapter extends RecyclerView.Adapter<User_List_Adapter.ChatUserViewHolder> {
 
     private final Context context;
-    private ArrayList<Model_User> userList= new ArrayList<>();
+    private ArrayList<Model_User> userList = new ArrayList<>();
     private final String myUid;
     private final DatabaseReference messagesDatabaseReference;
 
@@ -54,7 +55,7 @@ public class User_List_Adapter extends RecyclerView.Adapter<User_List_Adapter.Ch
         notifyDataSetChanged();
     }
 
-    public interface OnUserClickListener{
+    public interface OnUserClickListener {
         void onUserClick(int position);     // метод внутри интерфейса
     }
 
@@ -65,7 +66,7 @@ public class User_List_Adapter extends RecyclerView.Adapter<User_List_Adapter.Ch
         this.messagesDatabaseReference = FirebaseDatabase.getInstance().getReference().child("messages");
     }
 
-    public void setOnUserClickListener(OnUserClickListener listener){
+    public void setOnUserClickListener(OnUserClickListener listener) {
         this.listener = listener;
     }
 
@@ -73,11 +74,11 @@ public class User_List_Adapter extends RecyclerView.Adapter<User_List_Adapter.Ch
     @NonNull
     @Override
     public ChatUserViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-       // View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_user, parent, false);
-       // return new ChatUserViewHolder(view,listener);
+        // View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_user, parent, false);
+        // return new ChatUserViewHolder(view,listener);
 
-        RowUserBinding rowUserBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),R.layout.row_user, parent, false);
-        return new ChatUserViewHolder(rowUserBinding,listener);
+        RowUserBinding rowUserBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.row_user, parent, false);
+        return new ChatUserViewHolder(rowUserBinding, listener);
     }
 
     @Override
@@ -124,10 +125,10 @@ public class User_List_Adapter extends RecyclerView.Adapter<User_List_Adapter.Ch
 
         //todo: staff to addFriend
         showIfUserIsFriend(hisUid, holder, position);
-        showAddUserToFriendBtn(hisUid,holder,position);
+        showAddUserToFriendBtn(hisUid, holder, position);
 
         //todo: friends action
-        addFriendsAction(holder, hisUid);
+        addFriendsAction(holder, hisUid, position);
 
         //todo: start dialog action
         startDialogActionWithCheck(holder, hisUid, position);
@@ -141,18 +142,18 @@ public class User_List_Adapter extends RecyclerView.Adapter<User_List_Adapter.Ch
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for(DataSnapshot sn : snapshot.getChildren() ){
+                for (DataSnapshot sn : snapshot.getChildren()) {
 
                     Model_Message message = sn.getValue(Model_Message.class);
                     assert message != null;
 
-                    if(message.getRecipient().equals(myUid)  &&  message.getSender().equals(currentUser.getFirebaseId()) ||
-                            message.getRecipient().equals(currentUser.getFirebaseId())  &&  message.getSender().equals(myUid)){
+                    if (message.getRecipient().equals(myUid) && message.getSender().equals(currentUser.getFirebaseId()) ||
+                            message.getRecipient().equals(currentUser.getFirebaseId()) && message.getSender().equals(myUid)) {
                         theLastMessage = message.getText();
 
-                        if(theLastMessage != null){
+                        if (theLastMessage != null) {
                             holder.userBinding.userLastMessage.setText(String.valueOf("' " + theLastMessage + " '"));
-                        }else if(message.getImageUrl() != null){
+                        } else if (message.getImageUrl() != null) {
                             holder.userBinding.userLastMessage.setText(String.valueOf(" Image "));
                             holder.userBinding.userLastMessage.setTextSize(16);
                         }
@@ -175,11 +176,11 @@ public class User_List_Adapter extends RecyclerView.Adapter<User_List_Adapter.Ch
         });
     }
 
-    private void addFriendsAction(ChatUserViewHolder holder, String hisUid) {
+    private void addFriendsAction(ChatUserViewHolder holder, String hisUid, int position) {
         holder.userBinding.addRequestToFriend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addFriendRequest(hisUid, holder);
+                addFriendRequest(hisUid, holder, position);
             }
         });
     }
@@ -188,14 +189,13 @@ public class User_List_Adapter extends RecyclerView.Adapter<User_List_Adapter.Ch
         holder.userBinding.blockBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(userList.get(position).isBlocked()){
+                if (userList.get(position).isBlocked()) {
 
                     unBlockedUser(hisUid, holder, position);
 
                     holder.userBinding.addRequestToFriend.setVisibility(View.VISIBLE);
                     userList.get(position).setBlocked(false);
-                }
-                else{
+                } else {
                     blockedUser(hisUid, holder, position);
 
                     holder.userBinding.addRequestToFriend.setVisibility(View.GONE);
@@ -212,26 +212,26 @@ public class User_List_Adapter extends RecyclerView.Adapter<User_List_Adapter.Ch
 
     private void loadAvatar(Model_User currentUser, ChatUserViewHolder holder) {
         try {
-            if(!currentUser.getAvatarMockUpResourse().equals("")){
+            if (!currentUser.getAvatarMockUpResourse().equals("")) {
                 //Picasso.get().load(currentUser.getAvatarMockUpResourse()).placeholder(R.drawable.default_avatar).into(holder.avatarImageView);
                 Glide.with(holder.userBinding.avatarImageView.getContext()).load(currentUser.getAvatarMockUpResourse()).into(holder.userBinding.avatarImageView);
-            }
-            else{
+            } else {
                 holder.userBinding.avatarImageView.setImageResource(R.drawable.default_avatar);
             }
-        }catch (Exception ignored){}
+        } catch (Exception ignored) {
+        }
     }
 
     private void setColorOnlineOffline(Model_User currentUser, ChatUserViewHolder holder) {
-        if(currentUser.getOnline().equals("online")){
+        if (currentUser.getOnline().equals("online")) {
             holder.userBinding.onOffLine.setTextColor(Color.parseColor("#7AC537"));
-        }else {
+        } else {
             holder.userBinding.onOffLine.setTextColor(Color.parseColor("#D32121"));
         }
     }
 
     private void chatWithYourself(Model_User currentUser, ChatUserViewHolder holder) {
-        if(currentUser.getFirebaseId().equals(myUid)){
+        if (currentUser.getFirebaseId().equals(myUid)) {
             holder.userBinding.UserNameChatList.setText(String.valueOf("Notes"));
             holder.userBinding.dayLastConnection.setText("");
             holder.userBinding.timeLastConnection.setText("");
@@ -249,13 +249,17 @@ public class User_List_Adapter extends RecyclerView.Adapter<User_List_Adapter.Ch
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        for(DataSnapshot ds : snapshot.getChildren()) {
-                            if(ds.exists()){
+                        try {
+                            if (snapshot.exists()) {
                                 //todo: blocked
                                 holder.userBinding.blockByAnotherUser.setVisibility(View.VISIBLE);
                                 holder.userBinding.addRequestToFriend.setVisibility(View.GONE);
                                 holder.userBinding.addToFriend.setVisibility(View.GONE);
+                            } else {
+                                holder.userBinding.blockByAnotherUser.setVisibility(View.GONE);
+                                holder.userBinding.addRequestToFriend.setVisibility(View.VISIBLE);
                             }
+                        } catch (Exception ignored) {
                         }
                     }
 
@@ -265,14 +269,14 @@ public class User_List_Adapter extends RecyclerView.Adapter<User_List_Adapter.Ch
                 });
     }
 
-    private void imBlockedOrNot(String hisUID, int position, ChatUserViewHolder holder){
+    private void imBlockedOrNot(String hisUID, int position, ChatUserViewHolder holder) {
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("users");
         ref.child(hisUID).child("BlockedUsers").orderByChild("uid").equalTo(myUid)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        for(DataSnapshot ds : snapshot.getChildren()) {
-                            if(ds.exists()){
+                        for (DataSnapshot ds : snapshot.getChildren()) {
+                            if (ds.exists()) {
                                 //blocked
                                 return;
                             }
@@ -280,8 +284,8 @@ public class User_List_Adapter extends RecyclerView.Adapter<User_List_Adapter.Ch
                         }
                         //not blocked
                         //переходим в чат
-                        if(listener != null){
-                            if(position != RecyclerView.NO_POSITION){
+                        if (listener != null) {
+                            if (position != RecyclerView.NO_POSITION) {
                                 listener.onUserClick(position);
                             }
                         }
@@ -298,12 +302,12 @@ public class User_List_Adapter extends RecyclerView.Adapter<User_List_Adapter.Ch
     private void checkIsBlocked(String hisUid, ChatUserViewHolder holder, int position) {
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("users");
         ref.child(myUid).child("BlockedUsers").orderByChild("uid").equalTo(hisUid)
-                .addListenerForSingleValueEvent(new ValueEventListener() {
+                .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        for(DataSnapshot ds : snapshot.getChildren()) {
-                            try{
-                                if(ds.exists()){
+                        for (DataSnapshot ds : snapshot.getChildren()) {
+                            try {
+                                if (ds.exists()) {
                                     holder.userBinding.addRequestToFriend.setVisibility(View.GONE);
                                     holder.userBinding.blockBtn.setImageResource(R.drawable.block_on);
                                     //todo: staff of requests
@@ -311,12 +315,12 @@ public class User_List_Adapter extends RecyclerView.Adapter<User_List_Adapter.Ch
                                     deleteFriendRequestHis(hisUid, holder);
                                     holder.userBinding.addToFriend.setVisibility(View.GONE);
                                     userList.get(position).setBlocked(true);
-                                }
-                                else{
+                                } else {
                                     holder.userBinding.addRequestToFriend.setVisibility(View.VISIBLE);
                                     userList.get(position).setBlocked(false);
                                 }
-                            }catch (Exception ignored){}
+                            } catch (Exception ignored) {
+                            }
 
                         }
                     }
@@ -333,7 +337,7 @@ public class User_List_Adapter extends RecyclerView.Adapter<User_List_Adapter.Ch
         hashMap.put("uid", hisUid);
 
         //delete friend
-        deleteFriend(hisUid,holder, position);
+        deleteFriend(hisUid, holder, position);
 
         //add in BlockedUsers
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("users");
@@ -353,8 +357,8 @@ public class User_List_Adapter extends RecyclerView.Adapter<User_List_Adapter.Ch
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        for(DataSnapshot ds : snapshot.getChildren()){
-                            if(ds.exists()){
+                        for (DataSnapshot ds : snapshot.getChildren()) {
+                            if (ds.exists()) {
                                 ds.getRef().removeValue();
                                 notifyItemChanged(position);
                             }
@@ -372,8 +376,8 @@ public class User_List_Adapter extends RecyclerView.Adapter<User_List_Adapter.Ch
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        for(DataSnapshot ds : snapshot.getChildren()){
-                            if(ds.exists()){
+                        for (DataSnapshot ds : snapshot.getChildren()) {
+                            if (ds.exists()) {
                                 ds.getRef().removeValue();
                             }
                         }
@@ -391,8 +395,8 @@ public class User_List_Adapter extends RecyclerView.Adapter<User_List_Adapter.Ch
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        for(DataSnapshot ds : snapshot.getChildren()){
-                            if(ds.exists()){
+                        for (DataSnapshot ds : snapshot.getChildren()) {
+                            if (ds.exists()) {
                                 ds.getRef().removeValue();
                                 notifyItemChanged(position);
                             }
@@ -405,7 +409,7 @@ public class User_List_Adapter extends RecyclerView.Adapter<User_List_Adapter.Ch
                 });
     }
 
-    private void addFriendRequest(String hisUid, ChatUserViewHolder holder) {
+    private void addFriendRequest(String hisUid, ChatUserViewHolder holder, int position) {
         //add the user, by adding to current user "blockedUsers" node
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("uid", myUid);
@@ -413,6 +417,7 @@ public class User_List_Adapter extends RecyclerView.Adapter<User_List_Adapter.Ch
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("users");
         ref.child(hisUid).child("RequestsToFriends").child(myUid).setValue(hashMap);
 
+        unBlockedUser( hisUid, holder, position);
     }
 
     private void deleteFriendRequest(String hisUid, ChatUserViewHolder holder) {
@@ -421,8 +426,8 @@ public class User_List_Adapter extends RecyclerView.Adapter<User_List_Adapter.Ch
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        for(DataSnapshot ds : snapshot.getChildren()){
-                            if(ds.exists()){
+                        for (DataSnapshot ds : snapshot.getChildren()) {
+                            if (ds.exists()) {
                                 ds.getRef().removeValue();
                             }
                         }
@@ -440,8 +445,8 @@ public class User_List_Adapter extends RecyclerView.Adapter<User_List_Adapter.Ch
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        for(DataSnapshot ds : snapshot.getChildren()){
-                            if(ds.exists()){
+                        for (DataSnapshot ds : snapshot.getChildren()) {
+                            if (ds.exists()) {
                                 ds.getRef().removeValue();
                             }
                         }
@@ -459,12 +464,11 @@ public class User_List_Adapter extends RecyclerView.Adapter<User_List_Adapter.Ch
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        for(DataSnapshot ds : snapshot.getChildren()) {
-                            if(ds.exists()){
+                        for (DataSnapshot ds : snapshot.getChildren()) {
+                            if (ds.exists()) {
                                 //blocked
                                 holder.userBinding.addRequestToFriend.setImageResource(R.drawable.user_friend_request);
-                            }
-                            else{
+                            } else {
                                 holder.userBinding.addRequestToFriend.setImageResource(R.drawable.add_friends);
                             }
 
@@ -483,12 +487,11 @@ public class User_List_Adapter extends RecyclerView.Adapter<User_List_Adapter.Ch
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        for(DataSnapshot ds : snapshot.getChildren()) {
-                            if(ds.exists()){
+                        for (DataSnapshot ds : snapshot.getChildren()) {
+                            if (ds.exists()) {
                                 holder.userBinding.addRequestToFriend.setImageResource(R.drawable.user_friend);
                                 holder.userBinding.addToFriend.setVisibility(View.GONE);
-                            }
-                            else{
+                            } else {
                                 holder.userBinding.addRequestToFriend.setImageResource(R.drawable.add_friends);
                             }
 
@@ -502,19 +505,18 @@ public class User_List_Adapter extends RecyclerView.Adapter<User_List_Adapter.Ch
                 });
     }
 
-    private void showAddUserToFriendBtn(String hisUid, ChatUserViewHolder holder, int position){
+    private void showAddUserToFriendBtn(String hisUid, ChatUserViewHolder holder, int position) {
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("users");
         ref.child(myUid).child("RequestsToFriends").orderByChild("uid").equalTo(hisUid)
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        for(DataSnapshot ds : snapshot.getChildren()) {
-                            if(ds.exists()){
+                        for (DataSnapshot ds : snapshot.getChildren()) {
+                            if (ds.exists()) {
                                 holder.userBinding.addToFriend.setVisibility(View.VISIBLE);
                                 holder.userBinding.addRequestToFriend.setImageResource(R.drawable.user_friend_request);
-                                addUserToFriend(hisUid,holder);
-                            }
-                            else{
+                                addUserToFriend(hisUid, holder);
+                            } else {
                                 holder.userBinding.addRequestToFriend.setImageResource(R.drawable.add_friends);
 
                             }

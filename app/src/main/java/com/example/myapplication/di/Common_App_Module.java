@@ -11,8 +11,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.myapplication.Services.Check_Internet_Connection_Exist;
 import com.example.myapplication.Services.Online_Offline_User_Service_To_Firebase;
-import com.example.myapplication.main.Screens.Posts.Posts_By_Friends_MVP.Post_Adapter_Friends;
+import com.example.myapplication.main.Screens.Posts.Posts_By_Friends_MVVM.Post_Adapter_Friends;
 import com.example.myapplication.main.Screens.Posts.Posts_By_Recommendation_MVVM.Post_Adapter_Recommendations;
+import com.example.myapplication.main.Screens.User_List_4_States_MVVM.User_List_Adapter;
 
 import javax.inject.Singleton;
 
@@ -88,6 +89,12 @@ public class Common_App_Module {
     }
 
     @Provides
+    @Singleton
+    User_List_Adapter provideUserListAdapter(Context context){
+        return new User_List_Adapter(context);
+    }
+
+    @Provides
         //todo: ту без синглтона, тк нужен каждый раз новый обьект
     GridLayoutManager provideGridLayout(Context context){
         return new GridLayoutManager(context,3);
@@ -97,4 +104,20 @@ public class Common_App_Module {
     LinearLayoutManager provideLinearLayout(Context context){
         return new LinearLayoutManager(context);
     }
+
+
+    //todo: find out later
+
+//    @Provides
+//    Start_Check_GeoPosition_Service provideGeoService(Activity activity, Context context){
+//        return new Start_Check_GeoPosition_Service(activity, context);
+//    }
+//
+//    @Provides
+//    Post_Recomm_ViewModel providePostRecVM(Context context){
+//        return new ViewModelProvider((ViewModelStoreOwner) context).get(Post_Recomm_ViewModel.class);
+//    }
+
+
 }
+

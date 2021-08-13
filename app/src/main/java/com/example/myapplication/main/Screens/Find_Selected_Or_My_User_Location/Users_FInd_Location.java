@@ -714,6 +714,6 @@ public class Users_FInd_Location extends FragmentActivity implements OnMapReadyC
 
     //todo: block online/offline and location
     public void updateUserStatus( String state){
-        Online_Offline_User_Service_To_Firebase.updateUserStatus(state, this);
+       // Online_Offline_User_Service_To_Firebase.updateUserStatus(state, this);
     }
 }

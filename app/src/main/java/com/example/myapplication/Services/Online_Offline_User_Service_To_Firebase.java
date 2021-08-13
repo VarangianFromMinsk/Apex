@@ -8,7 +8,10 @@ import android.content.res.Configuration;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.DefaultLifecycleObserver;
 
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleObserver;
 import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.OnLifecycleEvent;
 
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -24,7 +27,7 @@ import java.util.Locale;
 
 import javax.inject.Inject;
 
-public class Online_Offline_User_Service_To_Firebase implements DefaultLifecycleObserver {
+public class Online_Offline_User_Service_To_Firebase implements LifecycleObserver {
 
     private final SharedPreferences preferences;
     private final Context context;
@@ -35,18 +38,18 @@ public class Online_Offline_User_Service_To_Firebase implements DefaultLifecycle
         this.context = context;
     }
 
-    @Override
+    @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
     public void onResume(@NonNull LifecycleOwner owner) {
         updateUserStatus("online", context);
     }
 
-    @Override
+    @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
     public void onPause(@NonNull LifecycleOwner owner) {
         updateUserStatus("offline", context);
     }
 
     //todo: пока статик, потом через даггер и lifeCycle
-    public static void updateUserStatus(String state, Context context){
+    public void updateUserStatus(String state, Context context){
         String saveCurrentDate, saveCurrentTime;
 
         //todo: staff to onile/offline

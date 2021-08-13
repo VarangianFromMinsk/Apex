@@ -15,7 +15,7 @@
         android:animateLayoutChanges="true"
         android:background="#19979696"
         app:layoutDescription="@xml/post_activity_recommendations_xml_constraintlayout_scene"
-        tools:context=".main.Screens.Posts.Posts_By_Friends_MVP.Post_Activity_Friends">
+        tools:context=".main.Screens.Posts.Posts_By_Friends_MVVM.Post_Activity_Friends">
 
 
         <androidx.core.widget.NestedScrollView

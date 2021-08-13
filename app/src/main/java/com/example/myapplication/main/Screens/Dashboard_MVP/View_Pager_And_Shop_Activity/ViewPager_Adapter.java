@@ -142,12 +142,18 @@ public class ViewPager_Adapter extends PagerAdapter {
             @Override
             public void onClick(View v) {
                 //method of shop
-                Intent intent = new Intent(context, Shop_Activity.class);
-                intent.putExtra("userName", userName);
-                intent.putExtra("typeOfStaff", titleData);
-                intent.putExtra("numberOfStaff", number);
-                intent.putExtra("priceForOne", price);
-                context.startActivity(intent);
+                if(FirebaseAuth.getInstance().getCurrentUser() != null){
+                    Intent intent = new Intent(context, Shop_Activity.class)
+                            .putExtra("userName", userName)
+                            .putExtra("typeOfStaff", titleData)
+                            .putExtra("numberOfStaff", number)
+                            .putExtra("priceForOne", price);
+                    context.startActivity(intent);
+                }
+                else{
+                    Toast.makeText(context, "Available to registered users", Toast.LENGTH_SHORT).show();
+                }
+                
             }
         });
 

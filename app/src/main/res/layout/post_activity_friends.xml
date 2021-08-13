@@ -12,7 +12,7 @@
         android:animateLayoutChanges="true"
         android:background="#19979696"
         app:layoutDescription="@xml/post_activity_friends_xml_constraintlayout2_scene"
-        tools:context=".main.Screens.Posts.Posts_By_Friends_MVP.Post_Activity_Friends">
+        tools:context=".main.Screens.Posts.Posts_By_Friends_MVVM.Post_Activity_Friends">
 
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -23,9 +23,7 @@
             app:layout_constraintBottom_toTopOf="@+id/bottomNavigation"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:layout_editor_absoluteX="0dp"
-            tools:layout_editor_absoluteY="0dp">
+            app:layout_constraintTop_toTopOf="parent">
 
             <androidx.core.widget.NestedScrollView
                 android:layout_width="0dp"
@@ -140,6 +138,7 @@
             app:srcCompat="@drawable/add"
             tools:ignore="UsingOnClickInXml" />
 
+
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottomNavigation"
             android:layout_width="0dp"
@@ -153,18 +152,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:menu="@menu/menu_navigation" />
-
-        <ProgressBar
-            android:id="@+id/progressbarPostActivity"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:indeterminate="true"
-            android:visibility="visible"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:menu="@menu/menu_navigation" >
+        </com.google.android.material.bottomnavigation.BottomNavigationView>
 
 
     </androidx.constraintlayout.motion.widget.MotionLayout>

@@ -1,8 +1,20 @@
 package com.example.myapplication.main.Screens.User_Profile_MVVM;
 
 
+import android.app.Activity;
+import android.content.Context;
+import android.database.Cursor;
+import android.net.Uri;
+import android.os.Bundle;
+import android.provider.MediaStore;
+import android.util.Log;
+
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.lifecycle.MutableLiveData;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.CursorLoader;
+import androidx.loader.content.Loader;
 
 import com.example.myapplication.main.Models.Model_Post;
 import com.example.myapplication.main.Models.Model_User;
@@ -18,9 +30,10 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
-public class Profile_Repository {
+public class Profile_Repository{
 
     private static Profile_Repository instance;
+
 
     //todo: posts part
     private final ArrayList<Model_Post> postListMyRepArray = new ArrayList<>();
@@ -40,6 +53,13 @@ public class Profile_Repository {
 
     //todo: change user password
     private MutableLiveData<String> checkChangePassword = new MutableLiveData<>();
+
+    //TODO: part for location
+    private final ArrayList<String> phonePhotoArray = new ArrayList<>();
+    private final MutableLiveData<ArrayList<String>> images = new MutableLiveData<>();
+
+    private int currentNumber = 0;
+    private final MutableLiveData<Integer> currentNumberOfSelectedImages = new MutableLiveData<>();
 
 
     //TODO: main constructor
@@ -125,7 +145,6 @@ public class Profile_Repository {
 
     //TODO: get music
     public MutableLiveData<ArrayList<Model_Song>> getMusic(String selectedUser) {
-        music = new MutableLiveData<>();
         loadMusic(selectedUser);
         return music;
     }
@@ -205,7 +224,6 @@ public class Profile_Repository {
 
     //TODO: get info about current user
     public MutableLiveData<Model_User> getMutUserData(String selectedUser) {
-        mutUserData = new MutableLiveData<>();
         loadUser(selectedUser);
         return mutUserData;
     }
@@ -237,13 +255,11 @@ public class Profile_Repository {
     }
 
 
-
     //TODO: update current avatar or background
     public void updateCurrentAvatarOrBackground(String keyUser, String path, String imageUrl){
         DatabaseReference usersDatabaseReference = FirebaseDatabase.getInstance().getReference().child("users");
         usersDatabaseReference.child(keyUser).child(path).setValue(imageUrl);
     }
-
 
     //TODO: update user password
     public MutableLiveData<String> getCheckChangePassword(FirebaseUser user, String newPassword) {
@@ -263,6 +279,19 @@ public class Profile_Repository {
                 }
             }
         });
+    }
+
+
+
+    //TODO: current number of selected images
+
+    public MutableLiveData<Integer> getCurrentNumberOfSelectedImages() {
+        return currentNumberOfSelectedImages;
+    }
+
+    public void changeCurrentNumber(int number){
+        currentNumber = number;
+        currentNumberOfSelectedImages.setValue(currentNumber);
     }
 
 }

@@ -2,6 +2,7 @@ package com.example.myapplication.main.Screens.Music.Music_Player_Activity_And_S
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
 import androidx.palette.graphics.Palette;
 import androidx.preference.PreferenceManager;
 
@@ -21,15 +22,13 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.SeekBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.myapplication.Common_Dagger_App_Class.App;
 import com.example.myapplication.Services.Online_Offline_User_Service_To_Firebase;
+import com.example.myapplication.databinding.MusicPlayerActivityBinding;
 import com.example.myapplication.main.Screens.Dashboard_MVP.Dashboard_Activity;
 import com.example.myapplication.R;
 import com.example.myapplication.Services.App_Constants;
@@ -41,13 +40,20 @@ import com.example.myapplication.Services.Create_Music_Notification;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class Music_Player_Activity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener, Playable, Player_view{
+import javax.inject.Inject;
+import javax.net.ssl.HttpsURLConnection;
+
+public class Music_Player_Activity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener, Playable, Player_view {
+
+    @Inject
+    Online_Offline_User_Service_To_Firebase controller;
 
     //TODO: временно
     private ArrayList<Model_Song> songList = new ArrayList<>();
@@ -56,23 +62,14 @@ public class Music_Player_Activity extends AppCompatActivity implements SharedPr
     private MediaPlayer MusicPlayer;
     private SeekBar seekbar;
     private int number;
-    private final String[] addresses = { "VarangianMinsk@yandex.ru"};
+    private final String[] addresses = {"VarangianMinsk@yandex.ru"};
     private Uri attachment;
-    private TextView title, littletitle;
-    private ImageView mainAlbumImage;
-    private TextView timeUpDate, timeDuration;
-    private ImageButton startPauseBtn, prevSong, nextSong, loop, likeButton;
-
-    //todo: support btns
-    private ImageButton homeBtn, settingsBtn, randomSongBtn, backToListBtn, shareSongBtn;
-    private Button hqBtn;
 
     private SharedPreferences sharedPreferences, mSettings;
 
     private boolean randomSongBoolean = false, pauseSong = false, isLooping = false;
 
     //todo: values for current song
-    private Intent intent;
     private String currentAlbumUrl, currentMusicUrl, mainTitle, lastTitle, currentMusicDuration;
 
     //todo: staff for like
@@ -87,6 +84,7 @@ public class Music_Player_Activity extends AppCompatActivity implements SharedPr
     //todo: on deleting
     public static final String APP_PREFERENCES = "mySettingsInPlayer";
 
+    private MusicPlayerActivityBinding binding;
     private Player_Presenter presenter;
 
 
@@ -99,99 +97,106 @@ public class Music_Player_Activity extends AppCompatActivity implements SharedPr
 
         Objects.requireNonNull(getSupportActionBar()).hide();
 
-        presenter = new Player_Presenter(this);
-
         initialization();
-
-        initSharedPreferences();
 
         getMainIntent();
 
-        loadDataAndCreatePlayer();
+        if (checkIsUrlReachable()) {
 
-        initNextSongBtn();
+            loadDataAndCreatePlayer();
 
-        initPrevSongBtn();
+            initNextSongBtn();
 
-        initPlayPauseBtn();
+            initPrevSongBtn();
 
-        SeekBar();
+            initPlayPauseBtn();
 
-        likeSong();
+            SeekBar();
 
-        //todo: init support Btns
-        GoToSettings();
+            likeSong();
 
-        GoToHomePage();
+            //todo:support Btns
+            GoToSettings();
 
-        initLoopSongBtn();
+            GoToHomePage();
 
-        HQBtn();
+            initLoopSongBtn();
 
-        randomSong();
+            HQBtn();
 
-        ShareBtn();
+            randomSong();
 
-        toMusicList();
+            ShareBtn();
 
-        initNotification();
+            toMusicList();
 
-        updateUserStatus("online");
+            initNotification();
+        } else {
+            FirebaseReachedLimit();
+        }
+
     }
 
-    private void initialization(){
 
-        title = findViewById(R.id.textMainTitle);
-        littletitle = findViewById(R.id.textLastTitle);
-        loop=findViewById(R.id.loopBtn);
-        mainAlbumImage = findViewById(R.id.imageAlbum);
-        likeButton=findViewById(R.id.likeBtnMusic);
-        prevSong=findViewById(R.id.prevBtn);
-        nextSong=findViewById(R.id.nextBtn);
-        startPauseBtn= findViewById(R.id.startPauseBtn);
-        homeBtn = findViewById(R.id.ActBarBut);
-        settingsBtn = findViewById(R.id.ActBarSett);
-        hqBtn = findViewById(R.id.HQbtn);
-        randomSongBtn = findViewById(R.id.randomBtn);
-        backToListBtn = findViewById(R.id.listBtn);
-        shareSongBtn = findViewById(R.id.shareMusicBtn);
-        timeUpDate = findViewById(R.id.updateTime);
-        timeDuration = findViewById(R.id.AllTime);
-        seekbar = findViewById(R.id.seekBarInMusic);
+    private void initialization() {
+        ((App) getApplication()).getCommonComponent().inject(this);
 
-        intent = getIntent();
+        presenter = new Player_Presenter(this);
+        binding = DataBindingUtil.setContentView(this, R.layout.music_player_activity);
 
-        myUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        getLifecycle().addObserver(controller);
+
+        //todo:  РЕГИСТРИРУЕМ наш SharedPreferencesListner и звук для SettingsFragment!
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        sharedPreferences.registerOnSharedPreferenceChangeListener(this);
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+
+        myUid = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
 
         mSettings = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
+        seekbar = findViewById(R.id.seekBarInMusic);
     }
 
-    private void initSharedPreferences(){
-        //todo:  РЕГИСТРИРУЕМ наш SharedPreferencesListner и звук для SettingsFragment!
-        sharedPreferences= PreferenceManager.getDefaultSharedPreferences(this);
-        sharedPreferences.registerOnSharedPreferenceChangeListener(this);
-        sharedPreferences= PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+    private void FirebaseReachedLimit() {
+        binding.firebaseLimitText.setVisibility(View.VISIBLE);
+        binding.firebaseLimitAlert.setVisibility(View.VISIBLE);
     }
+
 
     //todo:  main music method
     public void getMainIntent() {
-
+        Intent intent = getIntent();
         Bundle extras = intent.getExtras();
         if (extras != null) {
-            if (intent != null) {
-                number = intent.getIntExtra("Position", 0);
-                currentAlbumUrl = intent.getStringExtra("ImageUrl");
-                mainTitle = intent.getStringExtra("mainTitle");
-                lastTitle = intent.getStringExtra("lastTitle");
-                currentMusicUrl = intent.getStringExtra("songUrl");
-                currentMusicDuration = intent.getStringExtra("songDuration");
-            }
-        }
-        else{
+            number = intent.getIntExtra("Position", 0);
+            currentAlbumUrl = intent.getStringExtra("ImageUrl");
+            mainTitle = intent.getStringExtra("mainTitle");
+            lastTitle = intent.getStringExtra("lastTitle");
+            currentMusicUrl = intent.getStringExtra("songUrl");
+            currentMusicDuration = intent.getStringExtra("songDuration");
+
+        } else {
             startActivity(new Intent(Music_Player_Activity.this, Music_List_Activity.class));
         }
 
+    }
 
+    private boolean checkIsUrlReachable() {
+        try {
+            URL url = new URL(currentMusicUrl);
+            HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
+            int code = connection.getResponseCode();
+
+            if (code == 200) {
+                return true;
+            } else {
+                return false;
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     private void loadDataAndCreatePlayer() {
@@ -201,16 +206,17 @@ public class Music_Player_Activity extends AppCompatActivity implements SharedPr
         setBackColour(currentAlbumUrl);
 
         //todo: load album banner
-        try{
-            Glide.with(mainAlbumImage.getContext()).load(currentAlbumUrl).into(mainAlbumImage);
-        }catch (Exception ignored){}
+        try {
+            Glide.with(binding.imageAlbum.getContext()).load(currentAlbumUrl).into(binding.imageAlbum);
+        } catch (Exception ignored) {
+        }
 
-        title.setText(mainTitle);
-        littletitle.setText(lastTitle);
-        timeDuration.setText(currentMusicDuration) ;
+        binding.textMainTitle.setText(mainTitle);
+        binding.textLastTitle.setText(lastTitle);
+        binding.AllTime.setText(currentMusicDuration);
 
         //todo: player check
-        if(MusicPlayer != null){
+        if (MusicPlayer != null) {
             MusicPlayer.stop();
             MusicPlayer.release();
             MusicPlayer = null;
@@ -219,14 +225,16 @@ public class Music_Player_Activity extends AppCompatActivity implements SharedPr
         MusicPlayer = new MediaPlayer();
         try {
             MusicPlayer.setDataSource(currentMusicUrl);
-        }catch (Exception ignored){}
+        } catch (Exception ignored) {
+        }
 
         MusicPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mp) {
                 try {
                     seekbar.setMax(MusicPlayer.getDuration());
-                }catch (Exception ignored){}
+                } catch (Exception ignored) {
+                }
             }
         });
         MusicPlayer.prepareAsync();
@@ -249,19 +257,19 @@ public class Music_Player_Activity extends AppCompatActivity implements SharedPr
         //todo: main equation!!!
 
         //todo: like path
-        likeButton.setImageResource(R.drawable.likeoff);
+        binding.likeButton.setImageResource(R.drawable.likeoff);
         String id = songList.get(number).getUploadId();
         setOrGetLikes(id);
 
         //todo: notification
         notificationPlayPauseBtn();
-        Create_Music_Notification.createNotification(Music_Player_Activity.this, songList.get(number),currentStateBtn, number, songList.size()-1);
+        Create_Music_Notification.createNotification(Music_Player_Activity.this, songList.get(number), currentStateBtn, number, songList.size() - 1);
 
         // saveCurrentTrackSharedPreference();
     }
 
-    private void initNextSongBtn(){
-        nextSong.setOnClickListener(new View.OnClickListener() {
+    private void initNextSongBtn() {
+        binding.nextSong.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 NextSong();
@@ -270,7 +278,7 @@ public class Music_Player_Activity extends AppCompatActivity implements SharedPr
     }
 
     private void initPrevSongBtn() {
-        prevSong.setOnClickListener(new View.OnClickListener() {
+        binding.prevSong.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 PrevSong();
@@ -279,8 +287,8 @@ public class Music_Player_Activity extends AppCompatActivity implements SharedPr
 
     }
 
-    private void initPlayPauseBtn(){
-        startPauseBtn.setEnabled(false);
+    private void initPlayPauseBtn() {
+        binding.startPauseBtn.setEnabled(false);
 
         //wait 1 sec
         Thread thread = new Thread() {
@@ -293,7 +301,7 @@ public class Music_Player_Activity extends AppCompatActivity implements SharedPr
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                startPauseBtn.setEnabled(true);
+                                binding.startPauseBtn.setEnabled(true);
                             }
                         });
 
@@ -307,7 +315,7 @@ public class Music_Player_Activity extends AppCompatActivity implements SharedPr
         thread.start();
 
 
-        startPauseBtn.setOnClickListener(new View.OnClickListener() {
+        binding.startPauseBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 try {
@@ -320,7 +328,7 @@ public class Music_Player_Activity extends AppCompatActivity implements SharedPr
 
                     } else {
                         pauseSong = false;
-                        startPauseBtn.setImageResource(R.drawable.stop);
+                        binding.startPauseBtn.setImageResource(R.drawable.stop);
                         if (MusicPlayer != null) {
                             MusicPlayer.start();
                         }
@@ -336,26 +344,26 @@ public class Music_Player_Activity extends AppCompatActivity implements SharedPr
     private void NextSong() {
 
         //todo; first part of player
-        if(MusicPlayer != null){
+        if (MusicPlayer != null) {
             MusicPlayer.stop();
             MusicPlayer.release();
-            nextSong.setEnabled(true);
-            prevSong.setEnabled(true);
+            binding.nextSong.setEnabled(true);
+            binding.prevSong.setEnabled(true);
         }
 
         //todo: list
-        if(randomSongBoolean){
+        if (randomSongBoolean) {
             final int min = 0;
             final int max = 3;
             final int random = new Random().nextInt((max - min) + 1) + min;
-            number=number+random;
+            number = number + random;
         }
-        if(number==songList.size()-1 && !sharedPreferences.getBoolean("player_switch_2",false)){
+        if (number == songList.size() - 1 && !sharedPreferences.getBoolean("player_switch_2", false)) {
             Toast.makeText(this, "Its end, check settings", Toast.LENGTH_SHORT).show();
-            nextSong.setEnabled(false);
+            binding.nextSong.setEnabled(false);
             AnimateButton();
-            startPauseBtn.setImageResource(R.drawable.start);
-            String last=songList.get(songList.size()-1).getSongUrl();
+            binding.startPauseBtn.setImageResource(R.drawable.start);
+            String last = songList.get(songList.size() - 1).getSongUrl();
             try {
                 MusicPlayer.setDataSource(last);
                 MusicPlayer.prepareAsync();
@@ -366,10 +374,10 @@ public class Music_Player_Activity extends AppCompatActivity implements SharedPr
             changePlayPauseBtn();
 
             saveCurrentTrackSharedPreference();
-        }else{
+        } else {
 
             //todo: get next position from list
-            number=((number+1) % songList.size());
+            number = ((number + 1) % songList.size());
 
             //todo: update UI
             String currentAlbumUrlCD, currentMusicUrlCD, mainTitleCD, lastTitleCD, currentMusicDuration;
@@ -379,18 +387,20 @@ public class Music_Player_Activity extends AppCompatActivity implements SharedPr
             lastTitleCD = songList.get(number).getSongLastTitle();
             currentMusicDuration = songList.get(number).getSongDuration();
 
-            title.setText(mainTitleCD);
-            littletitle.setText(lastTitleCD);
+            binding.textMainTitle.setText(mainTitleCD);
+            binding.textLastTitle.setText(lastTitleCD);
             try {
-                timeDuration.setText(currentMusicDuration) ;
-            }catch (Exception ignored){}
-            try{
-                Glide.with(mainAlbumImage.getContext()).load(currentAlbumUrlCD).into(mainAlbumImage);
-            }catch (Exception ignored){}
+                binding.AllTime.setText(currentMusicDuration);
+            } catch (Exception ignored) {
+            }
+            try {
+                Glide.with(binding.imageAlbum.getContext()).load(currentAlbumUrlCD).into(binding.imageAlbum);
+            } catch (Exception ignored) {
+            }
 
             setBackColour(currentAlbumUrlCD);
 
-            nextSong.setEnabled(true);
+            binding.nextSong.setEnabled(true);
 
             AnimateButton();
 
@@ -405,10 +415,9 @@ public class Music_Player_Activity extends AppCompatActivity implements SharedPr
                 @Override
                 public void onPrepared(MediaPlayer mp) {
                     seekbar.setMax(MusicPlayer.getDuration());
-                    if(pauseSong){
-                        startPauseBtn.setImageResource(R.drawable.start);
-                    }
-                    else{
+                    if (pauseSong) {
+                        binding.startPauseBtn.setImageResource(R.drawable.start);
+                    } else {
                         mp.start();
                     }
                 }
@@ -420,7 +429,7 @@ public class Music_Player_Activity extends AppCompatActivity implements SharedPr
             MusicPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                 @Override
                 public void onCompletion(MediaPlayer mp) {
-                    if(seekbar.getProgress() == seekbar.getMax()){
+                    if (seekbar.getProgress() == seekbar.getMax()) {
                         NextSong();
                     }
                 }
@@ -429,7 +438,7 @@ public class Music_Player_Activity extends AppCompatActivity implements SharedPr
             changePlayPauseBtn();
 
             //todo: first part for likes
-            likeButton.setImageResource(R.drawable.likeoff);
+            binding.likeButton.setImageResource(R.drawable.likeoff);
             String id = songList.get(number).getUploadId();
             //todo: second part to likes
             setOrGetLikes(id);
@@ -444,25 +453,25 @@ public class Music_Player_Activity extends AppCompatActivity implements SharedPr
 
     public void PrevSong() {
 
-        if(number == 0){
+        if (number == 0) {
             Toast.makeText(this, "Its First track", Toast.LENGTH_SHORT).show();
             MusicPlayer.pause();
-            startPauseBtn.setImageResource(R.drawable.start);
-            prevSong.setEnabled(false);
+            binding.startPauseBtn.setImageResource(R.drawable.start);
+            binding.prevSong.setEnabled(false);
             AnimateButton();
 
             saveCurrentTrackSharedPreference();
 
-        }else {
+        } else {
             //todo: first part of player
-            if(MusicPlayer != null){
+            if (MusicPlayer != null) {
                 MusicPlayer.stop();
                 MusicPlayer.release();
-                nextSong.setEnabled(true);
-                prevSong.setEnabled(true);
+                binding.nextSong.setEnabled(true);
+                binding.prevSong.setEnabled(true);
             }
 
-            number=((number-1) % songList.size());
+            number = ((number - 1) % songList.size());
 
             //todo: update UI
             String currentAlbumUrlCD, currentMusicUrlCD, mainTitleCD, lastTitleCD;
@@ -471,18 +480,20 @@ public class Music_Player_Activity extends AppCompatActivity implements SharedPr
             mainTitleCD = songList.get(number).getSongMainTitle();
             lastTitleCD = songList.get(number).getSongLastTitle();
 
-            title.setText(mainTitleCD);
-            littletitle.setText(lastTitleCD);
+            binding.textMainTitle.setText(mainTitleCD);
+            binding.textLastTitle.setText(lastTitleCD);
             try {
-                timeDuration.setText(currentMusicDuration) ;
-            }catch (Exception ignored){}
-            try{
-                Glide.with(mainAlbumImage.getContext()).load(currentAlbumUrlCD).into(mainAlbumImage);
-            }catch (Exception ignored){}
+                binding.AllTime.setText(currentMusicDuration);
+            } catch (Exception ignored) {
+            }
+            try {
+                Glide.with(binding.imageAlbum.getContext()).load(currentAlbumUrlCD).into(binding.imageAlbum);
+            } catch (Exception ignored) {
+            }
 
             setBackColour(currentAlbumUrlCD);
 
-            prevSong.setEnabled(true);
+            binding.prevSong.setEnabled(true);
 
             AnimateButton();
 
@@ -498,10 +509,9 @@ public class Music_Player_Activity extends AppCompatActivity implements SharedPr
                 @Override
                 public void onPrepared(MediaPlayer mp) {
                     seekbar.setMax(MusicPlayer.getDuration());
-                    if(pauseSong){
-                        startPauseBtn.setImageResource(R.drawable.start);
-                    }
-                    else{
+                    if (pauseSong) {
+                        binding.startPauseBtn.setImageResource(R.drawable.start);
+                    } else {
                         mp.start();
                     }
                 }
@@ -514,7 +524,7 @@ public class Music_Player_Activity extends AppCompatActivity implements SharedPr
             MusicPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                 @Override
                 public void onCompletion(MediaPlayer mp) {
-                    if(seekbar.getProgress() == seekbar.getMax()){
+                    if (seekbar.getProgress() == seekbar.getMax()) {
                         NextSong();
                     }
                 }
@@ -524,7 +534,7 @@ public class Music_Player_Activity extends AppCompatActivity implements SharedPr
 
 
             //todo: first part for likes
-            likeButton.setImageResource(R.drawable.likeoff);
+            binding.likeButton.setImageResource(R.drawable.likeoff);
             String id = songList.get(number).getUploadId();
             //todo: second part to likes
             setOrGetLikes(id);
@@ -545,16 +555,15 @@ public class Music_Player_Activity extends AppCompatActivity implements SharedPr
     @Override
     public void showHeartIfLiked(boolean check) {
 
-        if(check){
-            likeButton.setImageResource(R.drawable.likeon);
-        }
-        else{
-            likeButton.setImageResource(R.drawable.likeoff);
+        if (check) {
+            binding.likeButton.setImageResource(R.drawable.likeon);
+        } else {
+            binding.likeButton.setImageResource(R.drawable.likeoff);
         }
     }
 
     private void likeSong() {
-        likeButton.setOnClickListener(new View.OnClickListener() {
+        binding.likeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 presenter.likeSong(number, myUid);
@@ -568,8 +577,8 @@ public class Music_Player_Activity extends AppCompatActivity implements SharedPr
     }
 
     //todo: support music method
-    private void initLoopSongBtn(){
-        loop.setOnClickListener(new View.OnClickListener() {
+    private void initLoopSongBtn() {
+        binding.loop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 toLoop();
@@ -577,10 +586,10 @@ public class Music_Player_Activity extends AppCompatActivity implements SharedPr
         });
     }
 
-    private void setBackColour(String src){
-        SharedPreferences sharedPreferences= PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+    private void setBackColour(String src) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
-        if(sharedPreferences.getBoolean("player_switch_1",true)) {
+        if (sharedPreferences.getBoolean("player_switch_1", true)) {
             //todo: Async download
             Download_Image_Task downloadImage = new Download_Image_Task();
             //todo: set back
@@ -606,34 +615,35 @@ public class Music_Player_Activity extends AppCompatActivity implements SharedPr
                 });
                 // clean its work?? work in onBackground?
                 // bitmap.recycle();
-            }catch (Exception ignored){}
+            } catch (Exception ignored) {
+            }
 
         }
 
     }
 
     private void SeekBar() {
-            new Timer().scheduleAtFixedRate(new TimerTask() {
-                @Override
-                public void run() {
-                    try {
-                        seekbar.setProgress(MusicPlayer.getCurrentPosition());
+        new Timer().scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                try {
+                    seekbar.setProgress(MusicPlayer.getCurrentPosition());
 
-                        if(seekbar.getProgress() == seekbar.getMax()){
-                            NextSong();
-                        }
-
-                    }catch (IllegalStateException ignored){
+                    if (seekbar.getProgress() == seekbar.getMax()) {
+                        NextSong();
                     }
+
+                } catch (IllegalStateException ignored) {
                 }
-            }, 0, 100);
+            }
+        }, 0, 100);
 
         seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {  // Пишем метод,чтобы после передвижение ползунка моталлся трек вперед-назад.
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 if (fromUser) {
                     MusicPlayer.seekTo(progress);  // seekTo - перевести в нужную позицию.
-                    if(progress == 100){
+                    if (progress == 100) {
                         NextSong();
                     }
                 }
@@ -655,7 +665,7 @@ public class Music_Player_Activity extends AppCompatActivity implements SharedPr
                 } else {
                     secondsString = "" + seconds;
                 }
-                timeUpDate.setText(String.valueOf(minutesString + ":" + secondsString));
+                binding.updateTime.setText(String.valueOf(minutesString + ":" + secondsString));
                 //set updatable time for seekBar
 
                 //set time = song duration
@@ -686,9 +696,11 @@ public class Music_Player_Activity extends AppCompatActivity implements SharedPr
 
 
             }
+
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
             }
+
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
             }
@@ -696,39 +708,37 @@ public class Music_Player_Activity extends AppCompatActivity implements SharedPr
 
     }
 
-    private void AnimateButton(){
-        if(!nextSong.isEnabled()){     // Анимируем Вперед
-            nextSong.setAlpha(0.5f);
-        }else if(nextSong.isEnabled()){
-            nextSong.setAlpha(1.0f);
+    private void AnimateButton() {
+        if (!binding.nextSong.isEnabled()) {     // Анимируем Вперед
+            binding.nextSong.setAlpha(0.5f);
+        } else if (binding.nextSong.isEnabled()) {
+            binding.nextSong.setAlpha(1.0f);
         }
-        if(!prevSong.isEnabled()){        // Анимируем Назад
-            prevSong.setAlpha(0.5f);
-        }else if(prevSong.isEnabled()){
-            prevSong.setAlpha(1.0f);
+        if (!binding.prevSong.isEnabled()) {        // Анимируем Назад
+            binding.prevSong.setAlpha(0.5f);
+        } else if (binding.prevSong.isEnabled()) {
+            binding.prevSong.setAlpha(1.0f);
         }
     }
 
-    private void notificationPlayPauseBtn(){
-        if(MusicPlayer.isPlaying()){
+    private void notificationPlayPauseBtn() {
+        if (MusicPlayer.isPlaying()) {
             currentStateBtn = 2;
-        }
-        else{
+        } else {
             currentStateBtn = 1;
         }
     }
 
-    private void changePlayPauseBtn(){
-        if(MusicPlayer.isPlaying()){
-            startPauseBtn.setImageResource(R.drawable.start);
-        }
-        else{
-            startPauseBtn.setImageResource(R.drawable.stop);
+    private void changePlayPauseBtn() {
+        if (MusicPlayer.isPlaying()) {
+            binding.startPauseBtn.setImageResource(R.drawable.start);
+        } else {
+            binding.startPauseBtn.setImageResource(R.drawable.stop);
         }
     }
 
-    private void saveCurrentTrackSharedPreference(){
-        boolean play ;
+    private void saveCurrentTrackSharedPreference() {
+        boolean play;
         play = MusicPlayer.isPlaying();
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(Music_Player_Activity.this);
         preferences.edit()
@@ -739,7 +749,7 @@ public class Music_Player_Activity extends AppCompatActivity implements SharedPr
 
     //todo: action button
     private void toMusicList() {
-        backToListBtn.setOnClickListener(new View.OnClickListener() {
+        binding.backToListBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent GoToMusicList = new Intent(Music_Player_Activity.this, Music_List_Activity.class);
@@ -749,7 +759,7 @@ public class Music_Player_Activity extends AppCompatActivity implements SharedPr
     }
 
     private void ShareBtn() {
-        shareSongBtn.setOnClickListener(new View.OnClickListener() {
+        binding.shareSongBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String emailText = "Track name - " + mainTitle;
@@ -767,7 +777,7 @@ public class Music_Player_Activity extends AppCompatActivity implements SharedPr
     }
 
     private void GoToHomePage() {
-        homeBtn.setOnClickListener(new View.OnClickListener() {
+        binding.homeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent GoToHomePage = new Intent(Music_Player_Activity.this, Dashboard_Activity.class);
@@ -777,34 +787,34 @@ public class Music_Player_Activity extends AppCompatActivity implements SharedPr
     }
 
     private void toLoop() {
-        if(!MusicPlayer.isLooping()){
+        if (!MusicPlayer.isLooping()) {
             Toast.makeText(this, "Looping On", Toast.LENGTH_SHORT).show();
             MusicPlayer.setLooping(true);
-            loop.setAlpha(1.0f);
+            binding.loop.setAlpha(1.0f);
             isLooping = true;
-        }else if(MusicPlayer.isLooping()){
+        } else if (MusicPlayer.isLooping()) {
             Toast.makeText(this, "Looping Off", Toast.LENGTH_SHORT).show();
             MusicPlayer.setLooping(false);
-            loop.setAlpha(0.5f);
+            binding.loop.setAlpha(0.5f);
             isLooping = false;
         }
     }
 
     private void randomSong() {   //Рандомный трек
-        randomSongBtn.setOnClickListener(new View.OnClickListener() {
+        binding.randomSongBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!randomSongBoolean){
-                    randomSongBoolean=true;
+                if (!randomSongBoolean) {
+                    randomSongBoolean = true;
                     Toast.makeText(Music_Player_Activity.this, "Random On", Toast.LENGTH_SHORT).show();
                     //showSnackBar("Random On");
-                    randomSongBtn.setAlpha(1.0f);
+                    binding.randomSongBtn.setAlpha(1.0f);
 
-                }else {
-                    randomSongBoolean=false;
+                } else {
+                    randomSongBoolean = false;
                     Toast.makeText(Music_Player_Activity.this, "Random Off", Toast.LENGTH_SHORT).show();
                     //  showSnackBar("Random Off");
-                    randomSongBtn.setAlpha(0.5f);
+                    binding.randomSongBtn.setAlpha(0.5f);
                 }
             }
         });
@@ -813,7 +823,7 @@ public class Music_Player_Activity extends AppCompatActivity implements SharedPr
     }
 
     private void HQBtn() {
-        hqBtn.setOnClickListener(new View.OnClickListener() {
+        binding.hqBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(Music_Player_Activity.this, "Activate your Premium access", Toast.LENGTH_SHORT).show();
@@ -823,7 +833,7 @@ public class Music_Player_Activity extends AppCompatActivity implements SharedPr
     }
 
     public void GoToSettings() {
-        settingsBtn.setOnClickListener(new View.OnClickListener() {
+        binding.settingsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent GoToSettings = new Intent(Music_Player_Activity.this, Settings_Activity.class);
@@ -839,27 +849,10 @@ public class Music_Player_Activity extends AppCompatActivity implements SharedPr
 
     }
 
-    //TODO: Block online/offline
-    public void updateUserStatus( String state){
-        Online_Offline_User_Service_To_Firebase.updateUserStatus(state, this);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        updateUserStatus("online");
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        updateUserStatus("offline");
-    }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             notificationManager.cancelAll();
         }
 
@@ -884,17 +877,16 @@ public class Music_Player_Activity extends AppCompatActivity implements SharedPr
         public void onReceive(Context context, Intent intent) {
             String action = intent.getExtras().getString("musicAction");
 
-            switch (action){
+            switch (action) {
                 case App_Constants.ACTION_PREVIOUS:
                     //PrevSong(null);
                     onTrackPrevious();
                     break;
                 case App_Constants.ACTION_PLAY:
-                    if(MusicPlayer.isPlaying()){
+                    if (MusicPlayer.isPlaying()) {
                         // MusicPlayer.pause();
                         onTrackPause();
-                    }
-                    else{
+                    } else {
                         //MusicPlayer.start();
                         onTrackPlay();
                     }
@@ -914,10 +906,10 @@ public class Music_Player_Activity extends AppCompatActivity implements SharedPr
         supportTrackPrevious();
     }
 
-    private void supportTrackPrevious(){
+    private void supportTrackPrevious() {
         notificationPlayPauseBtn();
         changePlayPauseBtn();
-        Create_Music_Notification.createNotification(Music_Player_Activity.this, songList.get(number), 2, number, songList.size()-1);
+        Create_Music_Notification.createNotification(Music_Player_Activity.this, songList.get(number), 2, number, songList.size() - 1);
     }
 
     @Override
@@ -927,11 +919,11 @@ public class Music_Player_Activity extends AppCompatActivity implements SharedPr
 
     }
 
-    private void supportTrackPlay(){
+    private void supportTrackPlay() {
         notificationPlayPauseBtn();
         isPlaying = true;
-        startPauseBtn.setImageResource(R.drawable.stop);
-        Create_Music_Notification.createNotification(Music_Player_Activity.this, songList.get(number), currentStateBtn, number, songList.size()-1);
+        binding.startPauseBtn.setImageResource(R.drawable.stop);
+        Create_Music_Notification.createNotification(Music_Player_Activity.this, songList.get(number), currentStateBtn, number, songList.size() - 1);
     }
 
     @Override
@@ -940,11 +932,11 @@ public class Music_Player_Activity extends AppCompatActivity implements SharedPr
         supportTrackPause();
     }
 
-    private void supportTrackPause(){
+    private void supportTrackPause() {
         notificationPlayPauseBtn();
         isPlaying = false;
-        Create_Music_Notification.createNotification(Music_Player_Activity.this, songList.get(number), currentStateBtn, number, songList.size()-1);
-        startPauseBtn.setImageResource(R.drawable.start);
+        Create_Music_Notification.createNotification(Music_Player_Activity.this, songList.get(number), currentStateBtn, number, songList.size() - 1);
+        binding.startPauseBtn.setImageResource(R.drawable.start);
     }
 
     @Override
@@ -953,10 +945,10 @@ public class Music_Player_Activity extends AppCompatActivity implements SharedPr
         supportTrackNext();
     }
 
-    private void supportTrackNext(){
+    private void supportTrackNext() {
         notificationPlayPauseBtn();
         changePlayPauseBtn();
-        Create_Music_Notification.createNotification(Music_Player_Activity.this, songList.get(number), 2, number, songList.size()-1);
+        Create_Music_Notification.createNotification(Music_Player_Activity.this, songList.get(number), 2, number, songList.size() - 1);
     }
 
     private void createChannel() {
@@ -966,7 +958,7 @@ public class Music_Player_Activity extends AppCompatActivity implements SharedPr
             channel.enableLights(true);
 
             notificationManager = getSystemService(NotificationManager.class);
-            if(notificationManager != null){
+            if (notificationManager != null) {
                 notificationManager.createNotificationChannel(channel);
             }
         }

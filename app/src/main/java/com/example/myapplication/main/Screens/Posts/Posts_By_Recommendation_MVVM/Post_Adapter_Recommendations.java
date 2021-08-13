@@ -61,7 +61,7 @@ public class Post_Adapter_Recommendations extends RecyclerView.Adapter<Post_Adap
     @NonNull
     @Override
     public RecommendationsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        RowPostRecommendationsBinding rowPostRecommendationsBinding= DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),
+        RowPostRecommendationsBinding rowPostRecommendationsBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),
                 R.layout.row_post_recommendations,
                 parent, false);
         return new RecommendationsViewHolder(rowPostRecommendationsBinding);

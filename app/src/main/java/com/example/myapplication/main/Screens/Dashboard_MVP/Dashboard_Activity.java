@@ -9,6 +9,7 @@ import androidx.preference.PreferenceManager;
 import androidx.viewpager.widget.ViewPager;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -27,13 +28,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.myapplication.Common_Dagger_App_Class.App;
 import com.example.myapplication.Services.App_Constants;
 import com.example.myapplication.Services.Online_Offline_User_Service_To_Firebase;
 import com.example.myapplication.main.Models.Model_ViewPager;
 import com.example.myapplication.R;
 import com.example.myapplication.main.Screens.Dashboard_MVP.View_Pager_And_Shop_Activity.ViewPager_Adapter;
 import com.example.myapplication.main.Screens.Find_Selected_Or_My_User_Location.Users_FInd_Location;
-import com.example.myapplication.main.Screens.Posts.Posts_By_Friends_MVP.Post_Activity_Friends;
+import com.example.myapplication.main.Screens.Posts.Posts_By_Friends_MVVM.Post_Activity_Friends;
 import com.example.myapplication.main.Screens.User_List_4_States_MVVM.User_List_Activity;
 import com.example.myapplication.main.Screens.User_Profile_MVVM.User_Profile_Activity;
 import com.example.myapplication.main.Screens.Additional.Kino_Json.Kino_Search_Info_Activity;
@@ -41,6 +43,7 @@ import com.example.myapplication.main.Screens.Music.Music_List_Activity_MVVM.Mus
 import com.example.myapplication.Notes_ROOM_MVVM.Notes_Activity;
 import com.example.myapplication.main.Screens.DB_Activities.Workout_SQL.Workout_Register_Activity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.auth.FirebaseAuth;
 
 import org.jetbrains.annotations.NotNull;
@@ -49,7 +52,12 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import javax.inject.Inject;
+
 public class Dashboard_Activity extends AppCompatActivity implements Dashboard_view {
+
+    @Inject
+    Online_Offline_User_Service_To_Firebase controller;
 
     private BottomNavigationView bottomNavigationView;
     private String myUid;
@@ -80,8 +88,6 @@ public class Dashboard_Activity extends AppCompatActivity implements Dashboard_v
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-        presenter = new Dashboard_Presenter(this);
-
         initialization();
 
         initWeatherCard();
@@ -104,11 +110,16 @@ public class Dashboard_Activity extends AppCompatActivity implements Dashboard_v
 
         checkPermission();
 
-        updateUserStatus("online");
-
     }
 
     private void initialization() {
+
+        ((App) getApplication()).getCommonComponent().inject(this);
+        presenter = new Dashboard_Presenter(this);
+
+        //TODO: lifecycle
+        getLifecycle().addObserver(controller);
+
         stateWeather = findViewById(R.id.stateWeather);
         city = findViewById(R.id.cityWeather);
         temp = findViewById(R.id.tempWeather);
@@ -195,7 +206,7 @@ public class Dashboard_Activity extends AppCompatActivity implements Dashboard_v
             kinoTitle.setText(R.string.no_search);
         }
         else{
-            kinoTitle.setText(String.valueOf("Last search: " + "\n" + title));
+            kinoTitle.setText(title);
         }
 
     }
@@ -221,19 +232,19 @@ public class Dashboard_Activity extends AppCompatActivity implements Dashboard_v
         ArrayList<Model_ViewPager> shopList = new ArrayList<>();
 
         //add item
-        shopList.add(new Model_ViewPager(" Tactical helmet s2180",
+        shopList.add(new Model_ViewPager(" Airsoft helmet s2180",
                 " New generation tactical helmet",
                 R.drawable.helmet,98));
 
-        shopList.add(new Model_ViewPager(" Tactical armour e1210",
+        shopList.add(new Model_ViewPager(" Airsoft armour e1210",
                 " New generation tactical armour",
                 R.drawable.armour,144));
 
-        shopList.add(new Model_ViewPager(" Tactical kneepads u808",
+        shopList.add(new Model_ViewPager(" Airsoft kneepads u808",
                 " New generation tactical kneepads",
                 R.drawable.kneepads,32));
 
-        shopList.add(new Model_ViewPager(" Tactical gloves us218",
+        shopList.add(new Model_ViewPager(" Airsoft gloves us218",
                 " New generation tactical gloves",
                 R.drawable.tacticalgloves,20));
 
@@ -275,7 +286,8 @@ public class Dashboard_Activity extends AppCompatActivity implements Dashboard_v
 
         bottomNavigationView.setSelectedItemId(R.id.dashboard_nav);
         //PerformItemSelectedListner
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+        bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+            @SuppressLint("NonConstantResourceId")
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch(item.getItemId()){
@@ -302,26 +314,9 @@ public class Dashboard_Activity extends AppCompatActivity implements Dashboard_v
                         overridePendingTransition(0,0);
                         return true;
                 }
-                return false;
+                return true;
             }
         });
-    }
-
-    //TODO: block online/offline
-    public void updateUserStatus( String state){
-        Online_Offline_User_Service_To_Firebase.updateUserStatus(state, this);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        updateUserStatus("online");
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        updateUserStatus("offline");
     }
 
     //TODO: check all permission for App
@@ -419,7 +414,7 @@ public class Dashboard_Activity extends AppCompatActivity implements Dashboard_v
     //todo: disable back btn
     @Override
     public void onBackPressed() {
-
+        //dismiss
     }
 
     public void PathToRecycleView(View view) {

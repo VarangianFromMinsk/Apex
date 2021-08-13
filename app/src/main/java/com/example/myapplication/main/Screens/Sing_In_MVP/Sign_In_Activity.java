@@ -3,9 +3,12 @@ package com.example.myapplication.main.Screens.Sing_In_MVP;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelStoreOwner;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.app.Application;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -22,7 +25,12 @@ import android.widget.Toast;
 import com.example.myapplication.databinding.SignInActivityBinding;
 import com.example.myapplication.main.Screens.Dashboard_MVP.Dashboard_Activity;
 import com.example.myapplication.R;
+import com.example.myapplication.main.Screens.Posts.Posts_By_Recommendation_MVVM.Post_Recomm_ViewModel;
 import com.google.firebase.auth.FirebaseAuth;
+
+import java.util.Objects;
+
+import dagger.Provides;
 
 public class Sign_In_Activity extends AppCompatActivity implements Sing_In_view {
 
@@ -42,7 +50,7 @@ public class Sign_In_Activity extends AppCompatActivity implements Sing_In_view 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sign_in_activity);
 
-        getSupportActionBar().hide();
+        Objects.requireNonNull(getSupportActionBar()).hide();
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
@@ -55,7 +63,7 @@ public class Sign_In_Activity extends AppCompatActivity implements Sing_In_view 
 
         initialization();
 
-        videoBack();
+        videoBackground();
 
         initLoginBtn();
 
@@ -72,7 +80,7 @@ public class Sign_In_Activity extends AppCompatActivity implements Sing_In_view 
         auth = FirebaseAuth.getInstance();
     }
 
-    public void videoBack() {
+    public void  videoBackground() {
         try {
             binding.videoLogIn.setVideoPath("android.resource://" + getPackageName() + "/" + R.raw.loginthis);
             binding.videoLogIn.start();
@@ -89,7 +97,7 @@ public class Sign_In_Activity extends AppCompatActivity implements Sing_In_view 
         binding.loginSingUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loginSingUpUser(binding.emailEditText.getText().toString().trim(), binding.passwordEditText.getText().toString().trim());
+                loginSingUpUser(Objects.requireNonNull(binding.emailEditText.getText()).toString().trim(), binding.passwordEditText.getText().toString().trim());
             }
         });
     }
@@ -111,7 +119,7 @@ public class Sign_In_Activity extends AppCompatActivity implements Sing_In_view 
             //TODO: registration
             if (!binding.passwordEditText.getText().toString().trim().equals(binding.repeatpasswordEditText.getText().toString().trim())) {  // Проверяем совпадает 1 и 2 пароль при регистрации
                 Toast.makeText(this, "Passwords don't match", Toast.LENGTH_LONG).show();
-            } else if (binding.emailEditText.getText().toString().trim().equals("")) {
+            } else if (Objects.requireNonNull(binding.emailEditText.getText()).toString().trim().equals("")) {
                 Toast.makeText(this, "Input mail", Toast.LENGTH_LONG).show();
             } else if (binding.passwordEditText.getText().toString().trim().length() < 7) {
                 Toast.makeText(this, "Min 7 symbols in password ", Toast.LENGTH_LONG).show();
@@ -128,7 +136,7 @@ public class Sign_In_Activity extends AppCompatActivity implements Sing_In_view 
             }
 
         } else {
-            if (binding.emailEditText.getText().toString().trim().equals("")) {          // Проверка что бы мэил не был пустым
+            if (Objects.requireNonNull(binding.emailEditText.getText()).toString().trim().equals("")) {          // Проверка что бы мэил не был пустым
                 Toast.makeText(this, "Input mail", Toast.LENGTH_LONG).show();
             } else if (binding.passwordEditText.getText().toString().trim().length() < 7) {
                 Toast.makeText(this, "Min 7 symbols in password ", Toast.LENGTH_LONG).show();     // т к в Firebase минимум 6 символов
@@ -147,6 +155,7 @@ public class Sign_In_Activity extends AppCompatActivity implements Sing_In_view 
         progressDialog.dismiss();
         if (isSuccess) {
             Intent intent = new Intent(Sign_In_Activity.this, Dashboard_Activity.class);
+            finish();
             overridePendingTransition(0, 0);
             startActivity(intent);
         } else {
@@ -159,6 +168,8 @@ public class Sign_In_Activity extends AppCompatActivity implements Sing_In_view 
         progressDialog.dismiss();
         if (isSuccess) {
             Intent intent = new Intent(Sign_In_Activity.this, Dashboard_Activity.class);
+            finish();
+            overridePendingTransition(0, 0);
             startActivity(intent);
         } else {
             Toast.makeText(Sign_In_Activity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
@@ -284,4 +295,9 @@ public class Sign_In_Activity extends AppCompatActivity implements Sing_In_view 
         //dismiss
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        videoBackground();
+    }
 }

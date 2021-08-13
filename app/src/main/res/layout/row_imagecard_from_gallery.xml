@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:id="@+id/layFormPhotoPhone"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:animateLayoutChanges="true"
+    android:layout_width="130dp"
+    android:layout_height="130dp"
+    android:focusable="false"
+    android:focusableInTouchMode="false">
+
+    <View
+        android:id="@+id/back"
+        android:visibility="gone"
+        android:layout_width="130dp"
+        android:layout_height="130dp"
+        android:background="@color/purple_500" />
+
+    <ImageView
+        android:id="@+id/galleryImage"
+        android:layout_centerInParent="true"
+        android:scaleType="centerCrop"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        tools:ignore="ContentDescription" />
+
+    <View
+        android:id="@+id/backCount"
+        android:visibility="gone"
+        android:layout_alignParentBottom="true"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="#2541A3" />
+
+    <TextView
+        android:id="@+id/IndividualCount"
+        android:visibility="gone"
+        android:layout_width="20dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginBottom="3dp"
+        android:layout_alignParentBottom="true"
+        android:textColor="@color/white"
+        android:textSize="25sp" />
+
+
+</RelativeLayout>

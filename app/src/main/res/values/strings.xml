@@ -123,7 +123,7 @@
     <string name="new_account">New account</string>
 
     <!-- TODO: Finds_Location-->
-     <string name="find_nearest_user">Find nearest user</string>
+    <string name="find_nearest_user">Find nearest user</string>
     <string name="find_selected_user">Find selected user</string>
     <string name="finding_location">Finding location..</string>
     <string name="Distance">\"Distance - \"</string>
@@ -150,12 +150,17 @@
     <string name="no_file_selected">No file selected</string>
     <string name="choose_album">Choose album</string>
     <string name="upload_treck">Upload treck</string>
+    <string name="server_limit_reached">Server Limit Reached</string>
 
     <!-- TODO: Chat-->
-    <string name="texting_to_you">texting to you ...</string>
+    <string name="texting_to_you">texting to you …</string>
     <string name="refresh">refresh</string>
     <string name="name">Name</string>
     <string name="online">Online</string>
+    <string name="your_message">Your message…</string>
+    <string name="press_send_to_repost">Press send to repost</string>
+    <string name="send">send</string>
+
 
     <!-- TODO: Chat_Bubble -->
     <string name="postname">PostName</string>
@@ -217,5 +222,10 @@
     <string name="gallery">Gallery</string>
     <string name="camera">Camera</string>
 
+    <!-- TODO: BottomSheetDialog in Add_Change_Post -->
+    <string name="number_selected">number selected</string>
+    <string name="back">Close</string>
+    <string name="ready">Ready</string>
+    <string name="select_one">Select one</string>
 
 </resources>

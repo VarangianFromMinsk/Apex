@@ -16,6 +16,8 @@ import com.example.myapplication.Services.Online_Offline_User_Service_To_Firebas
 import com.example.myapplication.databinding.ShowImageActivityBinding;
 import com.example.myapplication.main.Screens.User_List_4_States_MVVM.User_List_Activity;
 
+import java.util.Objects;
+
 import javax.inject.Inject;
 
 public class Show_Image_Activity extends AppCompatActivity implements Show_Image_view {
@@ -34,7 +36,7 @@ public class Show_Image_Activity extends AppCompatActivity implements Show_Image
         super.onCreate(savedInstanceState);
         setContentView(R.layout.show_image_activity);
 
-        getSupportActionBar().hide();
+        Objects.requireNonNull(getSupportActionBar()).hide();
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
@@ -86,6 +88,7 @@ public class Show_Image_Activity extends AppCompatActivity implements Show_Image
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Show_Image_Activity.this, User_List_Activity.class)
+                        .putExtra("shareImage", "true")
                         .putExtra("check", "true")
                         .putExtra("imageURL", image)
                         .putExtra("typeOfUserList", "all");

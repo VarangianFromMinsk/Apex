@@ -18,11 +18,12 @@ import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.Toast;
 
+import com.example.myapplication.Common_Dagger_App_Class.App;
 import com.example.myapplication.Services.Online_Offline_User_Service_To_Firebase;
 import com.example.myapplication.main.Screens.Dashboard_MVP.Dashboard_Activity;
 import com.example.myapplication.R;
 import com.example.myapplication.main.Models.Model_Song;
-import com.example.myapplication.main.Screens.Posts.Posts_By_Friends_MVP.Post_Activity_Friends;
+import com.example.myapplication.main.Screens.Posts.Posts_By_Friends_MVVM.Post_Activity_Friends;
 import com.example.myapplication.main.Screens.User_List_4_States_MVVM.User_List_Activity;
 import com.example.myapplication.main.Screens.User_Profile_MVVM.User_Profile_Activity;
 import com.example.myapplication.main.Screens.Music.Add_Music_Activity_MVP.Add_Music_Activity;
@@ -33,7 +34,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import javax.inject.Inject;
+
 public class Music_List_Activity extends AppCompatActivity {
+
+    @Inject
+    Online_Offline_User_Service_To_Firebase controller;
 
     //todo: main staff
     private RecyclerView recyclerView;
@@ -57,7 +63,10 @@ public class Music_List_Activity extends AppCompatActivity {
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
+        ((App) getApplication()).getCommonComponent().inject(this);
         viewModel = new ViewModelProvider(this).get(Music_List_ViewModel.class);
+
+        getLifecycle().addObserver(controller);
 
         initialization();
 
@@ -200,14 +209,14 @@ public class Music_List_Activity extends AppCompatActivity {
                         overridePendingTransition(0,0);
                         return true;
                 }
-                return false;
+                return true;
             }
         });
     }
 
     //todo: block online/offline and location
     public void updateUserStatus( String state){
-        Online_Offline_User_Service_To_Firebase.updateUserStatus(state, this);
+      //  Online_Offline_User_Service_To_Firebase.updateUserStatus(state, this);
     }
 
     @Override

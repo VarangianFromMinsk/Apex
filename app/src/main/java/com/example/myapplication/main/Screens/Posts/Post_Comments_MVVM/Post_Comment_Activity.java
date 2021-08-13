@@ -38,7 +38,7 @@ import com.example.myapplication.main.Models.Model_User;
 import com.example.myapplication.main.Screens.Posts.Add_Change_Post_MVP.Add_Change_Post_Activity;
 import com.example.myapplication.main.Models.Model_Comment;
 import com.example.myapplication.main.Models.Model_Post;
-import com.example.myapplication.main.Screens.Posts.Posts_By_Friends_MVP.Post_Activity_Friends;
+import com.example.myapplication.main.Screens.Posts.Posts_By_Friends_MVVM.Post_Activity_Friends;
 import com.example.myapplication.main.Screens.Show_Image_MVP.Show_Image_Activity;
 import com.example.myapplication.main.Screens.User_List_4_States_MVVM.User_List_Activity;
 import com.example.myapplication.main.Screens.User_Profile_MVVM.User_Profile_Activity;
@@ -282,6 +282,19 @@ public class Post_Comment_Activity extends AppCompatActivity {
 
         drawable = binding.pLikeClickComment.getDrawable();
 
+
+        binding.cardInPostComment.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                //todo: showImageFullScreen
+                Intent intent = new Intent(Post_Comment_Activity.this, Show_Image_Activity.class);
+                intent.putExtra("imageURL", pImage);
+                overridePendingTransition(0, 0);
+                startActivity(intent);
+                return true;
+            }
+        });
+
         binding.cardInPostComment.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
@@ -324,12 +337,6 @@ public class Post_Comment_Activity extends AppCompatActivity {
                     isItLikeAnim = false;
                     doubleClick=true;
                     handler.postDelayed(r, 500);
-
-                    //todo: showImageFullScreen
-                    Intent intent = new Intent(Post_Comment_Activity.this, Show_Image_Activity.class);
-                    intent.putExtra("imageURL", pImage);
-                    overridePendingTransition(0, 0);
-                    startActivity(intent);
                 }
 
             }
@@ -489,4 +496,5 @@ public class Post_Comment_Activity extends AppCompatActivity {
     private void showSnackBar(final String mainText, final String action, View.OnClickListener listener) {
         Snackbar.make(findViewById(android.R.id.content), mainText, Snackbar.LENGTH_INDEFINITE).setAction(action, listener).show();
     }
+
 }

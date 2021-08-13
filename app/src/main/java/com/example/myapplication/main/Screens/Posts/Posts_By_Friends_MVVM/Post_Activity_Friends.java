@@ -1,21 +1,22 @@
-package com.example.myapplication.main.Screens.Posts.Posts_By_Friends_MVP;
+package com.example.myapplication.main.Screens.Posts.Posts_By_Friends_MVVM;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.SearchView;
+import android.widget.Toast;
 
 import com.example.myapplication.Common_Dagger_App_Class.App;
 import com.example.myapplication.Services.Check_Internet_Connection_Exist;
@@ -27,13 +28,13 @@ import com.example.myapplication.main.Screens.Posts.Add_Change_Post_MVP.Add_Chan
 import com.example.myapplication.main.Models.Model_Post;
 
 import com.example.myapplication.main.Screens.Posts.Posts_By_Recommendation_MVVM.Post_Activity_Recommendations;
+import com.example.myapplication.main.Screens.Posts.Posts_By_Recommendation_MVVM.Post_Recomm_ViewModel;
 import com.example.myapplication.main.Screens.User_List_4_States_MVVM.User_List_Activity;
 import com.example.myapplication.main.Screens.User_Profile_MVVM.User_Profile_Activity;
 import com.example.myapplication.main.Screens.Music.Music_List_Activity_MVVM.Music_List_Activity;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.snackbar.Snackbar;
 
-import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -43,7 +44,7 @@ import static android.content.Intent.FLAG_ACTIVITY_NO_ANIMATION;
 
 //TODO: created by Anton Sushchevich MVP format
 
-public class Post_Activity_Friends extends AppCompatActivity implements Post_List_view{
+public class Post_Activity_Friends extends AppCompatActivity {
 
     @Inject
     Post_Adapter_Friends postAdapter;
@@ -58,8 +59,7 @@ public class Post_Activity_Friends extends AppCompatActivity implements Post_Lis
     Online_Offline_User_Service_To_Firebase controller;
 
     //TODO: create presenter
-    private Post_Friends_Presenter presenter;
-
+    private Post_Friends_ViewModel viewModel;
     private PostActivityFriendsBinding postBinding;
 
 
@@ -82,20 +82,21 @@ public class Post_Activity_Friends extends AppCompatActivity implements Post_Lis
 
         createRecyclerView();
 
-        loadPosts();
+        checkLoadComplete();
+
+        checkNewPostsExists();
 
         initRefreshLayout();
 
         initRecommendBtn();
     }
 
-
     //TODO: main
     private void initialization() {
 
         ((App) getApplication()).getCommonComponent().inject(this);
 
-        presenter = new Post_Friends_Presenter(this);
+        viewModel = new ViewModelProvider(this).get(Post_Friends_ViewModel.class);
 
         postBinding = DataBindingUtil.setContentView(this, R.layout.post_activity_friends);
 
@@ -125,7 +126,29 @@ public class Post_Activity_Friends extends AppCompatActivity implements Post_Lis
         //TODO: перелистывает как VIEWPAGER + тонко настроить растояние и анимацию
        // SnapHelper snapHelper = new LinearSnapHelper();
        // snapHelper.attachToRecyclerView(recyclerView);
+
+        loadPosts();
+
+        viewModel.getMutPostListFriends().observe(this, new Observer<ArrayList<Model_Post>>() {
+            @Override
+            public void onChanged(ArrayList<Model_Post> posts) {
+                Log.d("postsList", String.valueOf(posts));
+                postAdapter.setPostList(posts);
+            }
+        });
     }
+
+    private void checkLoadComplete() {
+        viewModel.getShowLoad().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean state) {
+                if(state){
+                  //  postBinding.progressBarFriends.setVisibility(View.GONE);
+                }
+            }
+        });
+    }
+
 
     private void initSearchUser() {
         postBinding.actionSearch.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -157,11 +180,28 @@ public class Post_Activity_Friends extends AppCompatActivity implements Post_Lis
     }
 
     private void loadPosts() {
-         presenter.loadData("no");
+        viewModel.loadData("no");
     }
 
     private void searchPosts(String searchQuery) {
-        presenter.loadData(searchQuery);
+        viewModel.loadData(searchQuery);
+    }
+
+    private void checkNewPostsExists() {
+        viewModel.getShowNewPosts().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean state) {
+                if(state){
+                    postBinding.showNewPostBtn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                           // postBinding.progressBarFriends.setVisibility(View.VISIBLE);
+                            loadPosts();
+                        }
+                    });
+                }
+            }
+        });
     }
 
     public  void initRefreshLayout() {
@@ -195,10 +235,6 @@ public class Post_Activity_Friends extends AppCompatActivity implements Post_Lis
         startActivity(intent);
     }
 
-    @Override
-    public void showData(ArrayList<Model_Post> posts) {
-        postAdapter.setPostList(posts);
-    }
 
     public void startActAddPost(View view) {
         startActivity(new Intent(Post_Activity_Friends.this, Add_Change_Post_Activity.class)
@@ -206,21 +242,6 @@ public class Post_Activity_Friends extends AppCompatActivity implements Post_Lis
                 .putExtra("editPostId",""));
     }
 
-    @Override
-    public void initShowNewPost() {
-        postBinding.showNewPostBtn.setVisibility(View.VISIBLE);
-        postBinding.showNewPostBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                loadPosts();
-            }
-        });
-    }
-
-    @Override
-    public void disableProgressBar() {
-        postBinding.progressbarPostActivity.setVisibility(View.GONE);
-    }
 
     //TODO: another staff
     public void updateNavigationMenu() {
@@ -255,7 +276,7 @@ public class Post_Activity_Friends extends AppCompatActivity implements Post_Lis
                         overridePendingTransition(0, 0);
                         return true;
                 }
-                return false;
+                return true;
             }
         });
     }

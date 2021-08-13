@@ -27,12 +27,4 @@ public class Settings_Activity extends AppCompatActivity {
         }
     }
 
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        int id=item.getItemId();
-        if(id==android.R.id.home){
-            NavUtils.navigateUpFromSameTask(this);
-        }
-        return super.onOptionsItemSelected(item);
-    }
 }

@@ -18,13 +18,20 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.myapplication.Common_Dagger_App_Class.App;
 import com.example.myapplication.R;
 import com.example.myapplication.Services.App_Constants;
+import com.example.myapplication.Services.Online_Offline_User_Service_To_Firebase;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import javax.inject.Inject;
+
 
 public class Add_Music_Activity extends AppCompatActivity implements Add_Music_view{
+
+    @Inject
+    Online_Offline_User_Service_To_Firebase controller;
 
     private EditText editTextMainTitle, editTextLastTitle;
     private TextView textViewTitleFromMachine;
@@ -52,7 +59,10 @@ public class Add_Music_Activity extends AppCompatActivity implements Add_Music_v
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
+        ((App) getApplication()).getCommonComponent().inject(this);
         presenter = new Add_Music_Presenter(this);
+
+        getLifecycle().addObserver(controller);
 
         initialization();
 

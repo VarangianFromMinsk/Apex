@@ -1,6 +1,7 @@
-package com.example.myapplication.main.Screens.Posts.Posts_By_Friends_MVP;
+package com.example.myapplication.main.Screens.Posts.Posts_By_Friends_MVVM;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.MutableLiveData;
 
 import com.example.myapplication.main.Models.Model_Post;
 import com.google.firebase.auth.FirebaseAuth;
@@ -14,35 +15,34 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Post_Friends_Presenter {
+public class Friends_Repository {
 
-    private final ArrayList<Model_Post> postListFriends = new ArrayList<>();
+    public static final Friends_Repository instance = new Friends_Repository();
+
+    private final ArrayList<Model_Post> postListFriendsRepArray = new ArrayList<>();
+    private final MutableLiveData<ArrayList<Model_Post>> posts = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> showLoad = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> showNewPosts = new MutableLiveData<>();
+
     private String hisUid = "";
     private String myUid;
     private boolean itsWork;
 
-    private final Post_List_view view;
 
-
-    public Post_Friends_Presenter(Post_List_view view) {
-        this.view = view;
+    public MutableLiveData<ArrayList<Model_Post>> getPosts(String searchText) {
+        loadPosts(searchText);
+        return posts;
     }
 
 
-    //TODO: test method to unitTest
-    public int add(int a, int b){
-        return a*b;
-    }
-
-
-    public void loadData(String searchQuery){
+    public void loadPosts(String searchQuery){
 
         FirebaseAuth auth = FirebaseAuth.getInstance();
         myUid = auth.getUid();
 
         itsWork = true;
 
-        postListFriends.clear();
+        postListFriendsRepArray.clear();
 
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Posts");
         //TODO: get all data from this ref
@@ -56,6 +56,7 @@ public class Post_Friends_Presenter {
                         assert post != null;
                         hisUid = post.getUid();
 
+
                         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("users");
                         Query queryFriends = ref.child(myUid).child("Friends").orderByChild("uid").equalTo(hisUid);
                         queryFriends .addListenerForSingleValueEvent(new ValueEventListener() {
@@ -66,22 +67,22 @@ public class Post_Friends_Presenter {
                                         if(!searchQuery.equals("no")){
                                             if (post.getpTitle().toLowerCase().contains(searchQuery.toLowerCase())
                                                     || post.getpDescr().toLowerCase().contains(searchQuery.toLowerCase())) {
-                                                postListFriends.add(0,post);
-                                                view.disableProgressBar();
+                                                postListFriendsRepArray.add(0,post);
+                                                setShowProgressBar(false);
                                             }
                                         }
                                         else{
-                                            postListFriends.add(0,post);
-                                            view.disableProgressBar();
+                                            postListFriendsRepArray.add(0,post);
+                                            setShowProgressBar(false);
                                         }
                                     }
-                                    view.showData( postListFriends);
                                 }
+                                posts.setValue(postListFriendsRepArray);
                             }
 
                             @Override
                             public void onCancelled(@NonNull DatabaseError error) {
-                                view.disableProgressBar();
+                                setShowProgressBar(false);
                             }
                         });
                         itsWork = false;
@@ -125,8 +126,8 @@ public class Post_Friends_Presenter {
 
                     }
 
-                    if(checkForMainList.size() > postListFriends.size() ){
-                        view.initShowNewPost();
+                    if(checkForMainList.size() > postListFriendsRepArray.size() ){
+                        showNewPosts.setValue(true);
                     }
                 }
 
@@ -136,7 +137,20 @@ public class Post_Friends_Presenter {
             public void onCancelled(@NonNull DatabaseError error) {
             }
         });
-
     }
 
+    //progress bar
+    public MutableLiveData<Boolean> getShowLoad() {
+        return showLoad;
+    }
+
+    public void setShowProgressBar(Boolean state){
+        showLoad.setValue(state);
+    }
+
+    //show new posts
+
+    public MutableLiveData<Boolean> getShowNewPosts() {
+        return showNewPosts;
+    }
 }

@@ -1,19 +1,17 @@
 package com.example.myapplication.main.Screens.Posts.Posts_By_Recommendation_MVVM;
 
 import android.app.Application;
-import android.content.Context;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.myapplication.Services.Check_Internet_Connection_Exist;
+import com.example.myapplication.Common_Dagger_App_Class.App;
+
 import com.example.myapplication.main.Models.Model_Post;
 
 import java.util.ArrayList;
-
-import javax.inject.Inject;
 
 public class Post_Recomm_ViewModel extends AndroidViewModel {
 

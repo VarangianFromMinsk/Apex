@@ -27,7 +27,7 @@ import com.example.myapplication.Services.Check_Internet_Connection_Exist;
 import com.example.myapplication.Services.Check_Permission_Service;
 import com.example.myapplication.Services.Online_Offline_User_Service_To_Firebase;
 import com.example.myapplication.databinding.AddPostActivityBinding;
-import com.example.myapplication.main.Screens.Posts.Posts_By_Friends_MVP.Post_Activity_Friends;
+import com.example.myapplication.main.Screens.Posts.Posts_By_Friends_MVVM.Post_Activity_Friends;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;

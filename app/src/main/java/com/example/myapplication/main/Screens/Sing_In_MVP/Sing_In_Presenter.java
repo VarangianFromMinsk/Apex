@@ -54,6 +54,7 @@ public class Sing_In_Presenter {
                             Log.d(tag, "createUserWithEmail:success");
 
                             FirebaseUser user = auth.getCurrentUser();
+                            assert user != null;
                             createUser(user,"online", name, activity);
 
                             view.registerComplete(true);

@@ -1,9 +1,11 @@
 package com.example.myapplication.main.Screens.Chat_Activity_MVP;
 
 import android.net.Uri;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.MutableLiveData;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
@@ -28,24 +30,39 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
-public class Chat_Presenter {
+public class Chat_Repository {
 
-    private final Chat_view view;
+    public static final Chat_Repository instance = new Chat_Repository();
 
     private String myName = "";
     private String myAvatarUrl = "";
 
-    public Chat_Presenter(Chat_view view) {
-        this.view = view;
-    }
 
-    //todo: start writting
+    private final MutableLiveData<Boolean> showIfWriting = new MutableLiveData<>();
+
+    private final MutableLiveData<String> hisInfoAndAvatar = new MutableLiveData<>();
+
+    private final MutableLiveData<Boolean> isOnline = new MutableLiveData<>();
+    private final MutableLiveData<String> lastTimeConnectionCheck = new MutableLiveData<>();
+
+    private final MutableLiveData<String> myNameCheck = new MutableLiveData<>();
+    private final MutableLiveData<String> myAvatarCheck = new MutableLiveData<>();
+
+    private ArrayList<Model_Message> messages = new ArrayList<>();
+    private final MutableLiveData<Model_Message> newMessage = new MutableLiveData<>();
+
+    private final MutableLiveData<Boolean> refreshChatCheck = new MutableLiveData<>();
+
+
+
+    //todo: start writing
     public void showIsHisWritingToYou(String recipientUserId) {
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
         ref.child("StartWriting").child(recipientUserId)
@@ -53,18 +70,21 @@ public class Chat_Presenter {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if (snapshot.exists()) {
-                            view.showIfWriting(true);
+                            showIfWriting.setValue(true);
                         } else {
-                            view.showIfWriting(false);
+                            showIfWriting.setValue(false);
                         }
-
                     }
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
-
+                        Log.d("Chat", "error in show is writing");
                     }
                 });
+    }
+
+    public MutableLiveData<Boolean> getShowIfWriting() {
+        return showIfWriting;
     }
 
     public void createStartWriting(String myFirebaseId, String recipientUserId) {
@@ -83,7 +103,7 @@ public class Chat_Presenter {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                Log.d("Chat", "set is writing");
             }
         });
     }
@@ -101,7 +121,7 @@ public class Chat_Presenter {
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
-
+                    Log.d("Chat", "delete is writing");
                 }
             });
         } catch (Exception ignored) {
@@ -112,44 +132,57 @@ public class Chat_Presenter {
     public void loadRecipientUserInfo(String recipientUserId) {
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("users");
         Query userQuery = ref.orderByChild("firebaseId").equalTo(recipientUserId);
-        userQuery.addValueEventListener(new ValueEventListener() {
+        userQuery.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot ds : snapshot.getChildren()) {
                     String hisImage = "" + ds.child("avatarMockUpResourse").getValue();
-                    view.loadHisInfoAndAvatar(hisImage);
+                    hisInfoAndAvatar.setValue(hisImage);
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                Log.d("Chat", "load avatar");
             }
         });
+    }
+
+    public MutableLiveData<String> getHisInfoAndAvatar() {
+        return hisInfoAndAvatar;
     }
 
     public void isHeOnline(String recipientUserId) {
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("users");
-        DatabaseReference userRef = ref.child(recipientUserId);
-        userRef.addValueEventListener(new ValueEventListener() {
+        Query query = ref.orderByChild("firebaseId").equalTo(recipientUserId);
+        query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.hasChild("online")) {
-                    String lastTimeConnection = Objects.requireNonNull(snapshot.child("timeonline").getValue()).toString();
-                    view.isHeOnlineCheckComplete(true, lastTimeConnection);
-                } else {
-                    String lastTimeConnection = Objects.requireNonNull(snapshot.child("timeonline").getValue()).toString();
-                    view.isHeOnlineCheckComplete(false, lastTimeConnection);
+                for (DataSnapshot ds : snapshot.getChildren()) {
+                    Model_User user = ds.getValue(Model_User.class);
+
+                    assert user != null;
+                    isOnline.setValue(user.getOnline().equals("online"));
+
+                    lastTimeConnectionCheck.setValue(user.getTimeonline());
                 }
             }
 
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                Log.d("Chat", "load online");
             }
         });
     }
 
+    public MutableLiveData<Boolean> getIsOnline() {
+        return isOnline;
+    }
+
+    public MutableLiveData<String> getLastTimeConnectionCheck() {
+        return lastTimeConnectionCheck;
+    }
 
     //todo: load info about current user
     public void loadInfoAboutUser(String myUid) {
@@ -168,20 +201,29 @@ public class Chat_Presenter {
                     } catch (Exception ignored) {
                     }
 
-                    view.infoAboutUser(myName, myAvatarUrl);
+                    myAvatarCheck.setValue(myAvatarUrl);
+                    myNameCheck.setValue(myName);
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                Log.d("Chat", "load my info");
             }
         });
+    }
 
+    public MutableLiveData<String> getMyNameCheck() {
+        return myNameCheck;
+    }
+
+    public MutableLiveData<String> getMyAvatarCheck() {
+        return myAvatarCheck;
     }
 
     //todo: load messages
     public void loadMessages(FirebaseAuth auth, String recipientUserId) {
+
         DatabaseReference messagesDatabaseReference = FirebaseDatabase.getInstance().getReference().child("messages");
 
         ChildEventListener messagesChildEventListener = new ChildEventListener() {
@@ -194,24 +236,24 @@ public class Chat_Presenter {
 
                 if (message.getSender().equals(Objects.requireNonNull(auth.getCurrentUser()).getUid()) && message.getRecipient().equals(recipientUserId)) {
                     message.setMine(true);
-                    view.showMessage(message);
+                    newMessage.setValue(message);
+                  //  messages.add(message);
 
                 } else if (message.getRecipient().equals(auth.getCurrentUser().getUid()) && message.getSender().equals(recipientUserId)) {
                     message.setMine(false);
-                    view.showMessage(message);
+                    newMessage.setValue(message);
+                  //  messages.add(message);
                 }
-
-
             }
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                view.initRefreshChat();
+                refreshChatCheck.setValue(true);
             }
 
             @Override
             public void onChildRemoved(@NonNull DataSnapshot snapshot) {   // Удаление
-                view.initRefreshChat();
+                refreshChatCheck.setValue(true);
             }
 
             @Override
@@ -225,12 +267,30 @@ public class Chat_Presenter {
         messagesDatabaseReference.addChildEventListener(messagesChildEventListener);
     }
 
+    public ArrayList<Model_Message> getMessages() {
+        return messages;
+    }
+
+    public MutableLiveData<Model_Message> getNewMessage() {
+        return newMessage;
+    }
+
+    public void disableRefresh(){
+        refreshChatCheck.setValue(false);
+    }
+
+    public MutableLiveData<Boolean> getRefreshChatCheck() {
+        return refreshChatCheck;
+    }
 
     //todo: common push
     public void pushCommonMessage(Model_Message message, String typeOfMessage, Uri downloadUri, String shareImage,
                                   String pDescription, String uName, String pImage, String pId,
                                   Chat_Main_Activity activity, Locale locale, String myName, String recipientUserId,
                                   FirebaseAuth auth, String myFirebaseId, String myAvatarUrl, String text) {
+
+
+        Log.d("NotificationCheck", recipientUserId);
 
         String messageForNotification = "";
 
@@ -252,11 +312,11 @@ public class Chat_Presenter {
                     break;
                 case "imageMessage":
                     message.setImageUrl(downloadUri.toString());
-                    messageForNotification = String.valueOf("User send image");
+                    messageForNotification = "User send image";
                     break;
                 case "shareImageMessage":
                     message.setImageUrl(shareImage);
-                    messageForNotification = String.valueOf("User shared image");
+                    messageForNotification = "User shared image";
                     break;
             }
         } else {

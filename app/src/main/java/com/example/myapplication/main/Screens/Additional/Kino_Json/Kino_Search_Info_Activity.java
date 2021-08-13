@@ -1,9 +1,11 @@
 package com.example.myapplication.main.Screens.Additional.Kino_Json;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.View;
@@ -109,8 +111,12 @@ public class Kino_Search_Info_Activity extends AppCompatActivity {
     }
 
     public void searchKino(View view) {
-        titleName.getText().toString().trim();
         String moviename = titleName.getText().toString().trim();
+
+        //TODO: save current search
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        preferences.edit().putString("last_movie_search_name", moviename ).putString("last_movie_search_poster", null).apply();
+
         url = App_Constants.URL_REQUEST_KINO +  moviename;
 
         // TODO:refresh recyclerView

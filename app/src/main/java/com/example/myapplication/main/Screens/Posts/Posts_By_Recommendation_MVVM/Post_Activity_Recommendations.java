@@ -21,7 +21,7 @@ import com.example.myapplication.databinding.PostActivityRecommendationsBinding;
 import com.example.myapplication.main.Screens.Dashboard_MVP.Dashboard_Activity;
 import com.example.myapplication.R;
 import com.example.myapplication.main.Models.Model_Post;
-import com.example.myapplication.main.Screens.Posts.Posts_By_Friends_MVP.Post_Activity_Friends;
+import com.example.myapplication.main.Screens.Posts.Posts_By_Friends_MVVM.Post_Activity_Friends;
 import com.example.myapplication.Common_Dagger_App_Class.App;
 import com.example.myapplication.main.Screens.User_List_4_States_MVVM.User_List_Activity;
 import com.example.myapplication.main.Screens.User_Profile_MVVM.User_Profile_Activity;
@@ -232,7 +232,7 @@ public class Post_Activity_Recommendations extends AppCompatActivity {
                         overridePendingTransition(0,0);
                         return true;
                 }
-                return false;
+                return true;
             }
         });
 

@@ -1,4 +1,4 @@
-package com.example.myapplication.main.Screens.Posts.Posts_By_Friends_MVP;
+package com.example.myapplication.main.Screens.Posts.Posts_By_Friends_MVVM;
 
 import android.content.Context;
 import android.text.TextUtils;
